@@ -23,8 +23,8 @@ def main():
             print(f"Reading {file}")
             df = pd.read_excel(file, sheet_name=file.name[:-4], skiprows=1, nrows=1)
 
-            df = df.rename(columns={'Name': "Sample ID"})
-            df = df.fillna(0)
+            df = df.rename(columns={'Name': "Sample ID", "Number of reads":"Number of Reads", "Avg.length": "Mean Read Length"})
+            df = df[['Sample ID', 'Number of Reads', 'Mean Read Length']].fillna(0)
             # Append the dataframe to the output CSV file
             print(f"Writing to {output_file}")
             if not output_file.exists():
