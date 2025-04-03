@@ -10,6 +10,7 @@ def main():
     df = (df.merge(df_reg, left_on='Location (on dish)', right_on='Location').
           drop(columns=['Location', 'Location (on dish)']))
     df = df.fillna("Unknown")
+    df['Sample ID'] = df['Sample ID'].str.upper()  # Remove leading/trailing whitespace from sample IDs
     df.to_csv('build/Sample Metadata.csv', index=False)
 
 

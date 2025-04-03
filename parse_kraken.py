@@ -53,7 +53,7 @@ def process_kraken_file(file_path: str):
     df['Clades'] = df['Clades'].astype(int)
     df = df.rename(columns={'Clades': 'Abundance'})
     # Add the sample ID (filename without extension)
-    df['Sample ID'] = Path(file_path).stem
+    df['Sample ID'] = Path(file_path).stem.upper()
     return df, df_stacked
 
 
