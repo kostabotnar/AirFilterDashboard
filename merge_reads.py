@@ -4,7 +4,7 @@ import pandas as pd
 import argparse
 
 
-def main():
+def process_sample_reads():
     argparser = argparse.ArgumentParser()
     argparser.add_argument("input_path", help="Path to input CSV files")
     argparser.add_argument("output_path", help="Path for output file")
@@ -38,4 +38,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    process_sample_reads()

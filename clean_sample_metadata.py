@@ -21,10 +21,8 @@ def clean_metadata():
     df['Sample ID'] = df['Sample ID'].str.upper()  # Remove leading/trailing whitespace from sample IDs
     df = df.rename(columns={'FEMA Region': 'Region'})
 
-    if Path('build/Sample Abundances.csv').exists():
-        print("Filter samples with metagenomic data")
-        samples = pd.read_csv('build/Sample Abundances.csv', usecols=['Sample ID']).drop_duplicates()
-        df = df.merge(samples, on='Sample ID')
+    print('Clean collection location' )
+    df = df[~df['Location (Indoor/Outdoor/Transit/Special Event)'].isin(['Unknown', 'NF', 'Selected'])]
 
     print("Write Sample Metadata to CSV")
     df.to_csv('build/Sample Metadata.csv', index=False)
