@@ -171,4 +171,5 @@ cython_debug/
 .pypirc
 
 # custom
-/data/
+/data/metagenomic
+/data/psw.txt

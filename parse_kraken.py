@@ -21,8 +21,8 @@ def process_kraken_file(file_path: str):
     df = df[df['Rank'].str.match(r'^[A-Za-z]$')]
     df['Rank'] = df['Rank'].map(rank_values)
     df = df.dropna()
-    df_stacked = df.rename(columns={'Rank': 'OTU', 'Scientific Name':'Name', 'Clades': 'Abundance'})
-    df_stacked['Sample ID'] = Path(file_path).stem
+    df_stacked = df.rename(columns={'Rank': 'OTU', 'Scientific Name': 'Name', 'Clades': 'Abundance'})
+    df_stacked['Sample ID'] = Path(file_path).stem.upper()
 
     # Define the order of ranks
     ranks = ['Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']
@@ -59,7 +59,7 @@ def process_kraken_file(file_path: str):
 
 def main():
     # input_dir = Path("data/test")
-    input_dir = Path("data/DHS_kraken_2025-04-02-1853")
+    input_dir = Path("data/metagenomic/DHS_kraken_2025-04-03-1826")
     output_file = 'build/Sample Abundances.csv'
     stacked_output_file = 'build/Sample Abundances stacked.csv'
 

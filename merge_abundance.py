@@ -4,7 +4,7 @@ import pandas as pd
 import argparse
 
 
-def main():
+def process_sample_abundance():
     argparser = argparse.ArgumentParser()
     argparser.add_argument("input_path", help="Path to input CSV files")
     argparser.add_argument("output_path", help="Path to save output CSV file with merged abundance data")
@@ -50,4 +50,4 @@ def main():
     print(f"Abundance data merged successfully into {output_file}")
 
 if __name__ == "__main__":
-    main()
+    process_sample_abundance()
