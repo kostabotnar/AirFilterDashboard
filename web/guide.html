@@ -84,8 +84,7 @@
     <div class="section">
         <div class="description">
             <h2>Metadata</h2>
-            <p>This page provides an overview of sample metadata, including collection time, seasonality, and other
-                essential details. Users can apply filters to explore subsets of the data interactively.</p>
+            <div class="metadata-description"><p></p></div>
         </div>
         <div class="image-container">
             <img src="image/metadata.png" alt="Metadata Page">
@@ -95,9 +94,7 @@
     <div class="section">
         <div class="description">
             <h2>Region</h2>
-            <p>The Region tab visualizes the spatial distribution of samples across various locations. Interactive maps
-                and
-                charts allow users to identify geographic patterns and compare different areas.</p>
+            <div class="region-description"><p></p></div>
         </div>
         <div class="image-container">
             <img src="image/region.png" alt="Region Page">
@@ -107,9 +104,7 @@
     <div class="section">
         <div class="description">
             <h2>Sample</h2>
-            <p>The Sample page allows users to inspect individual sample records, view their attributes, and understand
-                how
-                each sample contributes to broader trends observed in the dataset.</p>
+            <div class="sample-description"><p></p></div>
         </div>
         <div class="image-container">
             <img src="image/sample.png" alt="Sample Page">
@@ -119,9 +114,7 @@
     <div class="section">
         <div class="description">
             <h2>Phylogenetic Tree</h2>
-            <p>This section illustrates evolutionary relationships between organisms found in the samples. Users can
-                explore
-                lineages, trace ancestries, and interact with a hierarchical tree structure.</p>
+            <div class="phylo-description"><p></p></div>
         </div>
         <div class="image-container">
             <img src="image/phylo_tree.png" alt="Phylogenetic Tree Page">
@@ -131,14 +124,72 @@
     <div class="section">
         <div class="description">
             <h2>Species</h2>
-            <p>The Species tab highlights bacterial and viral species detected in the samples. Use filters and sorting
-                tools
-                to explore frequency, diversity, and species distribution across samples.</p>
+            <div class="species-description">
+                <p></p>
+            </div>
         </div>
         <div class="image-container">
             <img src="image/species.png" alt="Species Page">
         </div>
     </div>
 </div>
+
+<script>
+    // Load external description into the blocks
+    window.addEventListener('DOMContentLoaded', () => {
+        // metdata
+        fetch('text/metadata.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.metadata-description p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+        // region
+        fetch('text/region.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.region-description p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+        // species
+        fetch('text/sample.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.sample-description p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+        // phylo tree
+        fetch('text/phylo_tree.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.phylo-description p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+        // species
+        fetch('text/species.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.species-description p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+
+    });
+
+</script>
 </body>
 </html>
