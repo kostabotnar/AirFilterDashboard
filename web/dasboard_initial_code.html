@@ -2,134 +2,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Air Filter Dashboard</title>
+    <title>Air Metagenomics Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
         }
-        .dialog-box {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-            text-align: center;
+
+        body, html {
+          height: 100%;
         }
-        .input-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
+
+        .container {
+          display: flex;
+          height: 100vh;
         }
-        input[type=password], input[type=text] {
-            width: 70%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .left-panel {
+          flex: 1;
+          background-color: #f4f4f4;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 40px;
         }
-        button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+
+        .left-panel h1 {
+          margin-bottom: 30px;
+          font-size: 2em;
         }
-        button:hover {
-            background: #0056b3;
+
+        .password-container {
+          position: relative;
+          width: 250px;
+          margin-bottom: 20px;
         }
-        .error {
-            color: red;
-            margin-top: 10px;
+
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+          padding: 10px 40px 10px 10px;
+          width: 100%;
+          border: 1px solid #ccc;
+          border-radius: 4px;
         }
-        .show-password-btn {
-            padding: 10px;
-            background: #f0f0f0;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
+
+        .toggle-password {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          background: none;
+          border: none;
+          font-size: 1em;
+          color: #888;
         }
-        .show-password-btn:hover {
-            background: #e0e0e0;
+
+        .login-button {
+          padding: 10px 20px;
+          font-size: 1em;
+          border: none;
+          border-radius: 4px;
+          background-color: #007BFF;
+          color: white;
+          cursor: pointer;
         }
+
+        .login-button:hover {
+          background-color: #0056b3;
+        }
+
+        .error-message {
+          color: red;
+          margin-top: 10px;
+        }
+
+        .right-panel {
+          flex: 1;
+          background-image: url('image/Dashboard Background.jpg');
+          background-size: cover;
+          background-position: center;
+          color: #222;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: left;
+          padding: 50px;
+        }
+
+        .right-panel-content {
+          background-color: rgba(255, 255, 255, 0.8);
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          max-width: 600px;
+        }
+
+        .right-panel-content h2 {
+          font-size: 2em;
+          margin-bottom: 20px;
+          color: #222;
+        }
+
+        .right-panel-content p {
+          font-size: 1em;
+          line-height: 1.6;
+          color: #333;
+          text-align: justify;
+        }
+
         .iframe-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: none;
-            background: #fff;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          display: none;
+          z-index: 9999;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+
+        .iframe-container iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
         }
     </style>
 </head>
 <body>
-    <div id="d" class="dialog-box">
-        <h2>Enter Password</h2>
-        <div class="input-container">
-            <input type="password" id="p" placeholder="Enter password">
-            <button class="show-password-btn" onclick="t()">Show</button>
+<div class="container" id="mainContainer">
+    <div class="left-panel">
+        <h1>Sign In</h1>
+        <div class="password-container">
+            <input id="password" type="password" placeholder="Enter Password">
+            <button class="toggle-password" onclick="togglePasswordVisibility()">
+                <img id="toggleIcon" src="image/hide_psw.jpg" alt="Toggle Password" width="20" height="20">
+            </button>
         </div>
-        <button onclick="c()">Submit</button>
-        <p id="e" class="error"></p>
+        <button class="login-button" onclick="checkPassword()">Login</button>
+        <div id="errorMsg" class="error-message"></div>
     </div>
-    <div id="i" class="iframe-container">
-        <iframe id="dashboard" title="Air Filter Dashboard" frameborder="0" allowFullScreen="true"></iframe>
+    <div class="right-panel">
+        <div class="right-panel-content">
+            <h2>Air Metadata Dashboard</h2>
+            <p>
+                This interactive dashboard is designed to explore the metadata of collected biological or environmental
+                samples.
+                It allows users to investigate the distribution of samples across time, seasons, geographic regions, and
+                sample locations.
+                Through the "drill through" navigation menu users can dive deeper into specific aspects such as
+                regional breakdowns, individual sample details, evolutionary relationships, and identified species.
+            </p>
+        </div>
     </div>
-    <script>
-        const h = "ae7ba4a8dbe36c4ef6c73292781d20a2d32c7478b28d26b82c8cf5e1208278a4aeeec7afff2e51c18020640eb694a0481e0b9bfaf3e064a400e30bb3a7d8edfa";
-        const encodedSrc = "aHR0cHM6Ly9hcHAucG93ZXJiaS5jb20vdmlldz9yPWV5SnJJam9pTVRkbU5tRXlNamd0T1RRd01pMDBNalU0TFdKbE1HVXROMlV3T1RjM1pEZGlNRGxrSWl3aWRDSTZJamRpWldZeU5UWmtMVGcxWkdJdE5EVXlOaTFoTnpKa0xUTXhZV1ZoTWpVME5qZzFNaUlzSW1NaU9qTjk=";
+</div>
+<div class="iframe-container" id="iframeContainer">
+    <iframe src=""></iframe>
+</div>
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        toggleIcon.src = isPassword ? 'image/show_psw.jpg' : 'image/hide_psw.jpg';
+    }
 
-        async function f(p) {
-            const e = new TextEncoder().encode(p),
-                  b = await crypto.subtle.digest("SHA-512", e);
-            return Array.from(new Uint8Array(b)).map(b => b.toString(16).padStart(2, "0")).join("");
+    async function checkPassword() {
+        const password = document.getElementById('password').value;
+        const msgEl = document.getElementById('errorMsg');
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-512', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        const correctHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
+
+        if (hashHex !== correctHash) {
+            msgEl.textContent = "Incorrect password. Please try again.";
+        } else {
+            msgEl.textContent = "";
+            document.getElementById('mainContainer').style.display = 'none';
+            const iframeContainer = document.getElementById('iframeContainer');
+            iframeContainer.style.display = 'block';
+            iframeContainer.querySelector('iframe').src = "https://app.powerbi.com/view?r=eyJrIjoiMTdmNmEyMjgtOTQwMi00MjU4LWJlMGUtN2UwOTc3ZDdiMDlkIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
         }
+    }
 
-        async function c() {
-            const p = document.getElementById("p").value,
-                  e = document.getElementById("e"),
-                  d = document.getElementById("d"),
-                  i = document.getElementById("i"),
-                  iframe = document.getElementById("dashboard");
+    // Load external description into the right panel
+    window.addEventListener('DOMContentLoaded', () => {
+        fetch('text/general-description.txt')
+            .then(response => response.text())
+            .then(text => {
+                const contentContainer = document.querySelector('.right-panel-content p');
+                contentContainer.textContent = text;
+            })
+            .catch(error => {
+                console.error("Failed to load dashboard description:", error);
+            });
+    });
 
-            if ((await f(p)) === h) {
-                e.textContent = "";
-                d.style.display = "none";
-                i.style.display = "block";
-
-                // Decode the URL and assign it to the iframe
-                iframe.src = atob(encodedSrc);
-            } else {
-                e.textContent = "Incorrect password. Please try again.";
-                i.style.display = "none";
-            }
-        }
-
-        function t() {
-            const p = document.getElementById("p"),
-                  b = document.querySelector(".show-password-btn");
-            if (p.type === "password") {
-                p.type = "text";
-                b.textContent = "Hide";
-            } else {
-                p.type = "password";
-                b.textContent = "Show";
-            }
-        }
-    </script>
+</script>
 </body>
 </html>
