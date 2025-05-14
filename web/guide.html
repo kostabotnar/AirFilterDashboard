@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Navigation Guide</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            padding: 60px 60px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .section {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .section:nth-child(1) .description { background-color: #d0e8ff; }
+        .section:nth-child(2) .description { background-color: #e6ffe6; }
+        .section:nth-child(3) .description { background-color: #fff0cc; }
+        .section:nth-child(4) .description { background-color: #ffe6f0; }
+        .section:nth-child(5) .description { background-color: #e0f7fa; }
+
+        .section:nth-child(2),
+        .section:nth-child(4){
+            flex-direction: row-reverse;
+        }
+
+        .image-container {
+            flex: 1;
+            max-width: 50%;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .description {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .description h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .description p {
+            font-size: 1em;
+            color: #555;
+            text-align: justify;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="title">Dashboard Navigation Guide</div>
+<div class="sections">
+    <div class="section">
+        <div class="description">
+            <h2>Metadata</h2>
+            <p>This page provides an overview of sample metadata, including collection time, seasonality, and other
+                essential details. Users can apply filters to explore subsets of the data interactively.</p>
+        </div>
+        <div class="image-container">
+            <img src="image/metadata.png" alt="Metadata Page">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="description">
+            <h2>Region</h2>
+            <p>The Region tab visualizes the spatial distribution of samples across various locations. Interactive maps
+                and
+                charts allow users to identify geographic patterns and compare different areas.</p>
+        </div>
+        <div class="image-container">
+            <img src="image/region.png" alt="Region Page">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="description">
+            <h2>Sample</h2>
+            <p>The Sample page allows users to inspect individual sample records, view their attributes, and understand
+                how
+                each sample contributes to broader trends observed in the dataset.</p>
+        </div>
+        <div class="image-container">
+            <img src="image/sample.png" alt="Sample Page">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="description">
+            <h2>Phylogenetic Tree</h2>
+            <p>This section illustrates evolutionary relationships between organisms found in the samples. Users can
+                explore
+                lineages, trace ancestries, and interact with a hierarchical tree structure.</p>
+        </div>
+        <div class="image-container">
+            <img src="image/phylo_tree.png" alt="Phylogenetic Tree Page">
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="description">
+            <h2>Species</h2>
+            <p>The Species tab highlights bacterial and viral species detected in the samples. Use filters and sorting
+                tools
+                to explore frequency, diversity, and species distribution across samples.</p>
+        </div>
+        <div class="image-container">
+            <img src="image/species.png" alt="Species Page">
+        </div>
+    </div>
+</div>
+</body>
+</html>
