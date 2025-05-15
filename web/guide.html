@@ -83,21 +83,21 @@
 <div class="sections">
     <div class="section">
         <div class="description">
-            <h2>Metadata</h2>
-            <div class="metadata-description"><p></p></div>
+            <h2>Nation View</h2>
+            <div class="nation-description"><p></p></div>
         </div>
         <div class="image-container">
-            <img src="image/metadata.png" alt="Metadata Page">
+            <img src="image/nation.png" alt="Nation View Page">
         </div>
     </div>
 
     <div class="section">
         <div class="description">
-            <h2>Region</h2>
+            <h2>Regional View</h2>
             <div class="region-description"><p></p></div>
         </div>
         <div class="image-container">
-            <img src="image/region.png" alt="Region Page">
+            <img src="image/region.png" alt="Regional View Page">
         </div>
     </div>
 
@@ -137,11 +137,11 @@
 <script>
     // Load external description into the blocks
     window.addEventListener('DOMContentLoaded', () => {
-        // metdata
-        fetch('text/metadata.txt')
+        // nation-view
+        fetch('text/nation.txt')
             .then(response => response.text())
             .then(text => {
-                const contentContainer = document.querySelector('.metadata-description p');
+                const contentContainer = document.querySelector('.nation-description p');
                 contentContainer.textContent = text;
             })
             .catch(error => {
