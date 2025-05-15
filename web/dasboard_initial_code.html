@@ -192,7 +192,7 @@
         const correctHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
 
         if (hashHex !== correctHash) {
-            msgEl.textContent = "Incorrect password. Please try again.";
+            msgEl.innerHTML = 'Incorrect password. Please try again.<br><a href="mailto:kobotnar@utmb.edu" style="display: block; text-align: center;">Contact support</a>';
         } else {
             localStorage.setItem("loggedIn", "true"); // Remember login
             showDashboard();
