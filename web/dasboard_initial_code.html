@@ -171,6 +171,7 @@
     </a>
     <iframe src=""></iframe>
 </div>
+<script src="config.js"></script>
 <script>
     function togglePasswordVisibility() {
         const passwordInput = document.getElementById('password');
@@ -189,9 +190,7 @@
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-        const correctHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
-
-        if (hashHex !== correctHash) {
+        if (hashHex !== pswHash) {
             msgEl.innerHTML = 'Incorrect password. Please try again.<br><a href="mailto:kobotnar@utmb.edu" style="display: block; text-align: center;">Contact support</a>';
         } else {
             localStorage.setItem("loggedIn", "true"); // Remember login
@@ -203,7 +202,7 @@
         document.getElementById('mainContainer').style.display = 'none';
         const iframeContainer = document.getElementById('iframeContainer');
         iframeContainer.style.display = 'block';
-        iframeContainer.querySelector('iframe').src = "https://app.powerbi.com/view?r=eyJrIjoiMTdmNmEyMjgtOTQwMi00MjU4LWJlMGUtN2UwOTc3ZDdiMDlkIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
+        iframeContainer.querySelector('iframe').src = powerBiUrl;
     }
 
     // On page load, check if user is already logged in
