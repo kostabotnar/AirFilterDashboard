@@ -378,11 +378,19 @@
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
         if (hashHex !== pswHash) {
-            msgEl.innerHTML = 'Incorrect password. Please try again.<br><a href="mailto:kobotnar@utmb.edu" style="display: block; text-align: center;">Contact support</a>';
+            msgEl.innerHTML = 'Incorrect password. Please try again.<br><a href="#" onclick="openContactPage(); return false;" style="display: block; text-align: center;">Contact support</a>';
         } else {
             localStorage.setItem("loggedIn", "true"); // Remember login
             showDashboard();
         }
+    }
+
+    function openContactPage() {
+        // Store the reason in localStorage to be retrieved by contact.html
+        localStorage.setItem("contactReason", "Forgot password");
+
+        // Open contact page in a new window/tab
+        window.open('contact.html', '_blank');
     }
 
     function showDashboard() {

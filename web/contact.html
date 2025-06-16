@@ -140,6 +140,15 @@
         // Initialize EmailJS with your user ID (you'll need to sign up at emailjs.com)
         (function() {
             emailjs.init("rtYAMug4jq9978IAc"); // Replace with your actual EmailJS user ID
+
+            // Check if there's a contact reason stored in localStorage
+            const contactReason = localStorage.getItem("contactReason");
+            if (contactReason) {
+                // Set the title field with the stored reason
+                document.getElementById('title').value = contactReason;
+                // Clear the stored reason to prevent it from persisting
+                localStorage.removeItem("contactReason");
+            }
         })();
 
         document.getElementById('contactForm').addEventListener('submit', function(e) {
