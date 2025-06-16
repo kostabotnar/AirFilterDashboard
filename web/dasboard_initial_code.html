@@ -83,6 +83,7 @@
           background-color: #007BFF;
           color: white;
           cursor: pointer;
+          margin-bottom: 20px;
         }
 
         .help-button:hover {
@@ -143,6 +144,151 @@
           height: 100%;
           border: none;
         }
+
+        .sidebar {
+          position: relative;
+          width: 240px;
+          height: 100%;
+          background-color: #ffffff;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          transition: width 0.3s ease, transform 0.3s ease;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          z-index: 100;
+        }
+
+        /* Add toggle button styles */
+        .sidebar-toggle {
+          position: absolute;
+          top: 50%;
+          right: -15px;
+          width: 30px;
+          height: 30px;
+          background-color: #6c5ce7;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: white;
+          font-weight: bold;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+          z-index: 101;
+          transform: translateY(-50%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+          background-color: #5649c0;
+        }
+
+        .sidebar.minimized .sidebar-toggle {
+          transform: translateY(-50%) rotate(180deg);
+        }
+
+        .sidebar.minimized {
+          width: 80px;
+          padding: 20px 10px;
+        }
+
+        .sidebar-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 25px;
+        }
+
+        .logo-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background-color: #6c5ce7;
+          border-radius: 8px;
+          color: white;
+          font-weight: bold;
+          margin-right: 10px;
+        }
+
+        .sidebar-title {
+          font-size: 16px;
+          font-weight: bold;
+          transition: opacity 0.3s ease;
+        }
+
+        .sidebar.minimized .sidebar-title {
+          display: none;
+        }
+
+        .sidebar-subtitle {
+          font-size: 12px;
+          color: #888;
+          transition: opacity 0.3s ease;
+        }
+
+        .sidebar.minimized .sidebar-subtitle {
+          display: none;
+        }
+
+        .nav-items {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+        }
+
+        .nav-item {
+          display: flex;
+          align-items: center;
+          padding: 12px 15px;
+          margin-bottom: 8px;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+          text-decoration: none;
+          color: #333;
+        }
+
+        .nav-item:hover {
+          background-color: #f5f5f7;
+        }
+
+        .nav-item.active {
+          background-color: #6c5ce7;
+          color: white;
+        }
+
+        .nav-icon {
+          margin-right: 12px;
+          width: 20px;
+          text-align: center;
+        }
+
+        .sidebar.minimized .nav-text {
+          display: none;
+        }
+
+        .sidebar-divider {
+          height: 1px;
+          background-color: #eee;
+          margin: 15px 0;
+        }
+
+        .sidebar-footer {
+          margin-top: auto;
+        }
+
+        .main-content {
+          flex: 1;
+          height: 100%;
+          transition: margin-left 0.3s ease;
+        }
+
+        .main-content iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
     </style>
 </head>
 <body>
@@ -166,10 +312,51 @@
     </div>
 </div>
 <div class="iframe-container" id="iframeContainer">
-    <a href="guide.html">
-        <button class="help-button">Help</button>
-    </a>
-    <iframe src=""></iframe>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">CL</div>
+            <div>
+                <div class="sidebar-title">Air Dashboard</div>
+                <div class="sidebar-subtitle">Metagenomics</div>
+            </div>
+        </div>
+
+        <div class="nav-items">
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">📚</span>
+                <span class="nav-text">Tutorial</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚠️</span>
+                <span class="nav-text">Disclaimer</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">📧</span>
+                <span class="nav-text">Contact</span>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">↩️</span>
+                <span class="nav-text">Logout</span>
+            </a>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+            «
+        </button>
+    </div>
+    <div class="main-content" id="mainContent">
+        <iframe src=""></iframe>
+    </div>
 </div>
 <script src="config.js"></script>
 <script>
@@ -201,8 +388,22 @@
     function showDashboard() {
         document.getElementById('mainContainer').style.display = 'none';
         const iframeContainer = document.getElementById('iframeContainer');
-        iframeContainer.style.display = 'block';
+        iframeContainer.style.display = 'flex';
         iframeContainer.querySelector('iframe').src = powerBiUrl;
+
+        // Show sidebar when user is logged in
+        document.getElementById('sidebar').style.display = 'flex';
+
+        // Ensure Dashboard menu item is active
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            const menuText = item.querySelector('.nav-text').textContent;
+            if (menuText === 'Dashboard') {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
     }
 
     // On page load, check if user is already logged in
@@ -217,10 +418,78 @@
                 console.error("Failed to load dashboard description:", error);
             });
 
+        // Hide sidebar by default
+        document.getElementById('sidebar').style.display = 'none';
+
         if (localStorage.getItem("loggedIn") === "true") {
             showDashboard();
         }
+
+        // Setup sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const iframe = mainContent.querySelector('iframe');
+
+        // Add double-click event to toggle sidebar
+        sidebar.addEventListener('dblclick', function() {
+            sidebar.classList.toggle('minimized');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Setup navigation item click events
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                const menuText = this.querySelector('.nav-text').textContent;
+
+                // Handle different menu items
+                switch(menuText) {
+                    case 'Dashboard':
+                        e.preventDefault();
+                        iframe.src = powerBiUrl; // Load the Power BI dashboard
+                        break;
+                    case 'Tutorial':
+                        e.preventDefault();
+                        iframe.src = 'guide.html'; // Assuming guide.html contains tutorial content
+                        break;
+                    case 'About':
+                        e.preventDefault();
+                        iframe.src = 'about.html'; // Create this file with about information
+                        break;
+                    case 'Disclaimer':
+                        e.preventDefault();
+                        iframe.src = 'disclaimer.html'; // Create this file with disclaimer information
+                        break;
+                    case 'Contact':
+                        e.preventDefault();
+                        iframe.src = 'contact.html'; // Create this file with contact information
+                        break;
+                    case 'Logout':
+                        e.preventDefault();
+                        localStorage.removeItem("loggedIn");
+                        // Hide sidebar when user logs out
+                        document.getElementById('sidebar').style.display = 'none';
+                        window.location.reload();
+                        return;
+                    default:
+                        e.preventDefault();
+                        break;
+                }
+
+                // Remove active class from all items
+                navItems.forEach(i => i.classList.remove('active'));
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
     });
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        sidebar.classList.toggle('minimized');
+        mainContent.classList.toggle('expanded');
+    }
 </script>
 </body>
 </html>
