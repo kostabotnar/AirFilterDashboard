@@ -1,16 +1,30 @@
+// Global variable to store all descriptions
+let descriptions = {};
 
 // Load external description into the blocks
 window.addEventListener('DOMContentLoaded', () => {
-    // nation-view
-    fetch('text/nation.txt')
-        .then(response => response.text())
-        .then(text => {
-            const contentContainer = document.querySelector('.nation-description p');
-            contentContainer.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load dashboard description:", error);
-        });
+  // Load descriptions from the consolidated JSON file
+  fetch('text/descriptions.json')
+    .then(response => response.json())
+    .then(data => {
+      descriptions = data;
+
+      // Initialize section descriptions
+      document.querySelector('.nation-description p').textContent = descriptions['nationwide'] || 'Not found';
+      document.querySelector('.region-description p').textContent = descriptions['region'] || 'Not found';
+      document.querySelector('.sample-description p').textContent = descriptions['sample'] || 'Not found';
+      document.querySelector('.taxo-description p').textContent = descriptions['taxonomic'] || 'Not found';
+      document.querySelector('.species-description p').textContent = descriptions['species'] || 'Not found';
+
+      // Initialize default descriptions for selected items
+      initializeSelectedItemDescriptions();
+
+      // Position highlight rectangles after descriptions are loaded
+      positionHighlightRectangles();
+    })
+    .catch(error => {
+      console.error("Failed to load descriptions:", error);
+    });
 
     // Position the highlight rectangles
     const positionHighlightRectangles = () => {
@@ -175,19 +189,6 @@ window.addEventListener('DOMContentLoaded', () => {
         mapHoverTooltip.style.display = 'none';
     }
 
-    // Load the collection date filter description by default
-    const selectedItem = document.querySelector('.filter-list li.selected');
-    const selectedItemDescription = selectedItem.querySelector('.filter-item-description');
-
-    fetch('text/collection-date-filter.txt')
-        .then(response => response.text())
-        .then(text => {
-            selectedItemDescription.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load collection date filter description:", error);
-        });
-
     filterItems.forEach(item => {
         item.addEventListener('click', function() {
             // Remove selected class from all items
@@ -212,73 +213,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // Show the appropriate rectangle based on selection
             const option = this.dataset.option;
             const itemDescription = this.querySelector('.filter-item-description');
-
-            if (option === 'collection-date-filter') {
-                collectionDateFilterRect.style.display = 'block';
-                // Load the collection date filter description
-                fetch('text/collection-date-filter.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load collection date filter description:", error);
-                    });
-            } else if (option === 'sample-count') {
-                sampleCountRect.style.display = 'block';
-                fetch('text/sample-count.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load sample count description:", error);
-                    });
-            } else if (option === 'geo-distribution') {
-                geoDistributionRect.style.display = 'block';
-                // Show the map hover tooltip
-                if (mapHoverTooltip) {
-                    mapHoverTooltip.style.display = 'block';
-                }
-                fetch('text/geo-distribution.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load geo distribution description:", error);
-                    });
-            } else if (option === 'collection-date') {
-                collectionDateRect.style.display = 'block';
-                fetch('text/collection-date.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load collection date map description:", error);
-                    });
-            } else if (option === 'seasonal-distribution') {
-                seasonalDistributionRect.style.display = 'block';
-                fetch('text/seasonal-distribution.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load seasonal distribution description:", error);
-                    });
-            } else if (option === 'location-distribution') {
-                locationDistributionRect.style.display = 'block';
-                fetch('text/location-distribution.txt')
-                    .then(response => response.text())
-                    .then(text => {
-                        itemDescription.textContent = text;
-                    })
-                    .catch(error => {
-                        console.error("Failed to load location distribution description:", error);
-                    });
-            }
+            itemDescription.textContent = descriptions[option] || 'Not found';
 
             // Update the highlight rectangle
             updateHighlight(option);
@@ -310,17 +245,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const selectedRegionItem = document.querySelector('#region .filter-list li.selected');
     if (selectedRegionItem) {
         const selectedRegionItemDescription = selectedRegionItem.querySelector('.filter-item-description');
-
-        fetch('text/collection-date-filter.txt')
-            .then(response => response.text())
-            .then(text => {
-                if (selectedRegionItemDescription) {
-                    selectedRegionItemDescription.textContent = text;
-                }
-            })
-            .catch(error => {
-                console.error("Failed to load region collection date filter description:", error);
-            });
+        selectedRegionItemDescription.textContent = descriptions['collection-date-filter'] || 'Not found';
     }
 
     regionFilterItems.forEach(item => {
@@ -344,144 +269,12 @@ window.addEventListener('DOMContentLoaded', () => {
             // Show the appropriate rectangle based on selection
             const option = this.dataset.option;
             const itemDescription = this.querySelector('.filter-item-description');
-
-            switch(option) {
-                case 'region-collection-date-filter':
-                    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'block';
-                    // Load the region collection date filter description
-                    fetch('text/region-collection-date-filter.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region collection date filter description:", error);
-                        });
-                    break;
-                case 'region-sample-count':
-                    if (regionSampleCountRect) regionSampleCountRect.style.display = 'block';
-                    fetch('text/region-sample-count.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region sample count description:", error);
-                        });
-                    break;
-                case 'region-name':
-                    if (regionNameRect) regionNameRect.style.display = 'block';
-                    fetch('text/region-name.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region name description:", error);
-                        });
-                    break;
-                case 'region-species-pathogen':
-                    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'block';
-                    fetch('text/region-species-pathogen.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region species pathogen description:", error);
-                        });
-                    break;
-                case 'region-metadata-distribution':
-                    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'block';
-                    fetch('text/region-metadata-distribution.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region metadata distribution description:", error);
-                        });
-                    break;
-                case 'region-top-species':
-                    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'block';
-                    fetch('text/region-top-species.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region top species description:", error);
-                        });
-                    break;
-                case 'region-samples-table':
-                    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'block';
-                    fetch('text/region-samples-table.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region samples table description:", error);
-                        });
-                    break;
-                case 'region-species-table':
-                    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'block';
-                    fetch('text/region-species-table.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load region species table description:", error);
-                        });
-                    break;
-            }
+            itemDescription.textContent = descriptions[option] || 'Not found';
 
             // Update the highlight rectangle
             updateHighlight(option);
         });
     });
-
-    // region
-    fetch('text/region.txt')
-        .then(response => response.text())
-        .then(text => {
-            const contentContainer = document.querySelector('.region-description p');
-            contentContainer.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load dashboard description:", error);
-        });
-    // species
-    fetch('text/sample.txt')
-        .then(response => response.text())
-        .then(text => {
-            const contentContainer = document.querySelector('.sample-description p');
-            contentContainer.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load dashboard description:", error);
-        });
-    // taxo tree
-    fetch('text/taxo-tree.txt')
-        .then(response => response.text())
-        .then(text => {
-            const contentContainer = document.querySelector('.taxo-description p');
-            contentContainer.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load dashboard description:", error);
-        });
-    // species
-    fetch('text/species.txt')
-        .then(response => response.text())
-        .then(text => {
-            const contentContainer = document.querySelector('.species-description p');
-            contentContainer.textContent = text;
-        })
-        .catch(error => {
-            console.error("Failed to load dashboard description:", error);
-        });
 
     // Initialize highlight rectangle
     updateHighlight('collection-date-filter');
@@ -515,77 +308,9 @@ window.addEventListener('DOMContentLoaded', () => {
             // Show the appropriate rectangle based on selection
             const option = this.dataset.option;
             const itemDescription = this.querySelector('.filter-item-description');
+            itemDescription.textContent = descriptions[option] || 'Not found';
 
-            switch(option) {
-                case 'sample-id':
-                    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'block';
-                    // Load the region collection date filter description
-                    fetch('text/sample-id.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample ID description:", error);
-                        });
-                    break;
-                case 'sample-metadata':
-                    if (regionSampleCountRect) regionSampleCountRect.style.display = 'block';
-                    fetch('text/sample-metadata.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample metadata description:", error);
-                        });
-                    break;
-                case 'sample-reads-info':
-                    if (regionNameRect) regionNameRect.style.display = 'block';
-                    fetch('text/sample-reads-info.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample reads description:", error);
-                        });
-                    break;
-                case 'sample-species-pathogen':
-                    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'block';
-                    fetch('text/sample-species-pathogen.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample species pathogen description:", error);
-                        });
-                    break;
-                case 'sample-top-species':
-                    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'block';
-                    fetch('text/sample-top-species.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample top species description:", error);
-                        });
-                    break;
-                case 'sample-species-table':
-                    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'block';
-                    fetch('text/sample-species-table.txt')
-                        .then(response => response.text())
-                        .then(text => {
-                            if (itemDescription) itemDescription.textContent = text;
-                        })
-                        .catch(error => {
-                            console.error("Failed to load sample species table description:", error);
-                        });
-                    break;
-            }
-
+            // Update the highlight rectangle
             updateHighlight(option);
 
             // Load and display the description
@@ -599,20 +324,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
         });
     });
-
-    // Initialize sample section with the first item selected
-    const firstSampleItem = document.querySelector('#sample .filter-list li');
-    if (firstSampleItem) {
-        const option = firstSampleItem.dataset.option;
-        fetch(`text/${option}.txt`)
-            .then(response => response.text())
-            .then(text => {
-                document.getElementById('sample-filter-description').textContent = text;
-            })
-            .catch(error => {
-                console.error(`Failed to load ${option} description:`, error);
-            });
-    }
 });
 
 // Function to update the highlight rectangle

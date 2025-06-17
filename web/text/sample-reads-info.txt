@@ -1,2 +1,0 @@
-
-The reads information section provides technical details about the sequencing data, including total read count and mean read length.

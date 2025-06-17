@@ -1,1 +1,0 @@
-The sample count indicator shows the total number of samples included in your current filter selection.

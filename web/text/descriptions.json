@@ -1,0 +1,30 @@
+{
+  "nationwide": "The nation view page presents sample collection patterns throughout the United States. Users can filter data by collection date and examine trends via various visualizations, such as a line chart for daily sample counts, a donut chart illustrating seasonal distribution, and a bar chart for location comparisons. A map of the US highlights sample distribution across the 10 FEMA regions, along with a summary table providing detailed regional counts. Both the map and the table support right-click \"drill-through\" navigation to the region page.",
+  "region": "The nation view page presents sample collection patterns throughout the United States. Users can filter data by collection date and examine trends via various visualizations, such as a line chart for daily sample counts, a donut chart illustrating seasonal distribution, and a bar chart for location comparisons. A map of the US highlights sample distribution across the 10 FEMA regions, along with a summary table providing detailed regional counts. Both the map and the table support right-click \"drill-through\" navigation to the region page.",
+  "sample": "The sample page displays detailed sample metadata, including the identified species and pathogen numbers [1]. In addition to the metagenomic data table with filters for each ontology level [2], it contains ranked charts showcasing the ten most identified species [3], along with statistics on read numbers and mean read length [4]. Users can utilize \"drill through\" navigation on the Top Species and Metagenomic table to access aggregated data about the selected unit.",
+  "taxonomic": "The taxonomic tree features an interactive interface enabling users to examine the full diversity of organisms within the sample. They can explore lineages, trace ancestries, and engage with a hierarchical tree structure.",
+  "species": "The Species page aggregates sample metadata from all collected samples for the specific species, including the number of samples, location, and season [1]. Users can filter samples based on collection date [2] and the absolute abundance of the specified species [3]. The map of US regions and the accompanying table highlight the number of samples [4] in which the selected species was identified, according to the chosen abundance filters and collection dates.",
+
+  "collection-date-filter": "The collection date filter allows you to select a specific time period to view samples collected within that range. This helps in analyzing temporal patterns and seasonal variations.",
+  "sample-count": "This section displays the total number of samples that match your current filter criteria, giving you an immediate sense of the dataset size you're working with.",
+  "geo-distribution": "The geographical distribution map shows where samples were collected across the United States, with color intensity indicating the number of samples from each region.",
+  "collection-date": "This visualization shows the distribution of samples by collection date, helping identify temporal patterns and periods of increased sampling activity.",
+  "seasonal-distribution": "This chart displays the seasonal distribution of samples, allowing you to identify patterns related to different times of the year.",
+  "location-distribution": "This chart shows the distribution of samples by location type (Indoor, Outdoor, Transit, or Special Event), helping understand the environmental context of the samples.",
+
+  "region-collection-date-filter": "The regional collection date filter allows you to select a specific time period to view samples collected within that region during that timeframe.",
+  "region-name": "This displays the name of the currently selected FEMA region, helping you maintain context as you explore the data.",
+  "region-sample-count": "This shows the total number of samples collected in the selected region that match your current filter criteria.",
+  "region-species-pathogen": "This section summarizes the number of unique species and potential pathogens detected in the selected region, providing a quick overview of biodiversity and potential health concerns.",
+  "region-metadata-distribution": "These charts display the distribution of samples in the region by various metadata categories, such as location type and PCR inhibition status.",
+  "region-top-species": "This visualization shows the most abundant species detected in the selected region, helping identify dominant organisms in the area.",
+  "region-samples-table": "This table lists all samples from the selected region, allowing you to browse and select individual samples for detailed analysis.",
+  "region-species-table": "This table lists all species detected in the selected region, showing their prevalence and allowing you to select individual species for detailed analysis.",
+
+  "sample-id": "The Sample ID section displays the unique identifier for the current sample. This ID corresponds to the Sample ID field in the metadata CSV file and is used to track and reference individual samples throughout the dashboard.",
+  "sample-metadata": "The Sample metadata section provides detailed information about the sample, including collection date, storage conditions (whether stored at 4°C), PCR inhibition status, and location type (Indoor/Outdoor/Transit/Special Event).",
+  "sample-species-pathogen": "This section summarizes the number of unique species and potential pathogens detected in the sample, providing a quick overview of biodiversity and potential health concerns.",
+  "sample-reads-info": "This section provides information about the sequencing reads, including total read count, classified reads, and unclassified reads, giving insight into the sequencing depth and quality.",
+  "sample-top-species": "This visualization shows the most abundant species detected in the sample, helping identify dominant organisms present in the collected material.",
+  "sample-species-table": "This table lists all species detected in the sample, showing their abundance and allowing you to select individual species for detailed analysis."
+}

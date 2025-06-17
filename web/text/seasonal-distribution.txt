@@ -1,1 +1,0 @@
-The seasonal distribution chart displays the number of samples collected during a specific season.

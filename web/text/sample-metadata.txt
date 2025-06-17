@@ -1,1 +1,0 @@
-Sample metadata provides contextual information about the sample, including collection region, location, and date.

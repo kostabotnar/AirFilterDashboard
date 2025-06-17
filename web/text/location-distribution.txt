@@ -1,1 +1,0 @@
-The location distribution chart categorizes samples by their collection environment (indoor, outdoor, transit, or special event).

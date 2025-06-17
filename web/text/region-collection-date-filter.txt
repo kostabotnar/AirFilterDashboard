@@ -1,1 +1,0 @@
-Set up the timeframe for the sample collection date. All samples are included by default. This filter is applied globally, impacting all dashboard views. To reset the filter, click the "Reset" button.

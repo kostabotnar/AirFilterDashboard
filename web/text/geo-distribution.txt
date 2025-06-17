@@ -1,1 +1,0 @@
-The geographical distribution map visualizes sample locations across the 10 FEMA regions. The color intensity indicates the concentration of the sample in that area. Hovering the region on the map or the table displays a tooltip with general region information.

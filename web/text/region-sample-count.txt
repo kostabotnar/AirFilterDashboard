@@ -1,1 +1,0 @@
-The sample count indicator shows the total number of samples in the selected region included in your current filter selection.

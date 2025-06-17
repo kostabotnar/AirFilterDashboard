@@ -1,1 +1,0 @@
-The Sample ID is a artificially generated unique identifier for each collected sample.
