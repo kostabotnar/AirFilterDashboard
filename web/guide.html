@@ -31,20 +31,41 @@
             <div class="filter-list">
                 <div class="filter-list-title">Dashboard elements</div>
                 <ul>
-                    <li class="selected" data-option="collection-date">Collection date filter</li>
-                    <li data-option="sample-count">Number of samples</li>
-                    <li data-option="geo-distribution">Geographical distribution</li>
-                    <li data-option="seasonal-distribution">Seasonal distribution</li>
-                    <li data-option="location-distribution">Location distribution</li>
+                    <li data-option="collection-date-filter" class="selected">
+                        <div class="filter-item">Collection date filter</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-count">
+                        <div class="filter-item">Number of samples</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="geo-distribution">
+                        <div class="filter-item">Geographical distribution</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="collection-date">
+                        <div class="filter-item">Collection date</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="seasonal-distribution">
+                        <div class="filter-item">Seasonal distribution</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="location-distribution">
+                        <div class="filter-item">Location distribution</div>
+                        <div class="filter-item-description"></div>
+                    </li>
                 </ul>
+                <div class="filter-description" id="filter-description"></div>
             </div>
         </div>
         <div class="image-container">
             <div class="image-overlay-container">
                 <img src="image/nation.png" alt="Nation View Page" id="nationwide-image">
-                <div class="highlight-rectangle" id="collection-date-highlight"></div>
+                <div class="highlight-rectangle" id="collection-date-filter-highlight"></div>
                 <div class="highlight-rectangle" id="sample-count-highlight"></div>
                 <div class="highlight-rectangle" id="geo-distribution-highlight"></div>
+                <div class="highlight-rectangle" id="collection-date-highlight"></div>
                 <div class="highlight-rectangle" id="seasonal-distribution-highlight"></div>
                 <div class="highlight-rectangle" id="location-distribution-highlight"></div>
             </div>

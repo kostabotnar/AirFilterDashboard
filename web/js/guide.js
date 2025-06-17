@@ -15,9 +15,10 @@ window.addEventListener('DOMContentLoaded', () => {
     // Position the highlight rectangles
     const positionHighlightRectangles = () => {
         const nationwideImage = document.getElementById('nationwide-image');
-        const collectionDateRect = document.getElementById('collection-date-highlight');
+        const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight'); // Add this new rectangle
         const sampleCountRect = document.getElementById('sample-count-highlight');
         const geoDistributionRect = document.getElementById('geo-distribution-highlight');
+        const collectionDateRect = document.getElementById('collection-date-highlight');
         const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
         const locationDistributionRect = document.getElementById('location-distribution-highlight');
 
@@ -32,11 +33,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const imgWidth = nationwideImage.offsetWidth;
             const imgHeight = nationwideImage.offsetHeight;
 
-            // Position the collection date rectangle
-            collectionDateRect.style.left = '0';
-            collectionDateRect.style.top = `${imgHeight * 0.08}px`;
-            collectionDateRect.style.width = `${imgWidth * 0.25}px`;
-            collectionDateRect.style.height = `${imgHeight * 0.2}px`;
+            // Position the collection date filter rectangle
+            collectionDateFilterRect.style.left = '0';
+            collectionDateFilterRect.style.top = `${imgHeight * 0.08}px`;
+            collectionDateFilterRect.style.width = `${imgWidth * 0.25}px`;
+            collectionDateFilterRect.style.height = `${imgHeight * 0.2}px`;
 
             // Position the sample count rectangle
             sampleCountRect.style.left = '0';
@@ -49,6 +50,12 @@ window.addEventListener('DOMContentLoaded', () => {
             geoDistributionRect.style.top = '0';
             geoDistributionRect.style.width = `${imgWidth * 0.75}px`;
             geoDistributionRect.style.height = `${imgHeight * 0.6}px`;
+
+            // Position the collection date rectangle
+            collectionDateRect.style.left = '0';
+            collectionDateRect.style.top = `${imgHeight * 0.6}px`;
+            collectionDateRect.style.width = `${imgWidth * 0.45}px`;
+            collectionDateRect.style.height = `${imgHeight * 0.4}px`;
 
             // Position the seasonal distribution rectangle
             seasonalDistributionRect.style.left = `${imgWidth * 0.45}px`;
@@ -72,11 +79,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Filter list single-select functionality
     const filterItems = document.querySelectorAll('.filter-list li');
-    const collectionDateRect = document.getElementById('collection-date-highlight');
+    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight'); // Add this new rectangle
     const sampleCountRect = document.getElementById('sample-count-highlight');
     const geoDistributionRect = document.getElementById('geo-distribution-highlight');
+    const collectionDateRect = document.getElementById('collection-date-highlight');
     const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
     const locationDistributionRect = document.getElementById('location-distribution-highlight');
+
+    // Load the collection date filter description by default
+    const selectedItem = document.querySelector('.filter-list li.selected');
+    const selectedItemDescription = selectedItem.querySelector('.filter-item-description');
+
+    fetch('text/collection-date-filter.txt')
+        .then(response => response.text())
+        .then(text => {
+            selectedItemDescription.textContent = text;
+        })
+        .catch(error => {
+            console.error("Failed to load collection date filter description:", error);
+        });
 
     filterItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -87,24 +108,78 @@ window.addEventListener('DOMContentLoaded', () => {
             this.classList.add('selected');
 
             // Hide all rectangles first
-            collectionDateRect.style.display = 'none';
+            collectionDateFilterRect.style.display = 'none'; // Add this line
             sampleCountRect.style.display = 'none';
             geoDistributionRect.style.display = 'none';
+            collectionDateRect.style.display = 'none';
             seasonalDistributionRect.style.display = 'none';
             locationDistributionRect.style.display = 'none';
 
             // Show the appropriate rectangle based on selection
             const option = this.dataset.option;
-            if (option === 'collection-date') {
-                collectionDateRect.style.display = 'block';
+            const itemDescription = this.querySelector('.filter-item-description');
+
+            if (option === 'collection-date-filter') {
+                collectionDateFilterRect.style.display = 'block';
+                // Load the collection date filter description
+                fetch('text/collection-date-filter.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load collection date filter description:", error);
+                    });
             } else if (option === 'sample-count') {
                 sampleCountRect.style.display = 'block';
+                fetch('text/sample-count.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load sample count description:", error);
+                    });
             } else if (option === 'geo-distribution') {
                 geoDistributionRect.style.display = 'block';
+                fetch('text/geo-distribution.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load geo distribution description:", error);
+                    });
+            } else if (option === 'collection-date') { // Add this new condition
+                collectionDateRect.style.display = 'block';
+                fetch('text/collection-date.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load collection date map description:", error);
+                    });
             } else if (option === 'seasonal-distribution') {
                 seasonalDistributionRect.style.display = 'block';
+                fetch('text/seasonal-distribution.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load seasonal distribution description:", error);
+                    });
             } else if (option === 'location-distribution') {
                 locationDistributionRect.style.display = 'block';
+                fetch('text/location-distribution.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        itemDescription.textContent = text;
+                    })
+                    .catch(error => {
+                        console.error("Failed to load location distribution description:", error);
+                    });
             }
         });
     });
@@ -151,38 +226,40 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
     // Initialize highlight rectangle
-    updateHighlight('collection-date');
+    updateHighlight('collection-date-filter');
 });
 
 // Function to update the highlight rectangle
 function updateHighlight(option) {
     const image = document.getElementById('nationwide-image');
-    const collectionDateRect = document.getElementById('collection-date-highlight');
+    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight'); // Add this new rectangle
     const sampleCountRect = document.getElementById('sample-count-highlight');
     const geoDistributionRect = document.getElementById('geo-distribution-highlight');
+    const collectionDateRect = document.getElementById('collection-date-highlight');
     const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
     const locationDistributionRect = document.getElementById('location-distribution-highlight');
 
-    if (!image || !collectionDateRect || !sampleCountRect || !geoDistributionRect || !seasonalDistributionRect || !locationDistributionRect) return;
+    if (!image || !collectionDateRect || !sampleCountRect || !geoDistributionRect || !collectionDateFilterRect || !seasonalDistributionRect || !locationDistributionRect) return; // Update this line
 
     const rect = image.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
 
     // Hide all rectangles first
-    collectionDateRect.style.display = 'none';
+    collectionDateFilterRect.style.display = 'none';
     sampleCountRect.style.display = 'none';
     geoDistributionRect.style.display = 'none';
+    collectionDateRect.style.display = 'none';
     seasonalDistributionRect.style.display = 'none';
     locationDistributionRect.style.display = 'none';
 
     switch (option) {
-        case 'collection-date':
-            collectionDateRect.style.left = '0';
-            collectionDateRect.style.top = `${height * 0.08}px`;
-            collectionDateRect.style.width = `${width * 0.25}px`;
-            collectionDateRect.style.height = `${height * 0.2}px`;
-            collectionDateRect.style.display = 'block';
+        case 'collection-date-filter': // Add this new condition
+            collectionDateFilterRect.style.left = '0';
+            collectionDateFilterRect.style.top = `${imgHeight * 0.08}px`;
+            collectionDateFilterRect.style.width = `${imgWidth * 0.25}px`;
+            collectionDateFilterRect.style.height = `${imgHeight * 0.2}px`;
+            collectionDateFilterRect.style.display = 'block';
             break;
         case 'sample-count':
             sampleCountRect.style.left = '0';
@@ -197,6 +274,13 @@ function updateHighlight(option) {
             geoDistributionRect.style.width = `${width * 0.75}px`;
             geoDistributionRect.style.height = `${height * 0.6}px`;
             geoDistributionRect.style.display = 'block';
+            break;
+        case 'collection-date':
+            collectionDateRect.style.left = '0';
+            collectionDateRect.style.top = `${imgHeight * 0.6}px`;
+            collectionDateRect.style.width = `${imgWidth * 0.45}px`;
+            collectionDateRect.style.height = `${imgHeight * 0.4}px`;
+            collectionDateRect.style.display = 'block';
             break;
         case 'seasonal-distribution':
             seasonalDistributionRect.style.left = `${width * 0.45}px`;
