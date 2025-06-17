@@ -136,9 +136,48 @@
         <div class="description">
             <h2>Sample</h2>
             <div class="sample-description"><p></p></div>
+
+            <div class="filter-list">
+                <div class="filter-list-title">Dashboard elements</div>
+                <ul>
+                    <li data-option="sample-id" class="selected">
+                        <div class="filter-item">Sample ID</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-metadata">
+                        <div class="filter-item">Sample metadata</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-species-pathogen">
+                        <div class="filter-item">Species and pathogens</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-reads-info">
+                        <div class="filter-item">Reads information</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-top-species">
+                        <div class="filter-item">Top species</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                    <li data-option="sample-species-table">
+                        <div class="filter-item">Species table</div>
+                        <div class="filter-item-description"></div>
+                    </li>
+                </ul>
+                <div class="filter-description" id="sample-filter-description"></div>
+            </div>
         </div>
         <div class="image-container">
-            <img src="image/sample.png" alt="Sample Page">
+            <div class="image-overlay-container">
+                <img src="image/sample.png" alt="Sample Page" id="sample-image">
+                <div class="highlight-rectangle" id="sample-id-highlight"></div>
+                <div class="highlight-rectangle" id="sample-metadata-highlight"></div>
+                <div class="highlight-rectangle" id="sample-species-pathogen-highlight"></div>
+                <div class="highlight-rectangle" id="sample-reads-info-highlight"></div>
+                <div class="highlight-rectangle" id="sample-top-species-highlight"></div>
+                <div class="highlight-rectangle" id="sample-species-table-highlight"></div>
+            </div>
         </div>
     </div>
 

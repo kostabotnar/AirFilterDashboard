@@ -1,0 +1,1 @@
+The species table shows all species found in the sample, along with their abundance. It includes complete taxonomy details for each identified species. Pathogenic species highlighted in red. The selectors above the table allow filtering by name search or simple selection. To select multiple items in the filter, hold down CTRL while selecting them.

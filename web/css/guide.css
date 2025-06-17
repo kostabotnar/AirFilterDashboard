@@ -72,11 +72,6 @@ body {
     scroll-margin-top: 20px; /* Adds margin when scrolling to this element */
 }
 
-.section:nth-child(1) .description { background-color: #d0e8ff; }
-.section:nth-child(2) .description { background-color: #e6ffe6; }
-.section:nth-child(3) .description { background-color: #fff0cc; }
-.section:nth-child(4) .description { background-color: #ffe6f0; }
-.section:nth-child(5) .description { background-color: #e0f7fa; }
 
 .image-container {
     flex: 1;

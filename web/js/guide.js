@@ -485,6 +485,134 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Initialize highlight rectangle
     updateHighlight('collection-date-filter');
+
+    // Add sample filter list functionality
+    const sampleFilterItems = document.querySelectorAll('#sample .filter-list li');
+    const sampleIdRect = document.getElementById('sample-id-highlight');
+    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
+    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
+    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
+    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
+    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
+    const sampleImage = document.getElementById('sample-image');
+
+    sampleFilterItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove selected class from all items
+            sampleFilterItems.forEach(i => i.classList.remove('selected'));
+
+            // Add selected class to clicked item
+            this.classList.add('selected');
+
+            // Hide all rectangles first
+            sampleIdRect.style.display = 'none';
+            sampleMetadataRect.style.display = 'none';
+            sampleSpeciesPathogenRect.style.display = 'none';
+            sampleReadsInfoRect.style.display = 'none';
+            sampleTopSpeciesRect.style.display = 'none';
+            sampleSpeciesTableRect.style.display = 'none';
+
+            // Show the appropriate rectangle based on selection
+            const option = this.dataset.option;
+            const itemDescription = this.querySelector('.filter-item-description');
+
+            switch(option) {
+                case 'sample-id':
+                    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'block';
+                    // Load the region collection date filter description
+                    fetch('text/sample-id.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample ID description:", error);
+                        });
+                    break;
+                case 'sample-metadata':
+                    if (regionSampleCountRect) regionSampleCountRect.style.display = 'block';
+                    fetch('text/sample-metadata.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample metadata description:", error);
+                        });
+                    break;
+                case 'sample-reads-info':
+                    if (regionNameRect) regionNameRect.style.display = 'block';
+                    fetch('text/sample-reads-info.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample reads description:", error);
+                        });
+                    break;
+                case 'sample-species-pathogen':
+                    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'block';
+                    fetch('text/sample-species-pathogen.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample species pathogen description:", error);
+                        });
+                    break;
+                case 'sample-top-species':
+                    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'block';
+                    fetch('text/sample-top-species.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample top species description:", error);
+                        });
+                    break;
+                case 'sample-species-table':
+                    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'block';
+                    fetch('text/sample-species-table.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load sample species table description:", error);
+                        });
+                    break;
+            }
+
+            updateHighlight(option);
+
+            // Load and display the description
+            fetch(`text/${option}.txt`)
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('sample-filter-description').textContent = text;
+                })
+                .catch(error => {
+                    console.error(`Failed to load ${option} description:`, error);
+                });
+        });
+    });
+
+    // Initialize sample section with the first item selected
+    const firstSampleItem = document.querySelector('#sample .filter-list li');
+    if (firstSampleItem) {
+        const option = firstSampleItem.dataset.option;
+        fetch(`text/${option}.txt`)
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('sample-filter-description').textContent = text;
+            })
+            .catch(error => {
+                console.error(`Failed to load ${option} description:`, error);
+            });
+    }
 });
 
 // Function to update the highlight rectangle
@@ -508,6 +636,15 @@ function updateHighlight(option) {
     const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
     const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
     const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
+
+    // Sample elements
+    const sampleIdRect = document.getElementById('sample-id-highlight');
+    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
+    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
+    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
+    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
+    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
+    const sampleImage = document.getElementById('sample-image');
 
     if (!image || !collectionDateFilterRect || !sampleCountRect || !geoDistributionRect ||
         !collectionDateRect || !seasonalDistributionRect || !locationDistributionRect) return;
@@ -538,6 +675,14 @@ function updateHighlight(option) {
     if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
     if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
     if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
+
+    // Hide sample rectangles
+    if (sampleIdRect) sampleIdRect.style.display = 'none';
+    if (sampleMetadataRect) sampleMetadataRect.style.display = 'none';
+    if (sampleSpeciesPathogenRect) sampleSpeciesPathogenRect.style.display = 'none';
+    if (sampleReadsInfoRect) sampleReadsInfoRect.style.display = 'none';
+    if (sampleTopSpeciesRect) sampleTopSpeciesRect.style.display = 'none';
+    if (sampleSpeciesTableRect) sampleSpeciesTableRect.style.display = 'none';
 
     switch (option) {
         case 'collection-date-filter':
@@ -689,6 +834,73 @@ function updateHighlight(option) {
                 regionSpeciesTableRect.style.width = `${regionWidth}px`;
                 regionSpeciesTableRect.style.height = `${regionHeight * 0.48}px`;
                 regionSpeciesTableRect.style.display = 'block';
+            }
+            break;
+        // Sample options
+        case 'sample-id':
+            if (sampleIdRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleIdRect.style.left = '0';
+                sampleIdRect.style.top = `${sampleHeight * 0.06}px`;
+                sampleIdRect.style.width = `${sampleWidth * 0.22}px`;
+                sampleIdRect.style.height = `${sampleHeight * 0.15}px`;
+                sampleIdRect.style.display = 'block';
+            }
+            break;
+        case 'sample-metadata':
+            if (sampleMetadataRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleMetadataRect.style.left = '0';
+                sampleMetadataRect.style.top = `${sampleHeight * 0.2}px`;
+                sampleMetadataRect.style.width = `${sampleWidth * 0.3}px`;
+                sampleMetadataRect.style.height = `${sampleHeight * 0.3}px`;
+                sampleMetadataRect.style.display = 'block';
+            }
+            break;
+        case 'sample-species-pathogen':
+            if (sampleSpeciesPathogenRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleSpeciesPathogenRect.style.left = `${sampleWidth * 0.25}px`;
+                sampleSpeciesPathogenRect.style.top = '0';
+                sampleSpeciesPathogenRect.style.width = `${sampleWidth * 0.2}px`;
+                sampleSpeciesPathogenRect.style.height = `${sampleHeight * 0.5}px`;
+                sampleSpeciesPathogenRect.style.display = 'block';
+            }
+            break;
+        case 'sample-reads-info':
+            if (sampleReadsInfoRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleReadsInfoRect.style.left = `${sampleWidth * 0.45}px`;
+                sampleReadsInfoRect.style.top = '0';
+                sampleReadsInfoRect.style.width = `${sampleWidth * 0.18}px`;
+                sampleReadsInfoRect.style.height = `${sampleHeight * 0.5}px`;
+                sampleReadsInfoRect.style.display = 'block';
+            }
+            break;
+        case 'sample-top-species':
+            if (sampleTopSpeciesRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleTopSpeciesRect.style.left = `${sampleWidth * 0.6}px`;
+                sampleTopSpeciesRect.style.top = '0';
+                sampleTopSpeciesRect.style.width = `${sampleWidth * 0.4}px`;
+                sampleTopSpeciesRect.style.height = `${sampleHeight * 0.5}px`;
+                sampleTopSpeciesRect.style.display = 'block';
+            }
+            break;
+        case 'sample-species-table':
+            if (sampleSpeciesTableRect && sampleImage) {
+                const sampleWidth = sampleImage.offsetWidth;
+                const sampleHeight = sampleImage.offsetHeight;
+                sampleSpeciesTableRect.style.left = '0';
+                sampleSpeciesTableRect.style.top = `${sampleHeight * 0.5}px`;
+                sampleSpeciesTableRect.style.width = `${sampleWidth}px`;
+                sampleSpeciesTableRect.style.height = `${sampleHeight * 0.5}px`;
+                sampleSpeciesTableRect.style.display = 'block';
             }
             break;
     }
