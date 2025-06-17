@@ -252,3 +252,13 @@ body {
 .filter-description.active {
     display: block;
 }
+
+.tooltip-image {
+    position: absolute;
+    z-index: 10;
+    max-width: 200px; /* Adjust as needed */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    pointer-events: none; /* Allow clicks to pass through */
+    display: none; /* Hidden by default */
+}
