@@ -277,7 +277,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize highlight rectangle
-    updateHighlight('collection-date-filter');
+    initializeWithNoSelection();
 
     // Add sample filter list functionality
     const sampleFilterItems = document.querySelectorAll('#sample .filter-list li');
@@ -631,3 +631,63 @@ document.querySelectorAll('.toc-list a').forEach(anchor => {
         });
     });
 });
+
+// Initialize with no highlight rectangle
+function initializeWithNoSelection() {
+    // Hide all nationwide rectangles
+    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight');
+    const sampleCountRect = document.getElementById('sample-count-highlight');
+    const geoDistributionRect = document.getElementById('geo-distribution-highlight');
+    const collectionDateRect = document.getElementById('collection-date-highlight');
+    const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
+    const locationDistributionRect = document.getElementById('location-distribution-highlight');
+    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
+
+    // Hide all nationwide rectangles
+    if (collectionDateFilterRect) collectionDateFilterRect.style.display = 'none';
+    if (sampleCountRect) sampleCountRect.style.display = 'none';
+    if (geoDistributionRect) geoDistributionRect.style.display = 'none';
+    if (collectionDateRect) collectionDateRect.style.display = 'none';
+    if (seasonalDistributionRect) seasonalDistributionRect.style.display = 'none';
+    if (locationDistributionRect) locationDistributionRect.style.display = 'none';
+    if (mapHoverTooltip) mapHoverTooltip.style.display = 'none';
+
+    // Hide all region rectangles
+    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
+    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
+    const regionNameRect = document.getElementById('region-name-highlight');
+    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
+    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
+    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
+    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
+    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
+
+    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
+    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
+    if (regionNameRect) regionNameRect.style.display = 'none';
+    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
+    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
+    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
+    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
+    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
+
+    // Hide all sample rectangles
+    const sampleIdRect = document.getElementById('sample-id-highlight');
+    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
+    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
+    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
+    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
+    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
+
+    if (sampleIdRect) sampleIdRect.style.display = 'none';
+    if (sampleMetadataRect) sampleMetadataRect.style.display = 'none';
+    if (sampleSpeciesPathogenRect) sampleSpeciesPathogenRect.style.display = 'none';
+    if (sampleReadsInfoRect) sampleReadsInfoRect.style.display = 'none';
+    if (sampleTopSpeciesRect) sampleTopSpeciesRect.style.display = 'none';
+    if (sampleSpeciesTableRect) sampleSpeciesTableRect.style.display = 'none';
+
+    // Remove selected class from all filter items
+    document.querySelectorAll('.filter-list li').forEach(item => {
+        item.classList.remove('selected');
+    });
+}
