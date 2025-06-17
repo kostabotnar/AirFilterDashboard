@@ -1,0 +1,222 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    padding: 60px 60px;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Table of Contents Styles */
+.table-of-contents {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-of-contents h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.toc-list {
+    list-style-type: decimal;
+    max-width: 600px;
+    padding-left: 30px;
+    margin: 0 0 0 0; /* Remove auto margins to align left */
+}
+
+.toc-list li {
+    margin-bottom: 12px;
+}
+
+.toc-list a {
+    display: inline-block;
+    padding: 5px 0;
+    color: #007bff;
+    text-decoration: none;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.toc-list a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+    transform: translateX(5px);
+}
+
+/* Section Styles */
+.section {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    scroll-margin-top: 20px; /* Adds margin when scrolling to this element */
+}
+
+.section:nth-child(1) .description { background-color: #d0e8ff; }
+.section:nth-child(2) .description { background-color: #e6ffe6; }
+.section:nth-child(3) .description { background-color: #fff0cc; }
+.section:nth-child(4) .description { background-color: #ffe6f0; }
+.section:nth-child(5) .description { background-color: #e0f7fa; }
+
+.image-container {
+    flex: 1;
+    max-width: 50%;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.description {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.description h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.description p {
+    font-size: 1em;
+    color: #555;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+/* Nation view filter list */
+.filter-list {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.filter-list-title {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+
+.filter-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-list li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.filter-list li:last-child {
+    border-bottom: none;
+}
+
+.filter-list li:hover {
+    background-color: #f8f8f8;
+}
+
+.filter-list li.selected {
+    background-color: #e6f2ff;
+    font-weight: bold;
+}
+
+/* Highlight Rectangle */
+.image-overlay-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.highlight-rectangle {
+    position: absolute;
+    border: 2px solid #2ecc71; /* Green border */
+    background-color: rgba(46, 204, 113, 0.2); /* Transparent green fill */
+    pointer-events: none; /* Allow clicks to pass through */
+    display: none; /* Hidden by default */
+}
+
+#collection-date-highlight {
+    display: block; /* Show by default since Collection date is selected by default */
+}
+
+#sample-count-highlight {
+    display: none; /* Hidden by default */
+}
+
+#geo-distribution-highlight {
+    display: none; /* Hidden by default */
+}
+
+#seasonal-distribution-highlight {
+    display: none; /* Hidden by default */
+}
+
+#location-distribution-highlight {
+    display: none; /* Hidden by default */
+}
+
+/* Media query for screens less than 1000px wide */
+@media (max-width: 1199px) {
+    .section {
+        flex-direction: column !important; /* Override the row-reverse for even sections */
+    }
+
+    .image-container {
+        max-width: 100%;
+        order: 2; /* Make sure image is always below description */
+    }
+
+    .description {
+        order: 1; /* Make sure description is always above image */
+    }
+
+    body {
+        padding: 30px 20px; /* Reduce padding on smaller screens */
+    }
+
+    .title {
+        font-size: 2em; /* Slightly smaller title on mobile */
+        margin-bottom: 30px;
+    }
+
+    .toc-list {
+        flex-direction: column;
+    }
+
+    .toc-list li {
+        flex-basis: 100%;
+        margin-bottom: 8px;
+    }
+}

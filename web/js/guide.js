@@ -48,19 +48,19 @@ window.addEventListener('DOMContentLoaded', () => {
             geoDistributionRect.style.left = `${imgWidth * 0.25}px`;
             geoDistributionRect.style.top = '0';
             geoDistributionRect.style.width = `${imgWidth * 0.75}px`;
-            geoDistributionRect.style.height = `${imgHeight * 0.65}px`;
+            geoDistributionRect.style.height = `${imgHeight * 0.6}px`;
 
             // Position the seasonal distribution rectangle
-            seasonalDistributionRect.style.left = `${imgWidth * 0.35}px`;
-            seasonalDistributionRect.style.top = `${imgHeight * 0.65}px`;
-            seasonalDistributionRect.style.width = `${imgWidth * 0.35}px`;
-            seasonalDistributionRect.style.height = `${imgHeight * 0.35}px`;
+            seasonalDistributionRect.style.left = `${imgWidth * 0.45}px`;
+            seasonalDistributionRect.style.top = `${imgHeight * 0.6}px`;
+            seasonalDistributionRect.style.width = `${imgWidth * 0.25}px`;
+            seasonalDistributionRect.style.height = `${imgHeight * 0.4}px`;
 
             // Position the location distribution rectangle
             locationDistributionRect.style.left = `${imgWidth * 0.7}px`;
-            locationDistributionRect.style.top = `${imgHeight * 0.65}px`;
+            locationDistributionRect.style.top = `${imgHeight * 0.6}px`;
             locationDistributionRect.style.width = `${imgWidth * 0.3}px`;
-            locationDistributionRect.style.height = `${imgHeight * 0.35}px`;
+            locationDistributionRect.style.height = `${imgHeight * 0.4}px`;
         }
     };
 
@@ -195,21 +195,21 @@ function updateHighlight(option) {
             geoDistributionRect.style.left = `${width * 0.25}px`;
             geoDistributionRect.style.top = '0';
             geoDistributionRect.style.width = `${width * 0.75}px`;
-            geoDistributionRect.style.height = `${height * 0.65}px`;
+            geoDistributionRect.style.height = `${height * 0.6}px`;
             geoDistributionRect.style.display = 'block';
             break;
         case 'seasonal-distribution':
-            seasonalDistributionRect.style.left = `${width * 0.35}px`;
-            seasonalDistributionRect.style.top = `${height * 0.65}px`;
-            seasonalDistributionRect.style.width = `${width * 0.35}px`;
-            seasonalDistributionRect.style.height = `${height * 0.35}px`;
+            seasonalDistributionRect.style.left = `${width * 0.45}px`;
+            seasonalDistributionRect.style.top = `${height * 0.6}px`;
+            seasonalDistributionRect.style.width = `${width * 0.25}px`;
+            seasonalDistributionRect.style.height = `${height * 0.4}px`;
             seasonalDistributionRect.style.display = 'block';
             break;
         case 'location-distribution':
             locationDistributionRect.style.left = `${width * 0.7}px`;
-            locationDistributionRect.style.top = `${height * 0.65}px`;
+            locationDistributionRect.style.top = `${height * 0.6}px`;
             locationDistributionRect.style.width = `${width * 0.3}px`;
-            locationDistributionRect.style.height = `${height * 0.35}px`;
+            locationDistributionRect.style.height = `${height * 0.4}px`;
             locationDistributionRect.style.display = 'block';
             break;
     }
