@@ -21,16 +21,34 @@ window.addEventListener('DOMContentLoaded', () => {
         const collectionDateRect = document.getElementById('collection-date-highlight');
         const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
         const locationDistributionRect = document.getElementById('location-distribution-highlight');
-        const mapHoverTooltip = document.getElementById('map-hover-tooltip'); // Add this line
+        const mapHoverTooltip = document.getElementById('map-hover-tooltip');
 
-        // Wait for the image to load to get its dimensions
+        // Region elements
+        const regionImage = document.getElementById('region-image');
+        const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
+        const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
+        const regionNameRect = document.getElementById('region-name-highlight');
+        const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
+        const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
+        const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
+        const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
+        const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
+
+        // Wait for the nationwide image to load to get its dimensions
         if (nationwideImage.complete) {
-            updateRectPositions();
+            updateNationwideRectPositions();
         } else {
-            nationwideImage.onload = updateRectPositions;
+            nationwideImage.onload = updateNationwideRectPositions;
         }
 
-        function updateRectPositions() {
+        // Wait for the region image to load to get its dimensions
+        if (regionImage.complete) {
+            updateRegionRectPositions();
+        } else {
+            regionImage.onload = updateRegionRectPositions;
+        }
+
+        function updateNationwideRectPositions() {
             const imgWidth = nationwideImage.offsetWidth;
             const imgHeight = nationwideImage.offsetHeight;
 
@@ -81,6 +99,59 @@ window.addEventListener('DOMContentLoaded', () => {
             locationDistributionRect.style.width = `${imgWidth * 0.3}px`;
             locationDistributionRect.style.height = `${imgHeight * 0.4}px`;
         }
+
+        function updateRegionRectPositions() {
+            const imgWidth = regionImage.offsetWidth;
+            const imgHeight = regionImage.offsetHeight;
+
+            // Position the region collection date filter rectangle
+            regionCollectionDateFilterRect.style.left = '0';
+            regionCollectionDateFilterRect.style.top = `${imgHeight * 0.08}px`;
+            regionCollectionDateFilterRect.style.width = `${imgWidth * 0.25}px`;
+            regionCollectionDateFilterRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region sample count rectangle
+            regionSampleCountRect.style.left = '0';
+            regionSampleCountRect.style.top = `${imgHeight * 0.3}px`;
+            regionSampleCountRect.style.width = `${imgWidth * 0.25}px`;
+            regionSampleCountRect.style.height = `${imgHeight * 0.15}px`;
+
+            // Position the region name rectangle
+            regionNameRect.style.left = `${imgWidth * 0.2}px`;
+            regionNameRect.style.top = `${imgHeight * 0.2}px`;
+            regionNameRect.style.width = `${imgWidth * 0.2}px`;
+            regionNameRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region species pathogen rectangle
+            regionSpeciesPathogenRect.style.left = `${imgWidth * 0.2}px`;
+            regionSpeciesPathogenRect.style.top = `${imgHeight * 0.2}px`;
+            regionSpeciesPathogenRect.style.width = `${imgWidth * 0.2}px`;
+            regionSpeciesPathogenRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region metadata distribution rectangle
+            regionMetadataDistributionRect.style.left = `${imgWidth * 0.2}px`;
+            regionMetadataDistributionRect.style.top = `${imgHeight * 0.2}px`;
+            regionMetadataDistributionRect.style.width = `${imgWidth * 0.2}px`;
+            regionMetadataDistributionRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region top species rectangle
+            regionTopSpeciesRect.style.left = `${imgWidth * 0.2}px`;
+            regionTopSpeciesRect.style.top = `${imgHeight * 0.2}px`;
+            regionTopSpeciesRect.style.width = `${imgWidth * 0.2}px`;
+            regionTopSpeciesRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region samples table rectangle
+            regionSamplesTableRect.style.left = `${imgWidth * 0.2}px`;
+            regionSamplesTableRect.style.top = `${imgHeight * 0.2}px`;
+            regionSamplesTableRect.style.width = `${imgWidth * 0.2}px`;
+            regionSamplesTableRect.style.height = `${imgHeight * 0.2}px`;
+
+            // Position the region species table rectangle
+            regionSpeciesTableRect.style.left = `${imgWidth * 0.2}px`;
+            regionSpeciesTableRect.style.top = `${imgHeight * 0.2}px`;
+            regionSpeciesTableRect.style.width = `${imgWidth * 0.2}px`;
+            regionSpeciesTableRect.style.height = `${imgHeight * 0.2}px`;
+        }
     };
 
     // Call initially
@@ -97,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const collectionDateRect = document.getElementById('collection-date-highlight');
     const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
     const locationDistributionRect = document.getElementById('location-distribution-highlight');
-    const mapHoverTooltip = document.getElementById('map-hover-tooltip'); // Add this line
+    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
 
     // Hide the tooltip initially
     if (mapHoverTooltip) {
@@ -208,6 +279,166 @@ window.addEventListener('DOMContentLoaded', () => {
                         console.error("Failed to load location distribution description:", error);
                     });
             }
+
+            // Update the highlight rectangle
+            updateHighlight(option);
+        });
+    });
+
+    // Add region filter list functionality
+    const regionFilterItems = document.querySelectorAll('#region .filter-list li');
+    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
+    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
+    const regionNameRect = document.getElementById('region-name-highlight');
+    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
+    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
+    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
+    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
+    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
+
+    // Hide all region rectangles initially
+    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
+    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
+    if (regionNameRect) regionNameRect.style.display = 'none';
+    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
+    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
+    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
+    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
+    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
+
+    // Load the region collection date filter description by default for the selected item
+    const selectedRegionItem = document.querySelector('#region .filter-list li.selected');
+    if (selectedRegionItem) {
+        const selectedRegionItemDescription = selectedRegionItem.querySelector('.filter-item-description');
+
+        fetch('text/collection-date-filter.txt')
+            .then(response => response.text())
+            .then(text => {
+                if (selectedRegionItemDescription) {
+                    selectedRegionItemDescription.textContent = text;
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load region collection date filter description:", error);
+            });
+    }
+
+    regionFilterItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove selected class from all region items
+            regionFilterItems.forEach(i => i.classList.remove('selected'));
+
+            // Add selected class to clicked item
+            this.classList.add('selected');
+
+            // Hide all region rectangles first
+            if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
+            if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
+            if (regionNameRect) regionNameRect.style.display = 'none';
+            if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
+            if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
+            if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
+            if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
+            if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
+
+            // Show the appropriate rectangle based on selection
+            const option = this.dataset.option;
+            const itemDescription = this.querySelector('.filter-item-description');
+
+            switch(option) {
+                case 'region-collection-date-filter':
+                    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'block';
+                    // Load the region collection date filter description
+                    fetch('text/region-collection-date-filter.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region collection date filter description:", error);
+                        });
+                    break;
+                case 'region-sample-count':
+                    if (regionSampleCountRect) regionSampleCountRect.style.display = 'block';
+                    fetch('text/region-sample-count.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region sample count description:", error);
+                        });
+                    break;
+                case 'region-name':
+                    if (regionNameRect) regionNameRect.style.display = 'block';
+                    fetch('text/region-name.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region name description:", error);
+                        });
+                    break;
+                case 'region-species-pathogen':
+                    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'block';
+                    fetch('text/region-species-pathogen.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region species pathogen description:", error);
+                        });
+                    break;
+                case 'region-metadata-distribution':
+                    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'block';
+                    fetch('text/region-metadata-distribution.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region metadata distribution description:", error);
+                        });
+                    break;
+                case 'region-top-species':
+                    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'block';
+                    fetch('text/region-top-species.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region top species description:", error);
+                        });
+                    break;
+                case 'region-samples-table':
+                    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'block';
+                    fetch('text/region-samples-table.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region samples table description:", error);
+                        });
+                    break;
+                case 'region-species-table':
+                    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'block';
+                    fetch('text/region-species-table.txt')
+                        .then(response => response.text())
+                        .then(text => {
+                            if (itemDescription) itemDescription.textContent = text;
+                        })
+                        .catch(error => {
+                            console.error("Failed to load region species table description:", error);
+                        });
+                    break;
+            }
+
+            // Update the highlight rectangle
+            updateHighlight(option);
         });
     });
 
@@ -265,7 +496,18 @@ function updateHighlight(option) {
     const collectionDateRect = document.getElementById('collection-date-highlight');
     const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
     const locationDistributionRect = document.getElementById('location-distribution-highlight');
-    const mapHoverTooltip = document.getElementById('map-hover-tooltip'); // Add this line
+    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
+
+    // Region elements
+    const regionImage = document.getElementById('region-image');
+    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
+    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
+    const regionNameRect = document.getElementById('region-name-highlight');
+    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
+    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
+    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
+    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
+    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
 
     if (!image || !collectionDateFilterRect || !sampleCountRect || !geoDistributionRect ||
         !collectionDateRect || !seasonalDistributionRect || !locationDistributionRect) return;
@@ -286,6 +528,16 @@ function updateHighlight(option) {
     if (mapHoverTooltip) {
         mapHoverTooltip.style.display = 'none';
     }
+
+    // Hide region rectangles
+    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
+    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
+    if (regionNameRect) regionNameRect.style.display = 'none';
+    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
+    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
+    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
+    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
+    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
 
     switch (option) {
         case 'collection-date-filter':
@@ -333,6 +585,111 @@ function updateHighlight(option) {
             locationDistributionRect.style.width = `${width * 0.3}px`;
             locationDistributionRect.style.height = `${height * 0.4}px`;
             locationDistributionRect.style.display = 'block';
+            break;
+        // Region options
+        case 'region-collection-date-filter':
+            if (regionCollectionDateFilterRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionCollectionDateFilterRect.style.left = `${regionWidth * 0}px`;
+                regionCollectionDateFilterRect.style.top = `${regionHeight * 0.05}px`;
+                regionCollectionDateFilterRect.style.width = `${regionWidth * 0.3}px`;
+                regionCollectionDateFilterRect.style.height = `${regionHeight * 0.2}px`;
+                regionCollectionDateFilterRect.style.display = 'block';
+            }
+            break;
+        case 'region-sample-count':
+            if (regionSampleCountRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionSampleCountRect.style.left = `${regionWidth * 0}px`;
+                regionSampleCountRect.style.top = `${regionHeight * 0.31}px`;
+                regionSampleCountRect.style.width = `${regionWidth * 0.3}px`;
+                regionSampleCountRect.style.height = `${regionHeight * 0.16}px`;
+                regionSampleCountRect.style.display = 'block';
+            }
+            break;
+        case 'region-name':
+            if (regionNameRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionNameRect.style.left = `${regionWidth * 0}px`;
+                regionNameRect.style.top = `${regionHeight * 0.25}px`;
+                regionNameRect.style.width = `${regionWidth * 0.3}px`;
+                regionNameRect.style.height = `${regionHeight * 0.08}px`;
+                regionNameRect.style.display = 'block';
+            }
+            break;
+        case 'region-species-pathogen':
+            if (regionSpeciesPathogenRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionSpeciesPathogenRect.style.left = `${regionWidth * 0}px`;
+                regionSpeciesPathogenRect.style.top = `${regionHeight * 0.47}px`;
+                regionSpeciesPathogenRect.style.width = `${regionWidth * 0.3}px`;
+                regionSpeciesPathogenRect.style.height = `${regionHeight * 0.15}px`;
+                regionSpeciesPathogenRect.style.display = 'block';
+            }
+            break;
+        case 'region-metadata-distribution':
+            if (regionMetadataDistributionRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionMetadataDistributionRect.style.left = `${regionWidth * 0.3}px`;
+                regionMetadataDistributionRect.style.top = `${regionHeight * 0.06}px`;
+                regionMetadataDistributionRect.style.width = `${regionWidth * 0.23}px`;
+                regionMetadataDistributionRect.style.height = `${regionHeight * 0.55}px`;
+                regionMetadataDistributionRect.style.display = 'block';
+            }
+            break;
+        case 'region-top-species':
+            if (regionTopSpeciesRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionTopSpeciesRect.style.left = `${regionWidth * 0.55}px`;
+                regionTopSpeciesRect.style.top = `${regionHeight * 0.06}px`;
+                regionTopSpeciesRect.style.width = `${regionWidth * 0.25}px`;
+                regionTopSpeciesRect.style.height = `${regionHeight * 0.55}px`;
+                regionTopSpeciesRect.style.display = 'block';
+            }
+            break;
+        case 'region-samples-table':
+            if (regionSamplesTableRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionSamplesTableRect.style.left = `${regionWidth * 0.8}px`;
+                regionSamplesTableRect.style.top = `${regionHeight * 0.06}px`;
+                regionSamplesTableRect.style.width = `${regionWidth * 0.2}px`;
+                regionSamplesTableRect.style.height = `${regionHeight * 0.56}px`;
+                regionSamplesTableRect.style.display = 'block';
+            }
+            break;
+        case 'region-species-table':
+            if (regionSpeciesTableRect && regionImage) {
+                const regionRect = regionImage.getBoundingClientRect();
+                const regionWidth = regionRect.width;
+                const regionHeight = regionRect.height;
+
+                regionSpeciesTableRect.style.left = `${regionWidth * 0}px`;
+                regionSpeciesTableRect.style.top = `${regionHeight * 0.62}px`;
+                regionSpeciesTableRect.style.width = `${regionWidth}px`;
+                regionSpeciesTableRect.style.height = `${regionHeight * 0.48}px`;
+                regionSpeciesTableRect.style.display = 'block';
+            }
             break;
     }
 }

@@ -1,0 +1,1 @@
+The metadata distribution charts show how this specific region samples are distributed across the collection location (indoor/outdoor/transit/special event) and season.

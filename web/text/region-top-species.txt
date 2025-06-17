@@ -1,0 +1,1 @@
+This visualization displays the top 10 prevalent species found in the selected region. Pathogenic species are highlighted in red.
