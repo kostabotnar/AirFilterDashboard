@@ -463,7 +463,7 @@ window.addEventListener('DOMContentLoaded', () => {
             console.error("Failed to load dashboard description:", error);
         });
     // taxo tree
-    fetch('text/taxo_tree.txt')
+    fetch('text/taxo-tree.txt')
         .then(response => response.text())
         .then(text => {
             const contentContainer = document.querySelector('.taxo-description p');
