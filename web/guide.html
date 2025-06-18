@@ -23,183 +23,198 @@
 </div>
 
 <div class="sections">
-    <div id="nationwide" class="section">
-        <div class="description">
-            <h2>Nationwide View</h2>
-            <div class="nation-description"><p></p></div>
+    <div class="section" id="nationwide">
+        <h2 class="section-title">Nationwide View</h2>
+        <div class="section-content">
+            <div class="description">
+                <h2>Nationwide View</h2>
+                <div class="nation-description"><p></p></div>
 
-            <div class="filter-list">
-                <div class="filter-list-title">Dashboard elements</div>
-                <ul>
-                    <li data-option="collection-date-filter">
-                        <div class="filter-item">Collection date filter</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-count">
-                        <div class="filter-item">Number of samples</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="geo-distribution">
-                        <div class="filter-item">Geographical distribution</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="collection-date">
-                        <div class="filter-item">Collection date</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="seasonal-distribution">
-                        <div class="filter-item">Seasonal distribution</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="location-distribution">
-                        <div class="filter-item">Location distribution</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                </ul>
-                <div class="filter-description" id="filter-description"></div>
+                <div class="filter-list">
+                    <div class="filter-list-title">Dashboard elements</div>
+                    <ul>
+                        <li data-option="collection-date-filter">
+                            <div class="filter-item">Collection date filter</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-count">
+                            <div class="filter-item">Number of samples</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="geo-distribution">
+                            <div class="filter-item">Geographical distribution</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="collection-date">
+                            <div class="filter-item">Collection date</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="seasonal-distribution">
+                            <div class="filter-item">Seasonal distribution</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="location-distribution">
+                            <div class="filter-item">Location distribution</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                    </ul>
+                    <div class="filter-description" id="filter-description"></div>
+                </div>
             </div>
-        </div>
-        <div class="image-container">
-            <div class="image-overlay-container">
-                <img src="image/nation.png" alt="Nation View Page" id="nationwide-image">
-                <div class="highlight-rectangle" id="collection-date-filter-highlight"></div>
-                <div class="highlight-rectangle" id="sample-count-highlight"></div>
-                <div class="highlight-rectangle" id="geo-distribution-highlight"></div>
-                <div class="highlight-rectangle" id="collection-date-highlight"></div>
-                <div class="highlight-rectangle" id="seasonal-distribution-highlight"></div>
-                <div class="highlight-rectangle" id="location-distribution-highlight"></div>
-                <img src="image/map-hover-tooltip.png" alt="Map Hover Tooltip" id="map-hover-tooltip" class="tooltip-image" style="left: 50%; top: 30%;">
-            </div>
-        </div>
-    </div>
-
-    <div id="region" class="section">
-        <div class="description">
-            <h2>Regional View</h2>
-            <div class="region-description"><p></p></div>
-
-            <div class="filter-list">
-                <div class="filter-list-title">Dashboard elements</div>
-                <ul>
-                    <li data-option="region-collection-date-filter">
-                        <div class="filter-item">Collection date filter</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-name">
-                        <div class="filter-item">Region name</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-sample-count">
-                        <div class="filter-item">Number of samples</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-species-pathogen">
-                        <div class="filter-item">Species and pathogen numbers</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-metadata-distribution">
-                        <div class="filter-item">Metadata distribution</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-top-species">
-                        <div class="filter-item">Top species</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-samples-table">
-                        <div class="filter-item">Samples table</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="region-species-table">
-                        <div class="filter-item">Species table</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                </ul>
-                <div class="filter-description" id="region-filter-description"></div>
-            </div>
-        </div>
-        <div class="image-container">
-            <div class="image-overlay-container">
-                <img src="image/region.png" alt="Regional View Page" id="region-image">
-                <div class="highlight-rectangle" id="region-collection-date-filter-highlight"></div>
-                <div class="highlight-rectangle" id="region-sample-count-highlight"></div>
-                <div class="highlight-rectangle" id="region-name-highlight"></div>
-                <div class="highlight-rectangle" id="region-species-pathogen-highlight"></div>
-                <div class="highlight-rectangle" id="region-metadata-distribution-highlight"></div>
-                <div class="highlight-rectangle" id="region-top-species-highlight"></div>
-                <div class="highlight-rectangle" id="region-samples-table-highlight"></div>
-                <div class="highlight-rectangle" id="region-species-table-highlight"></div>
+            <div class="image-container">
+                <div class="image-overlay-container">
+                    <img src="image/nation.png" alt="Nation View Page" id="nationwide-image">
+                    <div class="highlight-rectangle" id="collection-date-filter-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-count-highlight"></div>
+                    <div class="highlight-rectangle" id="geo-distribution-highlight"></div>
+                    <div class="highlight-rectangle" id="collection-date-highlight"></div>
+                    <div class="highlight-rectangle" id="seasonal-distribution-highlight"></div>
+                    <div class="highlight-rectangle" id="location-distribution-highlight"></div>
+                    <img src="image/map-hover-tooltip.png" alt="Map Hover Tooltip" id="map-hover-tooltip" class="tooltip-image" style="left: 50%; top: 30%;">
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="sample" class="section">
-        <div class="description">
-            <h2>Sample</h2>
-            <div class="sample-description"><p></p></div>
+    <div class="section" id="region">
+        <h2 class="section-title">Region</h2>
+        <div class="section-content">
+            <div class="description">
+                <h2>Regional View</h2>
+                <div class="region-description"><p></p></div>
 
-            <div class="filter-list">
-                <div class="filter-list-title">Dashboard elements</div>
-                <ul>
-                    <li data-option="sample-id">
-                        <div class="filter-item">Sample ID</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-metadata">
-                        <div class="filter-item">Sample metadata</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-species-pathogen">
-                        <div class="filter-item">Species and pathogens</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-reads-info">
-                        <div class="filter-item">Reads information</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-top-species">
-                        <div class="filter-item">Top species</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                    <li data-option="sample-species-table">
-                        <div class="filter-item">Species table</div>
-                        <div class="filter-item-description"></div>
-                    </li>
-                </ul>
-                <div class="filter-description" id="sample-filter-description"></div>
+                <div class="filter-list">
+                    <div class="filter-list-title">Dashboard elements</div>
+                    <ul>
+                        <li data-option="region-collection-date-filter">
+                            <div class="filter-item">Collection date filter</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-name">
+                            <div class="filter-item">Region name</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-sample-count">
+                            <div class="filter-item">Number of samples</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-species-pathogen">
+                            <div class="filter-item">Species and pathogen numbers</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-metadata-distribution">
+                            <div class="filter-item">Metadata distribution</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-top-species">
+                            <div class="filter-item">Top species</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-samples-table">
+                            <div class="filter-item">Samples table</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="region-species-table">
+                            <div class="filter-item">Species table</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                    </ul>
+                    <div class="filter-description" id="region-filter-description"></div>
+                </div>
             </div>
-        </div>
-        <div class="image-container">
-            <div class="image-overlay-container">
-                <img src="image/sample.png" alt="Sample Page" id="sample-image">
-                <div class="highlight-rectangle" id="sample-id-highlight"></div>
-                <div class="highlight-rectangle" id="sample-metadata-highlight"></div>
-                <div class="highlight-rectangle" id="sample-species-pathogen-highlight"></div>
-                <div class="highlight-rectangle" id="sample-reads-info-highlight"></div>
-                <div class="highlight-rectangle" id="sample-top-species-highlight"></div>
-                <div class="highlight-rectangle" id="sample-species-table-highlight"></div>
+            <div class="image-container">
+                <div class="image-overlay-container">
+                    <img src="image/region.png" alt="Regional View Page" id="region-image">
+                    <div class="highlight-rectangle" id="region-collection-date-filter-highlight"></div>
+                    <div class="highlight-rectangle" id="region-sample-count-highlight"></div>
+                    <div class="highlight-rectangle" id="region-name-highlight"></div>
+                    <div class="highlight-rectangle" id="region-species-pathogen-highlight"></div>
+                    <div class="highlight-rectangle" id="region-metadata-distribution-highlight"></div>
+                    <div class="highlight-rectangle" id="region-top-species-highlight"></div>
+                    <div class="highlight-rectangle" id="region-samples-table-highlight"></div>
+                    <div class="highlight-rectangle" id="region-species-table-highlight"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="taxonomic" class="section">
-        <div class="description">
-            <h2>Sample Taxonomic Tree</h2>
-            <div class="taxo-description"><p></p></div>
-        </div>
-        <div class="image-container">
-            <img src="image/taxo-tree.png" alt="Sample Taxonomic Tree Page">
+    <div class="section" id="sample">
+        <h2 class="section-title">Sample</h2>
+        <div class="section-content">
+            <div class="description">
+                <h2>Sample</h2>
+                <div class="sample-description"><p></p></div>
+
+                <div class="filter-list">
+                    <div class="filter-list-title">Dashboard elements</div>
+                    <ul>
+                        <li data-option="sample-id">
+                            <div class="filter-item">Sample ID</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-metadata">
+                            <div class="filter-item">Sample metadata</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-species-pathogen">
+                            <div class="filter-item">Species and pathogens</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-reads-info">
+                            <div class="filter-item">Reads information</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-top-species">
+                            <div class="filter-item">Top species</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="sample-species-table">
+                            <div class="filter-item">Species table</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                    </ul>
+                    <div class="filter-description" id="sample-filter-description"></div>
+                </div>
+            </div>
+            <div class="image-container">
+                <div class="image-overlay-container">
+                    <img src="image/sample.png" alt="Sample Page" id="sample-image">
+                    <div class="highlight-rectangle" id="sample-id-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-metadata-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-species-pathogen-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-reads-info-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-top-species-highlight"></div>
+                    <div class="highlight-rectangle" id="sample-species-table-highlight"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="species" class="section">
-        <div class="description">
-            <h2>Species</h2>
-            <div class="species-description">
-                <p></p>
+    <div class="section" id="taxonomic">
+        <h2 class="section-title">Sample taxonomic tree</h2>
+        <div class="section-content">
+            <div class="description">
+                <h2>Sample Taxonomic Tree</h2>
+                <div class="taxo-description"><p></p></div>
+            </div>
+            <div class="image-container">
+                <img src="image/taxo-tree.png" alt="Sample Taxonomic Tree Page">
             </div>
         </div>
-        <div class="image-container">
-            <img src="image/species.png" alt="Species Page">
+    </div>
+
+    <div class="section" id="species">
+        <h2 class="section-title">Species</h2>
+        <div class="section-content">
+            <div class="description">
+                <h2>Species</h2>
+                <div class="species-description">
+                    <p></p>
+                </div>
+            </div>
+            <div class="image-container">
+                <img src="image/species.png" alt="Species Page">
+            </div>
         </div>
     </div>
 </div>
