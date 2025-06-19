@@ -75,7 +75,15 @@ function initializeWithNoSelection() {
     // Taxonomic tree
     'taxo-sample-id-highlight',
     'taxo-sample-metadata-highlight',
-    'taxo-tree-highlight'
+    'taxo-tree-highlight',
+    // Species
+    'species-collection-date-filter-highlight',
+    'species-sample-count-highlight',
+    'species-samples-table-highlight',
+    'species-location-distribution-highlight',
+    'species-seasonal-distribution-highlight',
+    'species-taxonomy-highlight',
+    'species-geo-distribution-highlight'
   ];
 
   highlightIds.forEach(id => {
@@ -89,6 +97,7 @@ function setupFilterInteractivity() {
   setupSingleSelect('#region .filter-list li', 'region');
   setupSingleSelect('#sample .filter-list li', 'sample');
   setupSingleSelect('#taxonomic .filter-list li', 'taxonomic');
+  setupSingleSelect('#species .filter-list li', 'species');
 }
 
 function setupSingleSelect(selector, context) {
@@ -125,6 +134,7 @@ function setupHighlightRectangles() {
   const regionImage = document.getElementById('region-image');
   const sampleImage = document.getElementById('sample-image');
   const taxonomicImage = document.getElementById('taxonomic-image');
+  const speciesImage = document.getElementById('species-image');
 
   if (nationwideImage) {
     if (nationwideImage.complete) updateNationwideRects(nationwideImage);
@@ -144,6 +154,11 @@ function setupHighlightRectangles() {
   if (taxonomicImage) {
     if (taxonomicImage.complete) updateTaxonomicTreeRects(taxonomicImage);
     else taxonomicImage.onload = () => updateTaxonomicTreeRects(taxonomicImage);
+  }
+
+  if (speciesImage) {
+    if (speciesImage.complete) updateSpeciesRects(speciesImage);
+    else speciesImage.onload = () => updateSpeciesRects(speciesImage);
   }
 }
 
@@ -222,6 +237,29 @@ function updateTaxonomicTreeRects(img) {
     [0, 0.05, 0.25, 0.2],
     [0.25, 0.05, 0.7, 0.2],
     [0, 0.25, 1, 0.75]
+  ];
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+ }
+
+ function updateSpeciesRects(img) {
+ const keys = [
+    'species-collection-date-filter-highlight',
+    'species-sample-count-highlight',
+    'species-samples-table-highlight',
+    'species-location-distribution-highlight',
+    'species-seasonal-distribution-highlight',
+    'species-taxonomy-highlight',
+    'species-geo-distribution-highlight'
+  ];
+  const values = [
+    [0, 0.06, 0.25, 0.21],
+    [0.3, 0, 0.2, 0.2],
+    [0.5, 0.0, 0.3, 0.42],
+    [0.3, 0.17, 0.2, 0.28],
+    [0.78, 0, 0.2, 0.35],
+    [0.0, 0.30, 0.25, 0.7],
+    [0.25, 0.4, 0.75, 0.6]
   ];
   const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
   applyRectPositions(img, rects);

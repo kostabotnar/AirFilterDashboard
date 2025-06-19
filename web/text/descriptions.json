@@ -30,5 +30,13 @@
 
   "taxo-sample-id": "The Sample ID is a artificially generated unique identifier for each collected sample.",
   "taxo-sample-metadata": "The Sample metadata section provides detailed information about the region, collection date and location type (Indoor/Outdoor/Transit/Special Event).",
-  "taxo-tree": "Taxonomic tree visualizes the full diversity of organisms within the sample."
+  "taxo-tree": "Taxonomic tree visualizes the full diversity of organisms within the sample.",
+
+   "species-collection-date-filter": "Set up the timeframe for the sample collection date. All samples are included by default. This filter is applied globally, impacting all dashboard views. To reset the filter, click the \"Reset\" button.",
+   "species-sample-count": "The sample count indicator displays the total number of samples in which the current species was identified.",
+   "species-samples-table": "The samples table provides a list of sample IDs in which the current species was identified and associated sample metadata.",
+   "species-location-distribution": "The location distribution chart categorizes samples by their collection environment (indoor, outdoor, transit, or special event).",
+   "species-seasonal-distribution": "The seasonal distribution chart displays the number of samples collected during a specific season.",
+   "species-taxonomy": "List of the species taxonomy levels. The \"Pathogen\" label indicates of the species is identified as a pathogen.",
+   "species-geo-distribution": "The geographical distribution map visualizes sample locations across the 10 FEMA regions. This dashboard displays only samples with the selected species. The color intensity indicates the concentration of the sample in that area. Hovering the region on the map or the table displays a tooltip with general region information."
 }
