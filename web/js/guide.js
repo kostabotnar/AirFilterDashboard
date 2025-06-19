@@ -1,693 +1,201 @@
-// Global variable to store all descriptions
 let descriptions = {};
-
-// Load external description into the blocks
+let highlightIds = [];
 window.addEventListener('DOMContentLoaded', () => {
-  // Load descriptions from the consolidated JSON file
-  fetch('text/descriptions.json')
-    .then(response => response.json())
-    .then(data => {
-      descriptions = data;
-
-      // Initialize section descriptions
-      document.querySelector('.nation-description p').textContent = descriptions['nationwide'] || 'Not found';
-      document.querySelector('.region-description p').textContent = descriptions['region'] || 'Not found';
-      document.querySelector('.sample-description p').textContent = descriptions['sample'] || 'Not found';
-      document.querySelector('.taxo-description p').textContent = descriptions['taxonomic'] || 'Not found';
-      document.querySelector('.species-description p').textContent = descriptions['species'] || 'Not found';
-
-      // Initialize default descriptions for selected items
+  loadDescriptions()
+    .then(() => {
+      insertStaticDescriptions();
       initializeSelectedItemDescriptions();
-
-      // Position highlight rectangles after descriptions are loaded
-      positionHighlightRectangles();
-    })
-    .catch(error => {
-      console.error("Failed to load descriptions:", error);
-    });
-
-    // Position the highlight rectangles
-    const positionHighlightRectangles = () => {
-        const nationwideImage = document.getElementById('nationwide-image');
-        const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight');
-        const sampleCountRect = document.getElementById('sample-count-highlight');
-        const geoDistributionRect = document.getElementById('geo-distribution-highlight');
-        const collectionDateRect = document.getElementById('collection-date-highlight');
-        const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
-        const locationDistributionRect = document.getElementById('location-distribution-highlight');
-        const mapHoverTooltip = document.getElementById('map-hover-tooltip');
-
-        // Region elements
-        const regionImage = document.getElementById('region-image');
-        const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
-        const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
-        const regionNameRect = document.getElementById('region-name-highlight');
-        const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
-        const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
-        const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
-        const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
-        const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
-
-        // Wait for the nationwide image to load to get its dimensions
-        if (nationwideImage.complete) {
-            updateNationwideRectPositions();
-        } else {
-            nationwideImage.onload = updateNationwideRectPositions;
-        }
-
-        // Wait for the region image to load to get its dimensions
-        if (regionImage.complete) {
-            updateRegionRectPositions();
-        } else {
-            regionImage.onload = updateRegionRectPositions;
-        }
-
-        function updateNationwideRectPositions() {
-            const imgWidth = nationwideImage.offsetWidth;
-            const imgHeight = nationwideImage.offsetHeight;
-
-            // Position the collection date filter rectangle
-            collectionDateFilterRect.style.left = '0';
-            collectionDateFilterRect.style.top = `${imgHeight * 0.08}px`;
-            collectionDateFilterRect.style.width = `${imgWidth * 0.25}px`;
-            collectionDateFilterRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the sample count rectangle
-            sampleCountRect.style.left = '0';
-            sampleCountRect.style.top = `${imgHeight * 0.3}px`;
-            sampleCountRect.style.width = `${imgWidth * 0.25}px`;
-            sampleCountRect.style.height = `${imgHeight * 0.15}px`; // 45% - 30% = 15%
-
-            // Position the geographical distribution rectangle
-            geoDistributionRect.style.left = `${imgWidth * 0.25}px`;
-            geoDistributionRect.style.top = '0';
-            geoDistributionRect.style.width = `${imgWidth * 0.75}px`;
-            geoDistributionRect.style.height = `${imgHeight * 0.6}px`;
-
-            // Position the map hover tooltip
-            if (mapHoverTooltip) {
-                // Position at 50% horizontally and 30% vertically
-                const tooltipWidth = mapHoverTooltip.offsetWidth;
-                const tooltipHeight = mapHoverTooltip.offsetHeight;
-
-                // Center the tooltip at the 50%, 30% position
-                mapHoverTooltip.style.left = `${imgWidth * 0.5 - tooltipWidth / 2}px`;
-                mapHoverTooltip.style.top = `${imgHeight * 0.3 - tooltipHeight / 2}px`;
-            }
-
-            // Position the collection date rectangle
-            collectionDateRect.style.left = '0';
-            collectionDateRect.style.top = `${imgHeight * 0.6}px`;
-            collectionDateRect.style.width = `${imgWidth * 0.45}px`;
-            collectionDateRect.style.height = `${imgHeight * 0.4}px`;
-
-            // Position the seasonal distribution rectangle
-            seasonalDistributionRect.style.left = `${imgWidth * 0.45}px`;
-            seasonalDistributionRect.style.top = `${imgHeight * 0.6}px`;
-            seasonalDistributionRect.style.width = `${imgWidth * 0.25}px`;
-            seasonalDistributionRect.style.height = `${imgHeight * 0.4}px`;
-
-            // Position the location distribution rectangle
-            locationDistributionRect.style.left = `${imgWidth * 0.7}px`;
-            locationDistributionRect.style.top = `${imgHeight * 0.6}px`;
-            locationDistributionRect.style.width = `${imgWidth * 0.3}px`;
-            locationDistributionRect.style.height = `${imgHeight * 0.4}px`;
-        }
-
-        function updateRegionRectPositions() {
-            const imgWidth = regionImage.offsetWidth;
-            const imgHeight = regionImage.offsetHeight;
-
-            // Position the region collection date filter rectangle
-            regionCollectionDateFilterRect.style.left = '0';
-            regionCollectionDateFilterRect.style.top = `${imgHeight * 0.08}px`;
-            regionCollectionDateFilterRect.style.width = `${imgWidth * 0.25}px`;
-            regionCollectionDateFilterRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region sample count rectangle
-            regionSampleCountRect.style.left = '0';
-            regionSampleCountRect.style.top = `${imgHeight * 0.3}px`;
-            regionSampleCountRect.style.width = `${imgWidth * 0.25}px`;
-            regionSampleCountRect.style.height = `${imgHeight * 0.15}px`;
-
-            // Position the region name rectangle
-            regionNameRect.style.left = `${imgWidth * 0.2}px`;
-            regionNameRect.style.top = `${imgHeight * 0.2}px`;
-            regionNameRect.style.width = `${imgWidth * 0.2}px`;
-            regionNameRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region species pathogen rectangle
-            regionSpeciesPathogenRect.style.left = `${imgWidth * 0.2}px`;
-            regionSpeciesPathogenRect.style.top = `${imgHeight * 0.2}px`;
-            regionSpeciesPathogenRect.style.width = `${imgWidth * 0.2}px`;
-            regionSpeciesPathogenRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region metadata distribution rectangle
-            regionMetadataDistributionRect.style.left = `${imgWidth * 0.2}px`;
-            regionMetadataDistributionRect.style.top = `${imgHeight * 0.2}px`;
-            regionMetadataDistributionRect.style.width = `${imgWidth * 0.2}px`;
-            regionMetadataDistributionRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region top species rectangle
-            regionTopSpeciesRect.style.left = `${imgWidth * 0.2}px`;
-            regionTopSpeciesRect.style.top = `${imgHeight * 0.2}px`;
-            regionTopSpeciesRect.style.width = `${imgWidth * 0.2}px`;
-            regionTopSpeciesRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region samples table rectangle
-            regionSamplesTableRect.style.left = `${imgWidth * 0.2}px`;
-            regionSamplesTableRect.style.top = `${imgHeight * 0.2}px`;
-            regionSamplesTableRect.style.width = `${imgWidth * 0.2}px`;
-            regionSamplesTableRect.style.height = `${imgHeight * 0.2}px`;
-
-            // Position the region species table rectangle
-            regionSpeciesTableRect.style.left = `${imgWidth * 0.2}px`;
-            regionSpeciesTableRect.style.top = `${imgHeight * 0.2}px`;
-            regionSpeciesTableRect.style.width = `${imgWidth * 0.2}px`;
-            regionSpeciesTableRect.style.height = `${imgHeight * 0.2}px`;
-        }
-    };
-
-    // Call initially
-    positionHighlightRectangles();
-
-    // Also call on window resize
-    window.addEventListener('resize', positionHighlightRectangles);
-
-    // Filter list single-select functionality
-    const filterItems = document.querySelectorAll('.filter-list li');
-    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight');
-    const sampleCountRect = document.getElementById('sample-count-highlight');
-    const geoDistributionRect = document.getElementById('geo-distribution-highlight');
-    const collectionDateRect = document.getElementById('collection-date-highlight');
-    const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
-    const locationDistributionRect = document.getElementById('location-distribution-highlight');
-    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
-
-    // Hide the tooltip initially
-    if (mapHoverTooltip) {
-        mapHoverTooltip.style.display = 'none';
-    }
-
-    filterItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Remove selected class from all items
-            filterItems.forEach(i => i.classList.remove('selected'));
-
-            // Add selected class to clicked item
-            this.classList.add('selected');
-
-            // Hide all rectangles first
-            collectionDateFilterRect.style.display = 'none';
-            sampleCountRect.style.display = 'none';
-            geoDistributionRect.style.display = 'none';
-            collectionDateRect.style.display = 'none';
-            seasonalDistributionRect.style.display = 'none';
-            locationDistributionRect.style.display = 'none';
-
-            // Hide the tooltip by default
-            if (mapHoverTooltip) {
-                mapHoverTooltip.style.display = 'none';
-            }
-
-            // Show the appropriate rectangle based on selection
-            const option = this.dataset.option;
-            const itemDescription = this.querySelector('.filter-item-description');
-            itemDescription.textContent = descriptions[option] || 'Not found';
-
-            // Update the highlight rectangle
-            updateHighlight(option);
-        });
-    });
-
-    // Add region filter list functionality
-    const regionFilterItems = document.querySelectorAll('#region .filter-list li');
-    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
-    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
-    const regionNameRect = document.getElementById('region-name-highlight');
-    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
-    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
-    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
-    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
-    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
-
-    // Hide all region rectangles initially
-    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
-    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
-    if (regionNameRect) regionNameRect.style.display = 'none';
-    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
-    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
-    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
-    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
-    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
-
-    // Load the region collection date filter description by default for the selected item
-    const selectedRegionItem = document.querySelector('#region .filter-list li.selected');
-    if (selectedRegionItem) {
-        const selectedRegionItemDescription = selectedRegionItem.querySelector('.filter-item-description');
-        selectedRegionItemDescription.textContent = descriptions['collection-date-filter'] || 'Not found';
-    }
-
-    regionFilterItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Remove selected class from all region items
-            regionFilterItems.forEach(i => i.classList.remove('selected'));
-
-            // Add selected class to clicked item
-            this.classList.add('selected');
-
-            // Hide all region rectangles first
-            if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
-            if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
-            if (regionNameRect) regionNameRect.style.display = 'none';
-            if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
-            if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
-            if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
-            if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
-            if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
-
-            // Show the appropriate rectangle based on selection
-            const option = this.dataset.option;
-            const itemDescription = this.querySelector('.filter-item-description');
-            itemDescription.textContent = descriptions[option] || 'Not found';
-
-            // Update the highlight rectangle
-            updateHighlight(option);
-        });
-    });
-
-    // Initialize highlight rectangle
-    initializeWithNoSelection();
-
-    // Add sample filter list functionality
-    const sampleFilterItems = document.querySelectorAll('#sample .filter-list li');
-    const sampleIdRect = document.getElementById('sample-id-highlight');
-    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
-    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
-    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
-    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
-    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
-    const sampleImage = document.getElementById('sample-image');
-
-    sampleFilterItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Remove selected class from all items
-            sampleFilterItems.forEach(i => i.classList.remove('selected'));
-
-            // Add selected class to clicked item
-            this.classList.add('selected');
-
-            // Hide all rectangles first
-            sampleIdRect.style.display = 'none';
-            sampleMetadataRect.style.display = 'none';
-            sampleSpeciesPathogenRect.style.display = 'none';
-            sampleReadsInfoRect.style.display = 'none';
-            sampleTopSpeciesRect.style.display = 'none';
-            sampleSpeciesTableRect.style.display = 'none';
-
-            // Show the appropriate rectangle based on selection
-            const option = this.dataset.option;
-            const itemDescription = this.querySelector('.filter-item-description');
-            itemDescription.textContent = descriptions[option] || 'Not found';
-
-            // Update the highlight rectangle
-            updateHighlight(option);
-
-            // Load and display the description
-            fetch(`text/${option}.txt`)
-                .then(response => response.text())
-                .then(text => {
-                    document.getElementById('sample-filter-description').textContent = text;
-                })
-                .catch(error => {
-                    console.error(`Failed to load ${option} description:`, error);
-                });
-        });
+      setupFilterInteractivity();
+      setupSmoothScrolling();
+      setupHighlightRectangles();
+      window.addEventListener('resize', setupHighlightRectangles);
+      initializeWithNoSelection();
     });
 });
 
-// Function to update the highlight rectangle
-function updateHighlight(option) {
-    const image = document.getElementById('nationwide-image');
-    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight');
-    const sampleCountRect = document.getElementById('sample-count-highlight');
-    const geoDistributionRect = document.getElementById('geo-distribution-highlight');
-    const collectionDateRect = document.getElementById('collection-date-highlight');
-    const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
-    const locationDistributionRect = document.getElementById('location-distribution-highlight');
-    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
-
-    // Region elements
-    const regionImage = document.getElementById('region-image');
-    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
-    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
-    const regionNameRect = document.getElementById('region-name-highlight');
-    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
-    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
-    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
-    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
-    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
-
-    // Sample elements
-    const sampleIdRect = document.getElementById('sample-id-highlight');
-    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
-    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
-    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
-    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
-    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
-    const sampleImage = document.getElementById('sample-image');
-
-    if (!image || !collectionDateFilterRect || !sampleCountRect || !geoDistributionRect ||
-        !collectionDateRect || !seasonalDistributionRect || !locationDistributionRect) return;
-
-    const rect = image.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    // Hide all rectangles first
-    collectionDateFilterRect.style.display = 'none';
-    sampleCountRect.style.display = 'none';
-    geoDistributionRect.style.display = 'none';
-    collectionDateRect.style.display = 'none';
-    seasonalDistributionRect.style.display = 'none';
-    locationDistributionRect.style.display = 'none';
-
-    // Hide the tooltip by default
-    if (mapHoverTooltip) {
-        mapHoverTooltip.style.display = 'none';
-    }
-
-    // Hide region rectangles
-    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
-    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
-    if (regionNameRect) regionNameRect.style.display = 'none';
-    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
-    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
-    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
-    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
-    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
-
-    // Hide sample rectangles
-    if (sampleIdRect) sampleIdRect.style.display = 'none';
-    if (sampleMetadataRect) sampleMetadataRect.style.display = 'none';
-    if (sampleSpeciesPathogenRect) sampleSpeciesPathogenRect.style.display = 'none';
-    if (sampleReadsInfoRect) sampleReadsInfoRect.style.display = 'none';
-    if (sampleTopSpeciesRect) sampleTopSpeciesRect.style.display = 'none';
-    if (sampleSpeciesTableRect) sampleSpeciesTableRect.style.display = 'none';
-
-    switch (option) {
-        case 'collection-date-filter':
-            collectionDateFilterRect.style.left = '0';
-            collectionDateFilterRect.style.top = `${height * 0.08}px`;
-            collectionDateFilterRect.style.width = `${width * 0.25}px`;
-            collectionDateFilterRect.style.height = `${height * 0.2}px`;
-            collectionDateFilterRect.style.display = 'block';
-            break;
-        case 'sample-count':
-            sampleCountRect.style.left = '0';
-            sampleCountRect.style.top = `${height * 0.3}px`;
-            sampleCountRect.style.width = `${width * 0.25}px`;
-            sampleCountRect.style.height = `${height * 0.15}px`;
-            sampleCountRect.style.display = 'block';
-            break;
-        case 'geo-distribution':
-            geoDistributionRect.style.left = `${width * 0.25}px`;
-            geoDistributionRect.style.top = '0';
-            geoDistributionRect.style.width = `${width * 0.75}px`;
-            geoDistributionRect.style.height = `${height * 0.6}px`;
-            geoDistributionRect.style.display = 'block';
-            // Show the map hover tooltip
-            if (mapHoverTooltip) {
-                mapHoverTooltip.style.display = 'block';
-            }
-            break;
-        case 'collection-date':
-            collectionDateRect.style.left = '0';
-            collectionDateRect.style.top = `${height * 0.6}px`;
-            collectionDateRect.style.width = `${width * 0.45}px`;
-            collectionDateRect.style.height = `${height * 0.4}px`;
-            collectionDateRect.style.display = 'block';
-            break;
-        case 'seasonal-distribution':
-            seasonalDistributionRect.style.left = `${width * 0.45}px`;
-            seasonalDistributionRect.style.top = `${height * 0.6}px`;
-            seasonalDistributionRect.style.width = `${width * 0.25}px`;
-            seasonalDistributionRect.style.height = `${height * 0.4}px`;
-            seasonalDistributionRect.style.display = 'block';
-            break;
-        case 'location-distribution':
-            locationDistributionRect.style.left = `${width * 0.7}px`;
-            locationDistributionRect.style.top = `${height * 0.6}px`;
-            locationDistributionRect.style.width = `${width * 0.3}px`;
-            locationDistributionRect.style.height = `${height * 0.4}px`;
-            locationDistributionRect.style.display = 'block';
-            break;
-        // Region options
-        case 'region-collection-date-filter':
-            if (regionCollectionDateFilterRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionCollectionDateFilterRect.style.left = `${regionWidth * 0}px`;
-                regionCollectionDateFilterRect.style.top = `${regionHeight * 0.05}px`;
-                regionCollectionDateFilterRect.style.width = `${regionWidth * 0.3}px`;
-                regionCollectionDateFilterRect.style.height = `${regionHeight * 0.2}px`;
-                regionCollectionDateFilterRect.style.display = 'block';
-            }
-            break;
-        case 'region-sample-count':
-            if (regionSampleCountRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionSampleCountRect.style.left = `${regionWidth * 0}px`;
-                regionSampleCountRect.style.top = `${regionHeight * 0.31}px`;
-                regionSampleCountRect.style.width = `${regionWidth * 0.3}px`;
-                regionSampleCountRect.style.height = `${regionHeight * 0.16}px`;
-                regionSampleCountRect.style.display = 'block';
-            }
-            break;
-        case 'region-name':
-            if (regionNameRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionNameRect.style.left = `${regionWidth * 0}px`;
-                regionNameRect.style.top = `${regionHeight * 0.25}px`;
-                regionNameRect.style.width = `${regionWidth * 0.3}px`;
-                regionNameRect.style.height = `${regionHeight * 0.08}px`;
-                regionNameRect.style.display = 'block';
-            }
-            break;
-        case 'region-species-pathogen':
-            if (regionSpeciesPathogenRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionSpeciesPathogenRect.style.left = `${regionWidth * 0}px`;
-                regionSpeciesPathogenRect.style.top = `${regionHeight * 0.47}px`;
-                regionSpeciesPathogenRect.style.width = `${regionWidth * 0.3}px`;
-                regionSpeciesPathogenRect.style.height = `${regionHeight * 0.15}px`;
-                regionSpeciesPathogenRect.style.display = 'block';
-            }
-            break;
-        case 'region-metadata-distribution':
-            if (regionMetadataDistributionRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionMetadataDistributionRect.style.left = `${regionWidth * 0.3}px`;
-                regionMetadataDistributionRect.style.top = `${regionHeight * 0.06}px`;
-                regionMetadataDistributionRect.style.width = `${regionWidth * 0.23}px`;
-                regionMetadataDistributionRect.style.height = `${regionHeight * 0.55}px`;
-                regionMetadataDistributionRect.style.display = 'block';
-            }
-            break;
-        case 'region-top-species':
-            if (regionTopSpeciesRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionTopSpeciesRect.style.left = `${regionWidth * 0.55}px`;
-                regionTopSpeciesRect.style.top = `${regionHeight * 0.06}px`;
-                regionTopSpeciesRect.style.width = `${regionWidth * 0.25}px`;
-                regionTopSpeciesRect.style.height = `${regionHeight * 0.55}px`;
-                regionTopSpeciesRect.style.display = 'block';
-            }
-            break;
-        case 'region-samples-table':
-            if (regionSamplesTableRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionSamplesTableRect.style.left = `${regionWidth * 0.8}px`;
-                regionSamplesTableRect.style.top = `${regionHeight * 0.06}px`;
-                regionSamplesTableRect.style.width = `${regionWidth * 0.2}px`;
-                regionSamplesTableRect.style.height = `${regionHeight * 0.56}px`;
-                regionSamplesTableRect.style.display = 'block';
-            }
-            break;
-        case 'region-species-table':
-            if (regionSpeciesTableRect && regionImage) {
-                const regionRect = regionImage.getBoundingClientRect();
-                const regionWidth = regionRect.width;
-                const regionHeight = regionRect.height;
-
-                regionSpeciesTableRect.style.left = `${regionWidth * 0}px`;
-                regionSpeciesTableRect.style.top = `${regionHeight * 0.62}px`;
-                regionSpeciesTableRect.style.width = `${regionWidth}px`;
-                regionSpeciesTableRect.style.height = `${regionHeight * 0.48}px`;
-                regionSpeciesTableRect.style.display = 'block';
-            }
-            break;
-        // Sample options
-        case 'sample-id':
-            if (sampleIdRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleIdRect.style.left = '0';
-                sampleIdRect.style.top = `${sampleHeight * 0.06}px`;
-                sampleIdRect.style.width = `${sampleWidth * 0.22}px`;
-                sampleIdRect.style.height = `${sampleHeight * 0.15}px`;
-                sampleIdRect.style.display = 'block';
-            }
-            break;
-        case 'sample-metadata':
-            if (sampleMetadataRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleMetadataRect.style.left = '0';
-                sampleMetadataRect.style.top = `${sampleHeight * 0.2}px`;
-                sampleMetadataRect.style.width = `${sampleWidth * 0.3}px`;
-                sampleMetadataRect.style.height = `${sampleHeight * 0.3}px`;
-                sampleMetadataRect.style.display = 'block';
-            }
-            break;
-        case 'sample-species-pathogen':
-            if (sampleSpeciesPathogenRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleSpeciesPathogenRect.style.left = `${sampleWidth * 0.25}px`;
-                sampleSpeciesPathogenRect.style.top = '0';
-                sampleSpeciesPathogenRect.style.width = `${sampleWidth * 0.2}px`;
-                sampleSpeciesPathogenRect.style.height = `${sampleHeight * 0.5}px`;
-                sampleSpeciesPathogenRect.style.display = 'block';
-            }
-            break;
-        case 'sample-reads-info':
-            if (sampleReadsInfoRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleReadsInfoRect.style.left = `${sampleWidth * 0.45}px`;
-                sampleReadsInfoRect.style.top = '0';
-                sampleReadsInfoRect.style.width = `${sampleWidth * 0.18}px`;
-                sampleReadsInfoRect.style.height = `${sampleHeight * 0.5}px`;
-                sampleReadsInfoRect.style.display = 'block';
-            }
-            break;
-        case 'sample-top-species':
-            if (sampleTopSpeciesRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleTopSpeciesRect.style.left = `${sampleWidth * 0.6}px`;
-                sampleTopSpeciesRect.style.top = '0';
-                sampleTopSpeciesRect.style.width = `${sampleWidth * 0.4}px`;
-                sampleTopSpeciesRect.style.height = `${sampleHeight * 0.5}px`;
-                sampleTopSpeciesRect.style.display = 'block';
-            }
-            break;
-        case 'sample-species-table':
-            if (sampleSpeciesTableRect && sampleImage) {
-                const sampleWidth = sampleImage.offsetWidth;
-                const sampleHeight = sampleImage.offsetHeight;
-                sampleSpeciesTableRect.style.left = '0';
-                sampleSpeciesTableRect.style.top = `${sampleHeight * 0.5}px`;
-                sampleSpeciesTableRect.style.width = `${sampleWidth}px`;
-                sampleSpeciesTableRect.style.height = `${sampleHeight * 0.5}px`;
-                sampleSpeciesTableRect.style.display = 'block';
-            }
-            break;
-    }
+async function loadDescriptions() {
+  try {
+    const response = await fetch('text/descriptions.json');
+    descriptions = await response.json();
+  } catch (err) {
+    console.error("Failed to load descriptions:", err);
+  }
 }
 
-// Add smooth scrolling for anchor links
-document.querySelectorAll('.toc-list a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
+function insertStaticDescriptions() {
+  const map = {
+    'nationwide': '.nation-description p',
+    'region': '.region-description p',
+    'sample': '.sample-description p',
+    'taxonomic': '.taxo-description p',
+    'species': '.species-description p'
+  };
+  Object.entries(map).forEach(([key, selector]) => {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = descriptions[key] || 'Not found';
+  });
+}
 
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
+function initializeSelectedItemDescriptions() {
+  const selectedRegionItem = document.querySelector('#region .filter-list li.selected');
+  if (selectedRegionItem) {
+    const descEl = selectedRegionItem.querySelector('.filter-item-description');
+    if (descEl) descEl.textContent = descriptions['collection-date-filter'] || 'Not found';
+  }
+}
 
-        window.scrollTo({
-            top: targetElement.offsetTop - 20, // Subtract some pixels to account for padding
-            behavior: 'smooth'
-        });
-    });
-});
-
-// Initialize with no highlight rectangle
 function initializeWithNoSelection() {
-    // Hide all nationwide rectangles
-    const collectionDateFilterRect = document.getElementById('collection-date-filter-highlight');
-    const sampleCountRect = document.getElementById('sample-count-highlight');
-    const geoDistributionRect = document.getElementById('geo-distribution-highlight');
-    const collectionDateRect = document.getElementById('collection-date-highlight');
-    const seasonalDistributionRect = document.getElementById('seasonal-distribution-highlight');
-    const locationDistributionRect = document.getElementById('location-distribution-highlight');
-    const mapHoverTooltip = document.getElementById('map-hover-tooltip');
+  document.querySelectorAll('.filter-list li').forEach(item => item.classList.remove('selected'));
 
-    // Hide all nationwide rectangles
-    if (collectionDateFilterRect) collectionDateFilterRect.style.display = 'none';
-    if (sampleCountRect) sampleCountRect.style.display = 'none';
-    if (geoDistributionRect) geoDistributionRect.style.display = 'none';
-    if (collectionDateRect) collectionDateRect.style.display = 'none';
-    if (seasonalDistributionRect) seasonalDistributionRect.style.display = 'none';
-    if (locationDistributionRect) locationDistributionRect.style.display = 'none';
-    if (mapHoverTooltip) mapHoverTooltip.style.display = 'none';
+   highlightIds = [
+    // Nationwide
+    'collection-date-filter-highlight',
+    'sample-count-highlight',
+    'geo-distribution-highlight',
+    'collection-date-highlight',
+    'seasonal-distribution-highlight',
+    'location-distribution-highlight',
+    'map-hover-tooltip',
+    // Region
+    'region-collection-date-filter-highlight',
+    'region-sample-count-highlight',
+    'region-name-highlight',
+    'region-species-pathogen-highlight',
+    'region-metadata-distribution-highlight',
+    'region-top-species-highlight',
+    'region-samples-table-highlight',
+    'region-species-table-highlight',
+    // Sample
+    'sample-id-highlight',
+    'sample-metadata-highlight',
+    'sample-species-pathogen-highlight',
+    'sample-reads-info-highlight',
+    'sample-top-species-highlight',
+    'sample-species-table-highlight'
+  ];
 
-    // Hide all region rectangles
-    const regionCollectionDateFilterRect = document.getElementById('region-collection-date-filter-highlight');
-    const regionSampleCountRect = document.getElementById('region-sample-count-highlight');
-    const regionNameRect = document.getElementById('region-name-highlight');
-    const regionSpeciesPathogenRect = document.getElementById('region-species-pathogen-highlight');
-    const regionMetadataDistributionRect = document.getElementById('region-metadata-distribution-highlight');
-    const regionTopSpeciesRect = document.getElementById('region-top-species-highlight');
-    const regionSamplesTableRect = document.getElementById('region-samples-table-highlight');
-    const regionSpeciesTableRect = document.getElementById('region-species-table-highlight');
+  highlightIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
 
-    if (regionCollectionDateFilterRect) regionCollectionDateFilterRect.style.display = 'none';
-    if (regionSampleCountRect) regionSampleCountRect.style.display = 'none';
-    if (regionNameRect) regionNameRect.style.display = 'none';
-    if (regionSpeciesPathogenRect) regionSpeciesPathogenRect.style.display = 'none';
-    if (regionMetadataDistributionRect) regionMetadataDistributionRect.style.display = 'none';
-    if (regionTopSpeciesRect) regionTopSpeciesRect.style.display = 'none';
-    if (regionSamplesTableRect) regionSamplesTableRect.style.display = 'none';
-    if (regionSpeciesTableRect) regionSpeciesTableRect.style.display = 'none';
+function setupFilterInteractivity() {
+  setupSingleSelect('.filter-list li', 'nationwide');
+  setupSingleSelect('#region .filter-list li', 'region');
+  setupSingleSelect('#sample .filter-list li', 'sample');
+}
 
-    // Hide all sample rectangles
-    const sampleIdRect = document.getElementById('sample-id-highlight');
-    const sampleMetadataRect = document.getElementById('sample-metadata-highlight');
-    const sampleSpeciesPathogenRect = document.getElementById('sample-species-pathogen-highlight');
-    const sampleReadsInfoRect = document.getElementById('sample-reads-info-highlight');
-    const sampleTopSpeciesRect = document.getElementById('sample-top-species-highlight');
-    const sampleSpeciesTableRect = document.getElementById('sample-species-table-highlight');
-
-    if (sampleIdRect) sampleIdRect.style.display = 'none';
-    if (sampleMetadataRect) sampleMetadataRect.style.display = 'none';
-    if (sampleSpeciesPathogenRect) sampleSpeciesPathogenRect.style.display = 'none';
-    if (sampleReadsInfoRect) sampleReadsInfoRect.style.display = 'none';
-    if (sampleTopSpeciesRect) sampleTopSpeciesRect.style.display = 'none';
-    if (sampleSpeciesTableRect) sampleSpeciesTableRect.style.display = 'none';
-
-    // Remove selected class from all filter items
-    document.querySelectorAll('.filter-list li').forEach(item => {
-        item.classList.remove('selected');
+function setupSingleSelect(selector, context) {
+  const items = document.querySelectorAll(selector);
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      items.forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+      const option = item.dataset.option;
+      const descriptionEl = item.querySelector('.filter-item-description');
+      if (descriptionEl) descriptionEl.textContent = descriptions[option] || 'Not found';
+      updateHighlight(option);
     });
+  });
+}
+
+function setupSmoothScrolling() {
+  document.querySelectorAll('.toc-list a').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        window.scrollTo({
+          top: target.offsetTop - 20,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+}
+
+function setupHighlightRectangles() {
+  const nationwideImage = document.getElementById('nationwide-image');
+  const regionImage = document.getElementById('region-image');
+
+  if (nationwideImage) {
+    if (nationwideImage.complete) updateNationwideRects(nationwideImage);
+    else nationwideImage.onload = () => updateNationwideRects(nationwideImage);
+  }
+
+  if (regionImage) {
+    if (regionImage.complete) updateRegionRects(regionImage);
+    else regionImage.onload = () => updateRegionRects(regionImage);
+  }
+}
+
+function updateNationwideRects(img) {
+  const rects = {
+    'collection-date-filter-highlight': [0, 0.08, 0.25, 0.2],
+    'sample-count-highlight': [0, 0.3, 0.25, 0.15],
+    'geo-distribution-highlight': [0.25, 0, 0.75, 0.6],
+    'collection-date-highlight': [0, 0.6, 0.45, 0.4],
+    'seasonal-distribution-highlight': [0.45, 0.6, 0.25, 0.4],
+    'location-distribution-highlight': [0.7, 0.6, 0.3, 0.4]
+  };
+  applyRectPositions(img, rects);
+
+  const tooltip = document.getElementById('map-hover-tooltip');
+  if (tooltip) {
+    tooltip.style.left = `${img.offsetWidth * 0.5 - tooltip.offsetWidth / 2}px`;
+    tooltip.style.top = `${img.offsetHeight * 0.3 - tooltip.offsetHeight / 2}px`;
+  }
+}
+
+function updateRegionRects(img) {
+  const keys = [
+    'region-collection-date-filter-highlight',
+    'region-sample-count-highlight',
+    'region-name-highlight',
+    'region-species-pathogen-highlight',
+    'region-metadata-distribution-highlight',
+    'region-top-species-highlight',
+    'region-samples-table-highlight',
+    'region-species-table-highlight'
+  ];
+  const values = [
+    [0, 0.05, 0.3, 0.2],
+    [0, 0.31, 0.3, 0.16],
+    [0, 0.25, 0.3, 0.08],
+    [0, 0.47, 0.3, 0.15],
+    [0.3, 0.06, 0.23, 0.55],
+    [0.55, 0.06, 0.25, 0.55],
+    [0.8, 0.06, 0.2, 0.56],
+    [0, 0.62, 1, 0.48]
+  ];
+
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+}
+
+function applyRectPositions(image, rects) {
+  const width = image.offsetWidth;
+  const height = image.offsetHeight;
+
+  Object.entries(rects).forEach(([id, [left, top, w, h]]) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.left = `${width * left}px`;
+      el.style.top = `${height * top}px`;
+      el.style.width = `${width * w}px`;
+      el.style.height = `${height * h}px`;
+    }
+  });
+}
+
+function updateHighlight(option) {
+  // Hide all highlight rectangles first
+  highlightIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // Then show only the selected rectangle
+  const el = document.getElementById(`${option}-highlight`);
+  if (el) el.style.display = 'block';
 }
