@@ -192,9 +192,33 @@
         <div class="section-content">
             <div class="description">
                 <div class="taxo-description"><p></p></div>
+
+                <div class="filter-list">
+                    <div class="filter-list-title">Dashboard elements</div>
+                    <ul>
+                        <li data-option="taxo-sample-id">
+                            <div class="filter-item">Sample ID</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="taxo-sample-metadata">
+                            <div class="filter-item">Sample metadata</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="taxo-tree">
+                            <div class="filter-item">Taxonomic tree</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                    </ul>
+                    <div class="filter-description" id="taxo-filter-description"></div>
+                </div>
             </div>
             <div class="image-container">
-                <img src="image/taxo-tree.png" alt="Sample Taxonomic Tree Page">
+                <div class="image-overlay-container">
+                    <img src="image/taxo-tree.png" alt="Sample Taxonomic Tree Page" id="taxonomic-image">
+                    <div class="highlight-rectangle" id="taxo-sample-id-highlight"></div>
+                    <div class="highlight-rectangle" id="taxo-sample-metadata-highlight"></div>
+                    <div class="highlight-rectangle" id="taxo-tree-highlight"></div>
+                </div>
             </div>
         </div>
     </div>

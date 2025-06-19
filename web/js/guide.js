@@ -71,7 +71,11 @@ function initializeWithNoSelection() {
     'sample-species-pathogen-highlight',
     'sample-reads-info-highlight',
     'sample-top-species-highlight',
-    'sample-species-table-highlight'
+    'sample-species-table-highlight',
+    // Taxonomic tree
+    'taxo-sample-id-highlight',
+    'taxo-sample-metadata-highlight',
+    'taxo-tree-highlight'
   ];
 
   highlightIds.forEach(id => {
@@ -81,9 +85,10 @@ function initializeWithNoSelection() {
 }
 
 function setupFilterInteractivity() {
-  setupSingleSelect('.filter-list li', 'nationwide');
+  setupSingleSelect('#nationwide .filter-list li', 'nationwide');
   setupSingleSelect('#region .filter-list li', 'region');
   setupSingleSelect('#sample .filter-list li', 'sample');
+  setupSingleSelect('#taxonomic .filter-list li', 'taxonomic');
 }
 
 function setupSingleSelect(selector, context) {
@@ -118,6 +123,8 @@ function setupSmoothScrolling() {
 function setupHighlightRectangles() {
   const nationwideImage = document.getElementById('nationwide-image');
   const regionImage = document.getElementById('region-image');
+  const sampleImage = document.getElementById('sample-image');
+  const taxonomicImage = document.getElementById('taxonomic-image');
 
   if (nationwideImage) {
     if (nationwideImage.complete) updateNationwideRects(nationwideImage);
@@ -127,6 +134,16 @@ function setupHighlightRectangles() {
   if (regionImage) {
     if (regionImage.complete) updateRegionRects(regionImage);
     else regionImage.onload = () => updateRegionRects(regionImage);
+  }
+
+  if (sampleImage) {
+    if (sampleImage.complete) updateSampleRects(sampleImage);
+    else sampleImage.onload = () => updateSampleRects(sampleImage);
+  }
+
+  if (taxonomicImage) {
+    if (taxonomicImage.complete) updateTaxonomicTreeRects(taxonomicImage);
+    else taxonomicImage.onload = () => updateTaxonomicTreeRects(taxonomicImage);
   }
 }
 
@@ -173,6 +190,42 @@ function updateRegionRects(img) {
   const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
   applyRectPositions(img, rects);
 }
+
+function updateSampleRects(img) {
+  const keys = [
+   'sample-id-highlight',
+   'sample-metadata-highlight',
+   'sample-species-pathogen-highlight',
+   'sample-reads-info-highlight',
+   'sample-top-species-highlight',
+   'sample-species-table-highlight'
+   ];
+   const values = [
+    [0, 0.05, 0.3, 0.2],
+    [0, 0.31, 0.3, 0.16],
+    [0, 0.47, 0.3, 0.15],
+    [0.3, 0.47, 0.3, 0.15],
+    [0.63, 0.05, 0.3, 0.2],
+    [0.63, 0.47, 0.3, 0.15]
+    ];
+    const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+    applyRectPositions(img, rects);
+}
+
+function updateTaxonomicTreeRects(img) {
+  const keys = [
+    'taxo-sample-id-highlight',
+    'taxo-sample-metadata-highlight',
+    'taxo-tree-highlight'
+  ];
+  const values = [
+    [0, 0.05, 0.25, 0.2],
+    [0.25, 0.05, 0.7, 0.2],
+    [0, 0.25, 1, 0.75]
+  ];
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+ }
 
 function applyRectPositions(image, rects) {
   const width = image.offsetWidth;
