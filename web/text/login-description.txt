@@ -1,0 +1,1 @@
+This dashboard displays the culmination of over 800 air filters collected throughout the continental US during all four seasons from 2024-2025. The embedded Microsoft Power BI dashboard enables easy data browsing, visualization, and sorting. The raw next-generation sequencing data is available on the National Center for Biotechnology Information's Sequence Read Archive database.

@@ -1,0 +1,5 @@
+U.S. Department of Homeland Security (DHS) does not accept liability for the use of this dashboard or its underlying data.  DHS distances itself expressly from the results inclusive of putative identification of genus, species and reported pathogenicity labels for detected microorganisms, which may or may not be accurate.  These data are provided purely for exploration and to further additional research and development activities.
+
+This statement is valid for all results and data coming from the dashboard.  The data herein were identified from a combination of processes and references.  All work was funded by the DHS Science and Technology Directorate (S&T) Hazard Awareness & Characterization Technology Center (HAC-TC) under the Basic Ordering Agreement (BOA) 70RSAT21G00000001/70RSAT23FR0000134.
+
+We encourage interested parties to work with the raw data available from the National Center for Biotechnology Information (NCBI) Sequence Read Archive (SRA).  Please contact bgl@utmb.edu for questions about procedures, datapoints, results, etc.
