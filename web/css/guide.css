@@ -274,3 +274,37 @@ body {
     pointer-events: none; /* Allow clicks to pass through */
     display: none; /* Hidden by default */
 }
+
+.table-title {
+    font-size: 1.3em;
+    margin: 25px 0 15px;
+    color: #333;
+}
+
+.navigation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+.navigation-table th,
+.navigation-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.navigation-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+}
+
+.navigation-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.navigation-table tr:hover {
+    background-color: #f1f1f1;
+}

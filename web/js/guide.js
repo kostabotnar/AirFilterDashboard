@@ -28,7 +28,8 @@ function insertStaticDescriptions() {
     'region': '.region-description p',
     'sample': '.sample-description p',
     'taxonomic': '.taxo-description p',
-    'species': '.species-description p'
+    'species': '.species-description p',
+    'navigation': '.navigation-description p'
   };
   Object.entries(map).forEach(([key, selector]) => {
     const el = document.querySelector(selector);
@@ -55,7 +56,6 @@ function initializeWithNoSelection() {
     'collection-date-highlight',
     'seasonal-distribution-highlight',
     'location-distribution-highlight',
-    'map-hover-tooltip',
     // Region
     'region-collection-date-filter-highlight',
     'region-sample-count-highlight',

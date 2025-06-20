@@ -19,6 +19,7 @@
         <li><a href="#sample">Sample</a></li>
         <li><a href="#taxonomic">Sample taxonomic tree</a></li>
         <li><a href="#species">Species</a></li>
+        <li><a href="#navigation">Navigation</a></li>
     </ul>
 </div>
 
@@ -69,7 +70,6 @@
                     <div class="highlight-rectangle" id="collection-date-highlight"></div>
                     <div class="highlight-rectangle" id="seasonal-distribution-highlight"></div>
                     <div class="highlight-rectangle" id="location-distribution-highlight"></div>
-                    <img src="image/map-hover-tooltip.png" alt="Map Hover Tooltip" id="map-hover-tooltip" class="tooltip-image" style="left: 50%; top: 30%;">
                 </div>
             </div>
         </div>
@@ -275,6 +275,48 @@
                     <div class="highlight-rectangle" id="species-taxonomy-highlight"></div>
                     <div class="highlight-rectangle" id="species-geo-distribution-highlight"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="navigation">
+        <h2 class="section-title">Navigation View</h2>
+        <div class="section-content">
+            <div class="description">
+                <div class="navigation-description">
+                    <p></p>
+
+                    <h3 class="table-title">Drill through navigation elements</h3>
+                    <table class="navigation-table">
+                        <thead>
+                            <tr>
+                                <th>Drill through element</th>
+                                <th>Source view</th>
+                                <th>Destination view</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Region</td>
+                                <td>Nationwide view, Species view</td>
+                                <td>Region view</td>
+                            </tr>
+                            <tr>
+                                <td>Sample</td>
+                                <td>Region view, Species view</td>
+                                <td>Sample view, Taxonomic tree</td>
+                            </tr>
+                            <tr>
+                                <td>Species</td>
+                                <td>Region view, Sample view</td>
+                                <td>Species view</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="image-container">
+                <img src="image/drill-through.png" alt="Nation View Page" id="navigation-image">
             </div>
         </div>
     </div>
