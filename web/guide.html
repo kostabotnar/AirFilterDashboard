@@ -20,6 +20,7 @@
         <li><a href="#taxonomic">Sample taxonomic tree</a></li>
         <li><a href="#species">Species</a></li>
         <li><a href="#navigation">Navigation</a></li>
+        <li><a href="#data-slicing">Data Slicing</a></li>
     </ul>
 </div>
 
@@ -317,6 +318,47 @@
             </div>
             <div class="image-container">
                 <img src="image/drill-through.png" alt="Nation View Page" id="navigation-image">
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="data-slicing">
+        <h2 class="section-title">Data Slicing</h2>
+        <div class="section-content">
+            <div class="description">
+                <div class="data-slicing-description"><p></p></div>
+
+                <div class="filter-list">
+                    <div class="filter-list-title">Dashboard elements</div>
+                    <ul>
+                        <li data-option="slicing-values-selection">
+                            <div class="filter-item">Values selection</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="slicing-collection-date">
+                            <div class="filter-item">Collection date</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                        <li data-option="slicing-taxonomy-levels">
+                            <div class="filter-item">Taxonomy levels</div>
+                            <div class="filter-item-description"></div>
+                        </li>
+                    </ul>
+                    <div class="filter-description" id="data-slicing-filter-description"></div>
+                </div>
+            </div>
+            <div class="image-container">
+                <div class="image-overlay-container" id="slicing-image-container">
+                    <img src="image/slicing-values-selection.png" alt="Values Selection" id="slicing-values-selection-image">
+                    <hr>
+                    <img src="image/slicing-collection-date.png" alt="Collection Date" id="slicing-collection-date-image">
+                    <hr>
+                    <img src="image/slicing-taxonomy-levels.png" alt="Taxonomy Levels" id="slicing-taxonomy-levels-image">
+
+                    <div class="highlight-rectangle" id="slicing-values-selection-highlight"></div>
+                    <div class="highlight-rectangle" id="slicing-collection-date-highlight"></div>
+                    <div class="highlight-rectangle" id="slicing-taxonomy-levels-highlight"></div>
+                </div>
             </div>
         </div>
     </div>

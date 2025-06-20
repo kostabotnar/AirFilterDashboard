@@ -29,7 +29,8 @@ function insertStaticDescriptions() {
     'sample': '.sample-description p',
     'taxonomic': '.taxo-description p',
     'species': '.species-description p',
-    'navigation': '.navigation-description p'
+    'navigation': '.navigation-description p',
+    'data-slicing': '.data-slicing-description p'
   };
   Object.entries(map).forEach(([key, selector]) => {
     const el = document.querySelector(selector);
@@ -83,7 +84,11 @@ function initializeWithNoSelection() {
     'species-location-distribution-highlight',
     'species-seasonal-distribution-highlight',
     'species-taxonomy-highlight',
-    'species-geo-distribution-highlight'
+    'species-geo-distribution-highlight',
+    // Data slicing
+    'slicing-values-selection-highlight',
+    'slicing-collection-date-highlight',
+    'slicing-taxonomy-levels-highlight'
   ];
 
   highlightIds.forEach(id => {
@@ -98,6 +103,7 @@ function setupFilterInteractivity() {
   setupSingleSelect('#sample .filter-list li', 'sample');
   setupSingleSelect('#taxonomic .filter-list li', 'taxonomic');
   setupSingleSelect('#species .filter-list li', 'species');
+  setupSingleSelect('#data-slicing .filter-list li', 'data-slicing');
 }
 
 function setupSingleSelect(selector, context) {
@@ -135,6 +141,10 @@ function setupHighlightRectangles() {
   const sampleImage = document.getElementById('sample-image');
   const taxonomicImage = document.getElementById('taxonomic-image');
   const speciesImage = document.getElementById('species-image');
+  const slicingValueSelectionImage = document.getElementById('slicing-values-selection-image');
+  const slicingCollectionDateImage = document.getElementById('slicing-collection-date-image');
+  const slicingTaxonomyLevelImage = document.getElementById('slicing-taxonomy-levels-image');
+  const slicingImageContainer = document.getElementById('slicing-image-container');
 
   if (nationwideImage) {
     if (nationwideImage.complete) updateNationwideRects(nationwideImage);
@@ -159,6 +169,19 @@ function setupHighlightRectangles() {
   if (speciesImage) {
     if (speciesImage.complete) updateSpeciesRects(speciesImage);
     else speciesImage.onload = () => updateSpeciesRects(speciesImage);
+  }
+
+  if (slicingValueSelectionImage) {
+    if (slicingValueSelectionImage.complete) updateSlicingValueSelectionRect(slicingImageContainer);
+    else slicingValueSelectionImage.onload = () => updateSlicingValueSelectionRect(slicingImageContainer);
+  }
+  if (slicingCollectionDateImage) {
+    if (slicingCollectionDateImage.complete) updateSlicingCollectionDateRect(slicingImageContainer);
+    else slicingCollectionDateImage.onload = () => updateSlicingCollectionDateRect(slicingImageContainer);
+  }
+  if (slicingTaxonomyLevelImage) {
+    if (slicingTaxonomyLevelImage.complete) updateSlicingTaxonomyLevelRect(slicingImageContainer);
+    else slicingTaxonomyLevelImage.onload = () => updateSlicingTaxonomyLevelRect(slicingImageContainer);
   }
 }
 
@@ -242,7 +265,7 @@ function updateTaxonomicTreeRects(img) {
   applyRectPositions(img, rects);
  }
 
- function updateSpeciesRects(img) {
+function updateSpeciesRects(img) {
  const keys = [
     'species-collection-date-filter-highlight',
     'species-sample-count-highlight',
@@ -260,6 +283,39 @@ function updateTaxonomicTreeRects(img) {
     [0.78, 0, 0.2, 0.35],
     [0.0, 0.30, 0.25, 0.7],
     [0.25, 0.4, 0.75, 0.6]
+  ];
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+ }
+
+function updateSlicingValueSelectionRect(img) {
+ const keys = [
+    'slicing-values-selection-highlight'
+  ];
+  const values = [
+    [0.25, 0, 0.3, 0.3]
+  ];
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+ }
+
+ function updateSlicingCollectionDateRect(img) {
+ const keys = [
+    'slicing-collection-date-highlight'
+  ];
+  const values = [
+    [0, 0.3, 0.3, 0.3]
+  ];
+  const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  applyRectPositions(img, rects);
+ }
+
+ function updateSlicingTaxonomyLevelRect(img) {
+ const keys = [
+    'slicing-taxonomy-levels-highlight'
+  ];
+  const values = [
+    [0.6, 0.75, 0.2, 0.15]
   ];
   const rects = Object.fromEntries(keys.map((key, i) => [key, values[i]]));
   applyRectPositions(img, rects);

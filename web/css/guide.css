@@ -101,6 +101,9 @@ body {
     object-fit: contain;
     display: block;
 }
+.data-slicing-image {
+    padding: 10px 0;
+}
 
 .description {
     flex: 1;
