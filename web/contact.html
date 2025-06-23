@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .contact-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0e1358;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+    <!-- Include EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Contact Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <div id="loadingIndicator" class="loading">Sending message...</div>
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script>
+        // Initialize EmailJS with your user ID (you'll need to sign up at emailjs.com)
+        (function() {
+            emailjs.init("rtYAMug4jq9978IAc"); // Replace with your actual EmailJS user ID
+
+            // Check if there's a contact reason stored in localStorage
+            const contactReason = localStorage.getItem("contactReason");
+            if (contactReason) {
+                // Set the title field with the stored reason
+                document.getElementById('title').value = contactReason;
+                // Clear the stored reason to prevent it from persisting
+                localStorage.removeItem("contactReason");
+            }
+        })();
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+
+            // Get form data
+            const templateParams = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                message: document.getElementById('message').value,
+                title: document.getElementById('title').value,
+                time: new Date().toLocaleString()
+            };
+
+            // Send email using EmailJS
+            emailjs.send('service_kpm9vai', 'template_g3jk4my', templateParams)
+                .then(function(response) {
+                    // Hide loading indicator
+                    document.getElementById('loadingIndicator').style.display = 'none';
+
+                    // Show success message
+                    const statusMessage = document.getElementById('statusMessage');
+                    statusMessage.textContent = 'Your message has been sent successfully!';
+                    statusMessage.className = 'status-message success';
+                    statusMessage.style.display = 'block';
+
+                    // Reset form
+                    document.getElementById('contactForm').reset();
+
+                    // Hide success message after 5 seconds
+                    setTimeout(function() {
+                        statusMessage.style.display = 'none';
+                    }, 5000);
+                }, function(error) {
+                    // Hide loading indicator
+                    document.getElementById('loadingIndicator').style.display = 'none';
+
+                    // Show error message
+                    const statusMessage = document.getElementById('statusMessage');
+                    statusMessage.textContent = 'Failed to send message. Please try again later.';
+                    statusMessage.className = 'status-message error';
+                    statusMessage.style.display = 'block';
+
+                    console.error('EmailJS error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

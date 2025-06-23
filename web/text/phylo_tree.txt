@@ -1,1 +1,0 @@
-The phylogenetic tree features an interactive interface enabling users to examine the full diversity of organisms within the sample. They can explore lineages, trace ancestries, and engage with a hierarchical tree structure.
