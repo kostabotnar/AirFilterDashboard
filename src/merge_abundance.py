@@ -45,7 +45,7 @@ def process_single_sample(folder, output_path):
         print(f"Error processing {folder.name}: {str(e)}")
         return None
 
-def process_sample_abundance(input_dir=None, output_dir=None, max_workers=64):
+def process_sample_abundance(input_dir=None, output_dir=None, max_workers=32):
     # Default paths for backward compatibility
     input_path = Path(input_dir)
     output_path = Path(output_dir)

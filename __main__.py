@@ -1,9 +1,11 @@
-import click
 from pathlib import Path
+
+import click
+
 from src.adjust_sample_data import adjust_samples
 from src.clean_sample_metadata import clean_metadata
 from src.merge_abundance import process_sample_abundance
-from src.merge_reads import process_sample_reads
+from src.prepare_reads_data import process_sample_read_stats
 
 
 @click.group()
@@ -36,7 +38,7 @@ def run(meta, abundance, reads, postprocessing, input, output):
     
     if reads:
         click.echo("Processing sample reads data...")
-        process_sample_reads(input_dir=input, output_dir=output)
+        process_sample_read_stats(input_dir=input, output_dir=output)
     
     if postprocessing:
         click.echo("Running post-processing adjustments...")
