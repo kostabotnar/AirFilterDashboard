@@ -6,7 +6,7 @@ def main():
     Reads the fastq_stats.tsv file, extracts sample IDs, and formats the data for easier downstream analysis.
     """
     print("Reading fastq_stats.tsv...")
-    df = pd.read_csv("data/metagenomic/fastq_stats.tsv", sep="\t")
+    df = pd.read_csv("../data/metagenomic/fastq_stats.tsv", sep="\t")
     print("Extracting sample IDs...")
     df["Sample"] = df["Sample"].apply(lambda x: x.split(".")[0])
     df.columns = ["Sample ID", "Number of Reads", "Mean Read Length"]

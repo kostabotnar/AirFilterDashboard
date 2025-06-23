@@ -4,13 +4,13 @@ import pandas as pd
 import argparse
 
 
-def process_sample_reads():
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument("input_path", help="Path to input CSV files")
-    argparser.add_argument("output_path", help="Path for output file")
-    args = argparser.parse_args()
-    input_path = Path(args.input_path) # Path("../../data/Trim Report")  #
-    output_path = Path(args.output_path) # Path("../../build")  #
+def process_sample_reads(input_dir=None, output_dir=None):
+    # Default paths for backward compatibility
+    input_dir = input_dir or Path("data")
+    output_dir = output_dir or Path("build")
+
+    input_path = Path(input_dir)  # Path("../../data/Trim Report")  #
+    output_path = Path(output_dir)  # Path("../../build")  #
     if not input_path.is_dir():
         raise ValueError(f"Input path '{input_path}' is not a directory")
     if not output_path.exists():
@@ -23,7 +23,7 @@ def process_sample_reads():
             print(f"Reading {file}")
             df = pd.read_excel(file, sheet_name=file.name[:-4], skiprows=1, nrows=1)
 
-            df = df.rename(columns={'Name': "Sample ID", "Number of reads":"Number of Reads", "Avg.length": "Mean Read Length"})
+            df = df.rename(columns={'Name': "Sample ID", "Number of reads": "Number of Reads", "Avg.length": "Mean Read Length"})
             df = df[['Sample ID', 'Number of Reads', 'Mean Read Length']].fillna(0)
             # Append the dataframe to the output CSV file
             print(f"Writing to {output_file}")

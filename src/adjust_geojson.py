@@ -44,7 +44,7 @@ def filter_smallest_objects(feature, n=1):
 
 def main():
     # read json file
-    with open('data/geojson/fema-maps-master/FEMA_Regions_edited.geojson', 'r') as f:
+    with open('../data/geojson/fema-maps-master/FEMA_Regions_edited.geojson', 'r') as f:
         geo_data = json.load(f)
     # loop through the geojson data and shift region coordinates
     for i, feature in enumerate(geo_data['features']):
@@ -69,7 +69,7 @@ def main():
 
 
     # save the dictionary to a json file
-    with open('build/edited_fema_regions.geojson', 'w') as f:
+    with open('../build/edited_fema_regions.geojson', 'w') as f:
         json.dump(geo_data, f)
 
 

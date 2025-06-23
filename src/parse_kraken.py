@@ -59,9 +59,9 @@ def process_kraken_file(file_path: str):
 
 def main():
     # input_dir = Path("data/test")
-    input_dir = Path("data/metagenomic/DHS_kraken_2025-04-03-1826")
-    output_file = 'build/Sample Abundances.csv'
-    stacked_output_file = 'build/Sample Abundances stacked.csv'
+    input_dir = Path("../data/metagenomic/DHS_kraken_2025-04-03-1826")
+    output_file = '../build/Sample Abundances.csv'
+    stacked_output_file = '../build/Sample Abundances stacked.csv'
 
     all_data = []
     all_data_stacked = []
