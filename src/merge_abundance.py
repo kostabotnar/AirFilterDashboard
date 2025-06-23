@@ -49,6 +49,7 @@ def process_sample_abundance(input_dir=None, output_dir=None, max_workers=64):
     # Default paths for backward compatibility
     input_path = Path(input_dir)
     output_path = Path(output_dir)
+    print(f"Processing sample abundance data from {input_path} to {output_path}")
     
     if not input_path.is_dir():
         raise ValueError(f"Input path '{input_path}' is not a directory")
