@@ -219,7 +219,7 @@ def extract_read_length_stats(report_file, sample_id=None) -> pd.DataFrame or No
     return None
 
 
-def process_all_reports(input_dir: str, output_file: str):
+def process_all_reports(input_dir: str, output_dir: str):
     """
     Process all metagenomics reports in the input directory and save results to a CSV file.
     
@@ -228,6 +228,9 @@ def process_all_reports(input_dir: str, output_file: str):
         output_file (str): Path to save the output CSV file
     """
     input_path = Path(input_dir)
+    if not Path(output_dir).exists():
+        Path(output_dir).mkdir(parents=True)
+    output_file = Path(output_dir) / "Sample Read Stats.csv"
     results = []
 
     # Find all report files
@@ -251,4 +254,4 @@ def process_all_reports(input_dir: str, output_file: str):
 
 
 if __name__ == "__main__":
-    process_all_reports("../data/metagenomic/completed_reports", "../build/test/Sample Read Stats.csv")
+    process_all_reports("../data/metagenomic/completed_reports", "../build/test")
