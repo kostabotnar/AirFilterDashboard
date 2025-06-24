@@ -29,6 +29,11 @@ def clean_metadata(input_dir=None, output_dir=None):
     print('Clean collection location')
     df = df[~df['Location (Indoor/Outdoor/Transit/Special Event)'].isin(['Unknown', 'NF', 'Selected'])]
 
+    print("Duplicate samples for RNA metagenomics data")
+    dfr = df.copy()
+    dfr['Sample ID'] = dfr['Sample ID'] + 'R'
+    df = pd.concat([df, dfr])
+
     print("Write Sample Metadata to CSV")
     df.to_csv(output_dir / 'Sample Metadata.csv', index=False)
     print("Sample Metadata merged successfully.")
