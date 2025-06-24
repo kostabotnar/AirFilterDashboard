@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 import pandas as pd
@@ -21,10 +20,7 @@ def adjust_samples(input_dir=None, output_dir=None):
         print("Sample Abundances file not found.")
         return
     print("Read Abundance samples")
-    # get all partition folders in the Sample Abundances.parquet and parse sample id (folder name is "Sample ID=X")
-    abundance_samples = [f.name.split("=")[1]
-                         for f in Path(input_dir/'Sample Abundances.parquet').iterdir()
-                         if f.is_dir()]
+    abundance_samples = pd.read_parquet(input_dir/'Sample Abundances.parquet', columns=['Sample ID'])['Sample ID'].tolist()
 
     if not (input_dir/'Sample Read Stats.csv').exists():
         print("Sample Read Stats file not found.")
@@ -45,18 +41,9 @@ def adjust_samples(input_dir=None, output_dir=None):
 
     print("Adjust Abundance file")
     # copy Sample Abundances.parquet to the output directory with only common samples files
-    for sample_id in common_samples:
-        source_dir = input_dir/ 'Sample Abundances.parquet' / f'Sample ID={sample_id}'
-        target_dir = output_dir/ 'Sample Abundances.parquet' / f'Sample ID={sample_id}'
-        Path.mkdir(target_dir, exist_ok=True, parents=True)
-        try:
-            shutil.copytree(source_dir, target_dir, dirs_exist_ok=True)
-            print(f"Directory '{source_dir}' and its contents copied to '{target_dir}' successfully.")
-        except FileExistsError:
-            print(
-                f"Error: Destination directory '{target_dir}' already exists. Use `dirs_exist_ok=True` to overwrite.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+    df = pd.read_parquet(input_dir/'Sample Abundances.parquet')
+    df = df[df["Sample ID"].isin(common_samples)]
+    df.to_parquet(output_dir/'Sample Abundances.parquet')
     print("Abundance copied for common samples.")
 
     print("Read Sample Read Stats file")
