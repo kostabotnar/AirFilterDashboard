@@ -43,7 +43,7 @@ def adjust_samples(input_dir=None, output_dir=None):
     # copy Sample Abundances.parquet to the output directory with only common samples files
     df = pd.read_parquet(input_dir/'Sample Abundances.parquet')
     df = df[df["Sample ID"].isin(common_samples)]
-    df.to_parquet(output_dir/'Sample Abundances.parquet')
+    df.to_csv(output_dir/'Sample Abundances.csv', index=False)
     print("Abundance copied for common samples.")
 
     print("Read Sample Read Stats file")
