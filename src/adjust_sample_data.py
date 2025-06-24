@@ -59,13 +59,6 @@ def adjust_samples(input_dir=None, output_dir=None):
             print(f"An error occurred: {e}")
     print("Abundance copied for common samples.")
 
-    # todo implement
-    # print("Read Abundance Stacked file")
-    # df = pd.read_csv(f'{input_dir}/Sample Abundances stacked.csv')
-    # df = df[df["Sample ID"].isin(common_samples)]
-    # df.to_csv(f'{output_dir}/Sample Abundances stacked.csv', index=False)
-    # print("Abundance stacked adjusted for common samples.")
-
     print("Read Sample Read Stats file")
     df = pd.read_csv(input_dir/'Sample Read Stats.csv')
     df = df[df["Sample ID"].isin(common_samples)]

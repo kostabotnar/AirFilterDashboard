@@ -21,8 +21,6 @@ def process_kraken_file(file_path: str):
     df = df[df['Rank'].str.match(r'^[A-Za-z]$')]
     df['Rank'] = df['Rank'].map(rank_values)
     df = df.dropna()
-    df_stacked = df.rename(columns={'Rank': 'OTU', 'Scientific Name': 'Name', 'Clades': 'Abundance'})
-    df_stacked['Sample ID'] = Path(file_path).stem.upper()
 
     # Define the order of ranks
     ranks = ['Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']
@@ -54,28 +52,23 @@ def process_kraken_file(file_path: str):
     df = df.rename(columns={'Clades': 'Abundance'})
     # Add the sample ID (filename without extension)
     df['Sample ID'] = Path(file_path).stem.upper()
-    return df, df_stacked
+    return df
 
 
 def main():
     # input_dir = Path("data/test")
     input_dir = Path("../data/metagenomic/DHS_kraken_2025-04-03-1826")
     output_file = '../build/Sample Abundances.csv'
-    stacked_output_file = '../build/Sample Abundances stacked.csv'
 
     all_data = []
-    all_data_stacked = []
 
     for file in input_dir.glob('*.kraken'):
         print(f"Processing {file}")
-        df, df_stacked = process_kraken_file(file)
+        df = process_kraken_file(file)
         all_data.append(df)
-        all_data_stacked.append(df_stacked)
     print(f"Merging all data into {output_file}")
     df_merged = pd.concat(all_data, ignore_index=True)
     df_merged.to_csv(output_file, index=False)
-    df_merged = pd.concat(all_data_stacked, ignore_index=True)
-    df_merged.to_csv(stacked_output_file, index=False)
     print(f"Sample abundances merged successfully into {output_file}")
 
 if __name__ == "__main__":
