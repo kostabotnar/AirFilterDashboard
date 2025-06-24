@@ -35,4 +35,4 @@ def clean_metadata(input_dir=None, output_dir=None):
 
 
 if __name__ == "__main__":
-    clean_metadata()
+    clean_metadata('../data/metadata', '../build')
