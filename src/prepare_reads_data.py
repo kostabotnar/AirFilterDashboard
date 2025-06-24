@@ -1,9 +1,12 @@
 import json
+import os
 import re
 from io import StringIO
 from pathlib import Path
 
 import pandas as pd
+
+from src.ConcurrentUtil import ConcurrentUtil
 
 
 def main():
@@ -132,6 +135,7 @@ def extract_read_count_stats(report_file) -> pd.DataFrame or None:
         print(f"Error extracting read count statistics: {str(e)}")
         return None
 
+
 def extract_index_stats(report_file) -> pd.DataFrame or None:
     """
     Extract read indexes statistics from the report HTML.
@@ -169,7 +173,7 @@ def extract_index_stats(report_file) -> pd.DataFrame or None:
 
         # First table contains the read count data
         result = tables[0]
-        result = result.drop(columns='total') # we have only one sample
+        result = result.drop(columns='total')  # we have only one sample
         result = result.set_index('Indices').transpose().reset_index(names='Sample ID')
         return result
 
@@ -219,6 +223,17 @@ def extract_read_length_stats(report_file, sample_id=None) -> pd.DataFrame or No
     return None
 
 
+def process_sample_stats(report_folder):
+    print(f"Processing stats from {report_folder} in the process {os.getpid()}")
+    sample_id = report_folder.name.split('_')[0]
+    report_file = report_folder / "wf-metagenomics-report.html"
+
+    if report_file.exists():
+        stats = extract_read_stats(report_file, sample_id)
+        return stats
+    return None
+
+
 def process_sample_read_stats(input_dir: str, output_dir: str):
     """
     Process all metagenomics reports in the input directory and save results to a CSV file.
@@ -231,24 +246,19 @@ def process_sample_read_stats(input_dir: str, output_dir: str):
     if not Path(output_dir).exists():
         Path(output_dir).mkdir(parents=True)
     output_file = Path(output_dir) / "Sample Read Stats.csv"
-    results = []
 
     # Find all report files
-    for report_folder in input_path.glob("*_reports"):
-        print(f"Processing stats from {report_folder}")
-        sample_id = report_folder.name.split('_')[0]
-        report_file = report_folder / "wf-metagenomics-report.html"
-
-        if report_file.exists():
-            stats = extract_read_stats(report_file, sample_id)
-            if stats is not None:
-                results.append(stats)
+    # Use max 64 processes or number of CPUs, whichever is smaller
+    max_workers = min(64, os.cpu_count() or 1)
+    report_folders = list(input_path.glob("*_reports"))
+    params = [(report_folder,) for report_folder in report_folders]
+    stats = ConcurrentUtil.run_in_separate_processes(process_sample_stats, params, max_workers)
 
     # Save results to CSV
-    if results:
-        df = pd.concat(results)
+    if stats:
+        df = pd.concat(stats)
         df.to_csv(output_file, index=False)
-        print(f"Saved read length data for {len(results)} samples to {output_file}")
+        print(f"Saved read length data for {len(stats)} samples to {output_file}")
     else:
         print("No read length data found")
 
