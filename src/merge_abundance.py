@@ -61,6 +61,8 @@ def process_sample_abundance(input_dir=None, output_dir=None, max_workers=32):
     
     # Process each folder in parallel
     processed_samples = []
+    max_workers = min(max_workers, os.cpu_count() or 1)
+
     with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         future_to_folder = {executor.submit(process_single_sample, folder, output_path): folder for folder in folders}
         for future in concurrent.futures.as_completed(future_to_folder):
