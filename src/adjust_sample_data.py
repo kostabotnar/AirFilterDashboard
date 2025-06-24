@@ -1,51 +1,73 @@
+import shutil
 from pathlib import Path
 
 import pandas as pd
 
 
 def adjust_samples(input_dir=None, output_dir=None):
+    print("Adjusting samples based on common IDs")
     # Default paths for backward compatibility
-    input_dir = input_dir or Path("data")
-    output_dir = output_dir or Path("build")
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir) / "Common Samples"
+    Path.mkdir(output_dir, exist_ok=True, parents=True)
 
-    if not Path(f'{input_dir}/Sample Metadata.csv').exists():
+    if not (input_dir / 'Sample Metadata.csv').exists():
         print("Sample Metadata file not found.")
         return
     print("Read Metadata file")
-    df = pd.read_csv(f'{input_dir}/Sample Metadata.csv')
+    metadata_samples = pd.read_csv(input_dir/'Sample Metadata.csv', usecols=['Sample ID'])["Sample ID"].tolist()
 
-    if not Path(f'{input_dir}/Sample Abundances.csv').exists():
+    if not (input_dir/'Sample Abundances.parquet').exists():
         print("Sample Abundances file not found.")
         return
     print("Read Abundance samples")
-    df_abundance_samples = pd.read_csv(f'{input_dir}/Sample Abundances.csv', usecols=['Sample ID']).drop_duplicates()
+    # get all partition folders in the Sample Abundances.parquet and parse sample id (folder name is "Sample ID=X")
+    abundance_samples = [f.name.split("=")[1]
+                         for f in Path(input_dir/'Sample Abundances.parquet').iterdir()
+                         if f.is_dir()]
 
-    if not Path(f'{input_dir}/Sample Read Stats.csv').exists():
+    if not (input_dir/'Sample Read Stats.csv').exists():
         print("Sample Read Stats file not found.")
         return
     print("Sample Read Stats file")
-    df_read_samples = pd.read_csv(f'{input_dir}/Sample Read Stats.csv', usecols=['Sample ID']).drop_duplicates()
+    read_samples = pd.read_csv(input_dir/'Sample Read Stats.csv', usecols=['Sample ID'])["Sample ID"].tolist()
 
-    common_samples = set(df["Sample ID"].tolist()) & set(df_abundance_samples["Sample ID"].tolist()) & set(df_read_samples["Sample ID"].tolist())
+    common_samples = set(metadata_samples) & set(abundance_samples) & set(read_samples)
 
+    # adjust metadata, abundance, abundance stacked, and read stats files
+    print("Read Metadata file")
+    df = pd.read_csv(input_dir/'Sample Metadata.csv')
+    # filter rows based on common samples
     df = df[df["Sample ID"].isin(common_samples)]
-    df.to_csv(f'{output_dir}/Sample Metadata.csv', index=False)
+    # save the filtered dataframe to the output directory
+    df.to_csv(output_dir/'Sample Metadata.csv', index=False)
     print("Metadata adjusted for common samples.")
 
-    print("Read Abundance file")
-    df = pd.read_csv(f'{input_dir}/Sample Abundances.csv')
-    df = df[df["Sample ID"].isin(common_samples)]
-    df.to_csv(f'{output_dir}/Sample Abundances.csv', index=False)
-    print("Abundance adjusted for common samples.")
+    print("Adjust Abundance file")
+    # copy Sample Abundances.parquet to the output directory with only common samples files
+    for sample_id in common_samples:
+        source_dir = input_dir/ 'Sample Abundances.parquet' / f'Sample ID={sample_id}'
+        target_dir = output_dir/ 'Sample Abundances.parquet' / f'Sample ID={sample_id}'
+        Path.mkdir(target_dir, exist_ok=True, parents=True)
+        try:
+            shutil.copytree(source_dir, target_dir, dirs_exist_ok=True)
+            print(f"Directory '{source_dir}' and its contents copied to '{target_dir}' successfully.")
+        except FileExistsError:
+            print(
+                f"Error: Destination directory '{target_dir}' already exists. Use `dirs_exist_ok=True` to overwrite.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+    print("Abundance copied for common samples.")
 
-    print("Read Abundance Stacked file")
-    df = pd.read_csv(f'{input_dir}/Sample Abundances stacked.csv')
-    df = df[df["Sample ID"].isin(common_samples)]
-    df.to_csv(f'{output_dir}/Sample Abundances stacked.csv', index=False)
-    print("Abundance stacked adjusted for common samples.")
+    # todo implement
+    # print("Read Abundance Stacked file")
+    # df = pd.read_csv(f'{input_dir}/Sample Abundances stacked.csv')
+    # df = df[df["Sample ID"].isin(common_samples)]
+    # df.to_csv(f'{output_dir}/Sample Abundances stacked.csv', index=False)
+    # print("Abundance stacked adjusted for common samples.")
 
     print("Read Sample Read Stats file")
-    df = pd.read_csv(f'{input_dir}/Sample Read Stats.csv')
+    df = pd.read_csv(input_dir/'Sample Read Stats.csv')
     df = df[df["Sample ID"].isin(common_samples)]
-    df.to_csv(f'{output_dir}/Sample Read Stats.csv', index=False)
+    df.to_csv(output_dir/'Sample Read Stats.csv', index=False)
     print("Read Stats adjusted for common samples.")

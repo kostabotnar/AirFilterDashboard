@@ -42,7 +42,7 @@ def run(meta, abundance, reads, postprocessing, input, output):
     
     if postprocessing:
         click.echo("Running post-processing adjustments...")
-        adjust_samples(input_dir=input, output_dir=output)
+        adjust_samples(input_dir=output, output_dir=output)
     
     click.echo("Processing complete!")
 
