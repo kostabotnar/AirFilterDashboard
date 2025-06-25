@@ -10,24 +10,17 @@ def clean_metadata(input_dir=None, output_dir=None):
     Path.mkdir(output_dir, parents=True, exist_ok=True)
 
     print("Read Metadata file")
-    df = pd.read_csv(input_dir / 'Sample Metadata.csv', parse_dates=['Collection Date'])
-    df = df.dropna(subset=['Sample ID', 'Collection Date', 'Location (on dish)'])
+    df = pd.read_csv(input_dir / 'Sample Metadata.csv', parse_dates=['Collection Date'],
+                     usecols=['Sample ID', 'Collection Date', 'State', 'Stored at 4C? (Y/N)',
+                              'PCR Inhibited? Y/N/Partial', 'Location (Indoor/ Outdoor/Transit/ Special Event)'])
+    df = df.dropna(subset=['Sample ID', 'Collection Date', 'State'])
 
     print("Read Regions file")
-    df_loc = pd.read_csv(input_dir / 'Location.csv')
     df_reg = pd.read_csv(input_dir / 'Regions.csv', usecols=['State', 'FEMA Region'])
-    df_reg = df_reg.merge(df_loc, on='State').drop(columns=['State'])
-    df['Location (on dish)'] = df['Location (on dish)'].str.upper()  # Convert location names to uppercase
-
-    print("Merge Regions with Metadata")
-    df = (df.merge(df_reg, left_on='Location (on dish)', right_on='Location').
-          drop(columns=['Location', 'Location (on dish)']))
+    df = df.merge(df_reg, on='State')
     df = df.fillna("Unknown")
     df['Sample ID'] = df['Sample ID'].str.upper()  # Remove leading/trailing whitespace from sample IDs
     df = df.rename(columns={'FEMA Region': 'Region'})
-
-    print('Clean collection location')
-    df = df[~df['Location (Indoor/Outdoor/Transit/Special Event)'].isin(['Unknown', 'NF', 'Selected'])]
 
     print("Duplicate samples for RNA metagenomics data")
     dfr = df.copy()
