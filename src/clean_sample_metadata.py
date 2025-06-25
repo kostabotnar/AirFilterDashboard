@@ -12,7 +12,7 @@ def clean_metadata(input_dir=None, output_dir=None):
     print("Read Metadata file")
     df = pd.read_csv(input_dir / 'Sample Metadata.csv', parse_dates=['Collection Date'],
                      usecols=['Sample ID', 'Collection Date', 'State', 'Stored at 4C? (Y/N)',
-                              'PCR Inhibited? Y/N/Partial', 'Location (Indoor/ Outdoor/Transit/ Special Event)'])
+                              'PCR Inhibited? Y/N/Partial', 'Location (Indoor/Outdoor/Transit/Special Event)'])
     df = df.dropna(subset=['Sample ID', 'Collection Date', 'State'])
 
     print("Read Regions file")

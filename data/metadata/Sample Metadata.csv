@@ -1,4 +1,4 @@
-Jurisdiction,Site Number,Collection Date,Stored at 4C? (Y/N),PCR Inhibited? Y/N/Partial,Location (Indoor/ Outdoor/Transit/ Special Event),Sample Tool Tracking Number,Sample ID,Location (on dish),State
+Jurisdiction,Site Number,Collection Date,Stored at 4C? (Y/N),PCR Inhibited? Y/N/Partial,Location (Indoor/Outdoor/Transit/Special Event),Sample Tool Tracking Number,Sample ID,Location (on dish),State
 Secaucus North NJ,410-263,12/19/2023,Y,N,Indoor,G0NJ259C7,A,"Trenton, NJ",NEW JERSEY
 AUS,,7/14/2024,Y,N,Outdoor,G0AN2D25H,A1,"Austin, TX",TEXAS
 PHX,625-213,7/15/2024,Y,N,Outdoor,G0PX2UYRK,A10,"Phoenix, AZ",ARIZONA
