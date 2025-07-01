@@ -58,7 +58,7 @@ function togglePasswordVisibility() {
     // On page load, check if user is already logged in
     window.addEventListener('DOMContentLoaded', () => {
         const contentContainer = document.querySelector('.right-panel-content p');
-        fetch('text/login-description.txt')
+        fetch('text/about.txt')
             .then(response => response.text())
             .then(text => {
                 contentContainer.textContent = text;
