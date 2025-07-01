@@ -122,7 +122,8 @@ function togglePasswordVisibility() {
                         break;
                     case 'Disclaimer':
                         e.preventDefault();
-                        showDisclaimer(); // Show the disclaimer modal
+                        // Show disclaimer as a regular page when accessed from sidebar
+                        showDisclaimer(false);
                         break;
                     case 'Contact':
                         e.preventDefault();
@@ -149,6 +150,11 @@ function togglePasswordVisibility() {
 
         // If we want to persist the acknowledgment across sessions, we could use localStorage
         // For now, the button will be disabled on each page load until disclaimer is acknowledged
+
+        // Update the help button click handler to show disclaimer as modal
+        document.querySelector('.help-button').addEventListener('click', function() {
+            showDisclaimer(true); // Show as modal when clicked from help button
+        });
     });
 
     function toggleSidebar() {
@@ -158,73 +164,82 @@ function togglePasswordVisibility() {
         mainContent.classList.toggle('expanded');
     }
 
-// Function to show the disclaimer modal
-function showDisclaimer() {
-    const modal = document.getElementById('disclaimerModal');
-    modal.style.display = 'block';
+// Function to show the disclaimer modal or page based on source
+function showDisclaimer(asModal = true) {
+    if (asModal) {
+        // Show as modal
+        const modal = document.getElementById('disclaimerModal');
+        modal.style.display = 'block';
 
-    // Load the disclaimer content
-    const disclaimerText = document.getElementById('disclaimerText');
+        // Load the disclaimer content
+        const disclaimerText = document.getElementById('disclaimerText');
 
-    // Check if disclaimer has been acknowledged
-    const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
+        // Check if disclaimer has been acknowledged
+        const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
 
-    // Find the acknowledge button - use a more specific selector if needed
-    const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
+        // Find the acknowledge button - use a more specific selector if needed
+        const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
 
-    // Update the acknowledge button if already acknowledged and if found
-    if (isAcknowledged && acknowledgeButton) {
-        acknowledgeButton.disabled = true;
-        acknowledgeButton.textContent = "Accepted";
-        acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+        // Update the acknowledge button if already acknowledged and if found
+        if (isAcknowledged && acknowledgeButton) {
+            acknowledgeButton.disabled = true;
+            acknowledgeButton.textContent = "Accepted";
+            acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+        }
+
+        fetch('text/disclaimer.txt')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(text => {
+                // Normalize line endings
+                const normalizedText = text.replace(/\r\n/g, '\n');
+
+                // Split text into paragraphs
+                const paragraphs = normalizedText.split(/\n{2,}/)
+                    .filter(para => para.trim() !== '')
+                    .map(para => para.trim());
+
+                // Process each paragraph
+                const formattedHtml = paragraphs.map(paragraph => {
+                    // Check if paragraph is a heading
+                    if (paragraph.startsWith('# ')) {
+                        return `<h2>${paragraph.substring(2)}</h2>`;
+                    } else if (paragraph.startsWith('## ')) {
+                        return `<h3>${paragraph.substring(3)}</h3>`;
+                    } else {
+                        // Handle single line breaks within paragraphs
+                        const processedPara = paragraph.replace(/\n/g, '<br>');
+                        return `<p>${processedPara}</p>`;
+                    }
+                }).join('');
+
+                disclaimerText.innerHTML = formattedHtml;
+
+                // Try again after content is loaded, in case the button wasn't available earlier
+                setTimeout(() => {
+                    const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
+                    if (isAcknowledged && acknowledgeButton) {
+                        acknowledgeButton.disabled = true;
+                        acknowledgeButton.textContent = "Acknowledged";
+                        acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+                    }
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error loading disclaimer text:', error);
+                disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p>';
+            });
+    } else {
+        // Show as regular page in iframe
+        const iframe = document.querySelector('#mainContent iframe');
+        if (iframe) {
+            iframe.src = 'disclaimer.html';
+        }
     }
-
-    fetch('text/disclaimer.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(text => {
-            // Normalize line endings
-            const normalizedText = text.replace(/\r\n/g, '\n');
-
-            // Split text into paragraphs
-            const paragraphs = normalizedText.split(/\n{2,}/)
-                .filter(para => para.trim() !== '')
-                .map(para => para.trim());
-
-            // Process each paragraph
-            const formattedHtml = paragraphs.map(paragraph => {
-                // Check if paragraph is a heading
-                if (paragraph.startsWith('# ')) {
-                    return `<h2>${paragraph.substring(2)}</h2>`;
-                } else if (paragraph.startsWith('## ')) {
-                    return `<h3>${paragraph.substring(3)}</h3>`;
-                } else {
-                    // Handle single line breaks within paragraphs
-                    const processedPara = paragraph.replace(/\n/g, '<br>');
-                    return `<p>${processedPara}</p>`;
-                }
-            }).join('');
-
-            disclaimerText.innerHTML = formattedHtml;
-
-            // Try again after content is loaded, in case the button wasn't available earlier
-            setTimeout(() => {
-                const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
-                if (isAcknowledged && acknowledgeButton) {
-                    acknowledgeButton.disabled = true;
-                    acknowledgeButton.textContent = "Acknowledged";
-                    acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
-                }
-            }, 100);
-        })
-        .catch(error => {
-            console.error('Error loading disclaimer text:', error);
-            disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p>';
-        });
 }
 
 // Function to acknowledge disclaimer and enable login button
