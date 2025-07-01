@@ -15,7 +15,10 @@
                 <img id="toggleIcon" src="image/hide_psw.jpg" alt="Toggle Password" width="20" height="20">
             </button>
         </div>
-        <button class="login-button" onclick="checkPassword()">Show</button>
+        <div class="button-container">
+            <button class="help-button" onclick="showDisclaimer()">Disclaimer</button>
+            <button class="login-button" onclick="checkPassword()">Show</button>
+        </div>
         <div id="errorMsg" class="error-message"></div>
     </div>
     <div class="right-panel">
@@ -69,6 +72,17 @@
     </div>
     <div class="main-content" id="mainContent">
         <iframe src=""></iframe>
+    </div>
+</div>
+<!-- Add modal for disclaimer -->
+<div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeDisclaimer()">&times;</span>
+        <div class="modal-body">
+            <h2>Disclaimer</h2>
+            <div id="disclaimerText">Loading disclaimer information...</div>
+            <button class="acknowledge-button" onclick="closeDisclaimer()">Acknowledge</button>
+        </div>
     </div>
 </div>
 <script src="js/index.js"></script>

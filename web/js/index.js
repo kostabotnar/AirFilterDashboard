@@ -1,4 +1,4 @@
-const powerBiUrl = "https://app.powerbi.com/view?r=eyJrIjoiZTA3YzM5NzMtMjVkOS00N2UxLTk5ZjctMmQ3N2E3MjQyMzYzIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
+const powerBiUrl = "https://app.powerbi.com/view?r=eyJrIjoiZDRkMzBlMDktZjc1Ny00YWIxLTk3YTMtNjQxYmJhYzk0YTZhIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
 const pswHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
 
 function togglePasswordVisibility() {
@@ -107,7 +107,7 @@ function togglePasswordVisibility() {
                         break;
                     case 'Disclaimer':
                         e.preventDefault();
-                        iframe.src = 'disclaimer.html'; // Create this file with disclaimer information
+                        showDisclaimer(); // Show the disclaimer modal
                         break;
                     case 'Contact':
                         e.preventDefault();
@@ -139,3 +139,63 @@ function togglePasswordVisibility() {
         sidebar.classList.toggle('minimized');
         mainContent.classList.toggle('expanded');
     }
+
+// Function to show the disclaimer modal
+function showDisclaimer() {
+    const modal = document.getElementById('disclaimerModal');
+    modal.style.display = 'block';
+
+    // Load the disclaimer content
+    const disclaimerText = document.getElementById('disclaimerText');
+
+    fetch('text/disclaimer.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(text => {
+            // Normalize line endings
+            const normalizedText = text.replace(/\r\n/g, '\n');
+
+            // Split text into paragraphs
+            const paragraphs = normalizedText.split(/\n{2,}/)
+                .filter(para => para.trim() !== '')
+                .map(para => para.trim());
+
+            // Process each paragraph
+            const formattedHtml = paragraphs.map(paragraph => {
+                // Check if paragraph is a heading
+                if (paragraph.startsWith('# ')) {
+                    return `<h2>${paragraph.substring(2)}</h2>`;
+                } else if (paragraph.startsWith('## ')) {
+                    return `<h3>${paragraph.substring(3)}</h3>`;
+                } else {
+                    // Handle single line breaks within paragraphs
+                    const processedPara = paragraph.replace(/\n/g, '<br>');
+                    return `<p>${processedPara}</p>`;
+                }
+            }).join('');
+
+            disclaimerText.innerHTML = formattedHtml;
+        })
+        .catch(error => {
+            console.error('Error loading disclaimer text:', error);
+            disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p><button onclick="closeDisclaimer()">Acknowledge</button>';
+        });
+}
+
+// Function to close the disclaimer modal
+function closeDisclaimer() {
+    const modal = document.getElementById('disclaimerModal');
+    modal.style.display = 'none';
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('disclaimerModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
