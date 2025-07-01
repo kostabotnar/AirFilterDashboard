@@ -229,8 +229,11 @@ def process_sample_stats(report_folder):
     report_file = report_folder / "wf-metagenomics-report.html"
 
     if report_file.exists():
-        stats = extract_read_stats(report_file, sample_id)
-        return stats
+        try:
+            stats = extract_read_stats(report_file, sample_id)
+            return stats
+        except Exception as e:
+            print(f"Error processing {report_file}: {str(e)}")
     return None
 
 
