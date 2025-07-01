@@ -17,7 +17,7 @@
         </div>
         <div class="button-container">
             <button class="help-button" onclick="showDisclaimer()">Disclaimer</button>
-            <button class="login-button" onclick="checkPassword()">Show</button>
+            <button class="login-button" id="loginButton" onclick="checkPassword()" disabled>Show</button>
         </div>
         <div id="errorMsg" class="error-message"></div>
     </div>
@@ -81,7 +81,7 @@
         <div class="modal-body">
             <h2>Disclaimer</h2>
             <div id="disclaimerText">Loading disclaimer information...</div>
-            <button class="acknowledge-button" onclick="closeDisclaimer()">Acknowledge</button>
+            <button class="acknowledge-button" onclick="acknowledgeDisclaimer()">Acknowledge</button>
         </div>
     </div>
 </div>

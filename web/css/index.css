@@ -69,6 +69,42 @@ body, html {
   background-color: #0056b3;
 }
 
+.login-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  position: relative;
+}
+
+/* Tooltip styling */
+.login-button:disabled:hover::after {
+  content: "Read Disclaimer";
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Arrow for tooltip */
+.login-button:disabled:hover::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+  pointer-events: none;
+}
+
 .help-button {
   padding: 10px 20px;
   font-size: 1em;

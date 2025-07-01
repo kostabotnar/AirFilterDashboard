@@ -1,6 +1,9 @@
 const powerBiUrl = "https://app.powerbi.com/view?r=eyJrIjoiZDRkMzBlMDktZjc1Ny00YWIxLTk3YTMtNjQxYmJhYzk0YTZhIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
 const pswHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
 
+// Variable to track if disclaimer has been acknowledged
+let disclaimerAcknowledged = false;
+
 function togglePasswordVisibility() {
         const passwordInput = document.getElementById('password');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -57,6 +60,18 @@ function togglePasswordVisibility() {
 
     // On page load, check if user is already logged in
     window.addEventListener('DOMContentLoaded', () => {
+        // Check localStorage for saved acknowledgment
+        const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
+
+        // Enable or disable login button based on acknowledgment status
+        document.getElementById('loginButton').disabled = !isAcknowledged;
+
+        // If acknowledged, add the visual indicator class
+        if (isAcknowledged) {
+            document.querySelector('.help-button').classList.add('acknowledged');
+        }
+
+        // Rest of your existing DOMContentLoaded code...
         const contentContainer = document.querySelector('.right-panel-content p');
         fetch('text/about.txt')
             .then(response => response.text())
@@ -131,6 +146,9 @@ function togglePasswordVisibility() {
                 this.classList.add('active');
             });
         });
+
+        // If we want to persist the acknowledgment across sessions, we could use localStorage
+        // For now, the button will be disabled on each page load until disclaimer is acknowledged
     });
 
     function toggleSidebar() {
@@ -182,8 +200,23 @@ function showDisclaimer() {
         })
         .catch(error => {
             console.error('Error loading disclaimer text:', error);
-            disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p><button onclick="closeDisclaimer()">Acknowledge</button>';
+            disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p>';
         });
+}
+
+// Function to acknowledge disclaimer and enable login button
+function acknowledgeDisclaimer() {
+    // Store acknowledgment in localStorage
+    localStorage.setItem("disclaimerAcknowledged", "true");
+
+    // Enable the login button
+    document.getElementById('loginButton').disabled = false;
+
+    // Close the modal
+    closeDisclaimer();
+
+    // Optional: Add a visual indicator that disclaimer has been acknowledged
+    document.querySelector('.help-button').classList.add('acknowledged');
 }
 
 // Function to close the disclaimer modal
