@@ -166,6 +166,19 @@ function showDisclaimer() {
     // Load the disclaimer content
     const disclaimerText = document.getElementById('disclaimerText');
 
+    // Check if disclaimer has been acknowledged
+    const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
+
+    // Find the acknowledge button - use a more specific selector if needed
+    const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
+
+    // Update the acknowledge button if already acknowledged and if found
+    if (isAcknowledged && acknowledgeButton) {
+        acknowledgeButton.disabled = true;
+        acknowledgeButton.textContent = "Accepted";
+        acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+    }
+
     fetch('text/disclaimer.txt')
         .then(response => {
             if (!response.ok) {
@@ -197,6 +210,16 @@ function showDisclaimer() {
             }).join('');
 
             disclaimerText.innerHTML = formattedHtml;
+
+            // Try again after content is loaded, in case the button wasn't available earlier
+            setTimeout(() => {
+                const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
+                if (isAcknowledged && acknowledgeButton) {
+                    acknowledgeButton.disabled = true;
+                    acknowledgeButton.textContent = "Acknowledged";
+                    acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+                }
+            }, 100);
         })
         .catch(error => {
             console.error('Error loading disclaimer text:', error);
@@ -209,14 +232,27 @@ function acknowledgeDisclaimer() {
     // Store acknowledgment in localStorage
     localStorage.setItem("disclaimerAcknowledged", "true");
 
+    // Find the acknowledge button - use a more specific selector if needed
+    const acknowledgeButton = document.querySelector('#disclaimerModal button[onclick*="acknowledgeDisclaimer"]');
+
+    // Update the acknowledge button if found
+    if (acknowledgeButton) {
+        acknowledgeButton.disabled = true;
+        acknowledgeButton.textContent = "Accepted";
+        acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+    }
+
     // Enable the login button
     document.getElementById('loginButton').disabled = false;
 
-    // Close the modal
-    closeDisclaimer();
-
     // Optional: Add a visual indicator that disclaimer has been acknowledged
-    document.querySelector('.help-button').classList.add('acknowledged');
+    const helpButton = document.querySelector('.help-button');
+    if (helpButton) {
+        helpButton.classList.add('acknowledged');
+    }
+
+    // Don't close the modal immediately so user can see the button change
+    setTimeout(closeDisclaimer, 1000);
 }
 
 // Function to close the disclaimer modal
