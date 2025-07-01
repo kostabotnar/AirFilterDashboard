@@ -1,13 +1,17 @@
-from pathlib import Path
-import pandas as pd
-import argparse
 import concurrent.futures
 import os
+from pathlib import Path
+
+import pandas as pd
+
 
 def process_single_sample(folder, output_path):
     try:
         # separate sample name from the folder name
         sample_id = folder.name.split("_")[0]
+        if len(sample_id) == 0:
+            print(f"Invalid sample ID: {folder.name}")
+            return None
         print(f"Processing {sample_id} in process {os.getpid()}")
         # read the TSV file into a dataframe
         abundance_file = folder / f"abundance_table_species.tsv"
