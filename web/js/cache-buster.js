@@ -7,6 +7,9 @@
     // Change this version number whenever you deploy a new version
     const APP_VERSION = '2.4.2';
 
+    // Make APP_VERSION globally accessible
+    window.APP_VERSION = APP_VERSION;
+
     // Check if stored version is different from current version
     const storedVersion = localStorage.getItem('appVersion');
 
@@ -48,4 +51,12 @@
             window.location.reload(true);
         }, 100);
     }
+
+    // Update the sidebar subtitle with the current app version
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarSubtitle = document.querySelector('.sidebar-subtitle');
+        if (sidebarSubtitle) {
+            sidebarSubtitle.textContent += ` v.${APP_VERSION}`;
+        }
+    });
 })();
