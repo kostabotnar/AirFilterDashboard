@@ -29,14 +29,17 @@ def adjust_samples(input_dir=None, output_dir=None):
     read_samples = pd.read_csv(input_dir/'Sample Read Stats.csv', usecols=['Sample ID'])["Sample ID"].tolist()
 
     common_samples = set(metadata_samples) & set(abundance_samples) & set(read_samples)
+    samples_no_metadata = set(abundance_samples) - set(metadata_samples)
+    samples_no_metagenomic = set(metadata_samples) - set(abundance_samples)
 
     # adjust metadata, abundance, abundance stacked, and read stats files
     print("Read Metadata file")
     df = pd.read_csv(input_dir/'Sample Metadata.csv')
     # filter rows based on common samples
-    df = df[df["Sample ID"].isin(common_samples)]
-    # save the filtered dataframe to the output directory
-    df.to_csv(output_dir/'Sample Metadata.csv', index=False)
+    df[df["Sample ID"].isin(common_samples)].to_csv(output_dir/'Sample Metadata.csv', index=False)
+    # save patients without metagenomics
+    df[df["Sample ID"].isin(samples_no_metagenomic)].to_csv(output_dir / 'Sample Metadata.csv', index=False)
+    pd.DataFrame(samples_no_metadata, columns=["Sample ID"]).to_csv(output_dir / 'Sample Metadata_No_Metagenomics.csv', index=False)
     print("Metadata adjusted for common samples.")
 
     print("Adjust Abundance file")
