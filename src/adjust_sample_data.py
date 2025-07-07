@@ -38,8 +38,8 @@ def adjust_samples(input_dir=None, output_dir=None):
     # filter rows based on common samples
     df[df["Sample ID"].isin(common_samples)].to_csv(output_dir/'Sample Metadata.csv', index=False)
     # save patients without metagenomics
-    df[df["Sample ID"].isin(samples_no_metagenomic)].to_csv(output_dir / 'Sample Metadata.csv', index=False)
-    pd.DataFrame(samples_no_metadata, columns=["Sample ID"]).to_csv(output_dir / 'Sample Metadata_No_Metagenomics.csv', index=False)
+    df[df["Sample ID"].isin(samples_no_metagenomic)].to_csv(output_dir / 'Samples_No_Metagenomics.csv', index=False)
+    pd.DataFrame(samples_no_metadata, columns=["Sample ID"]).to_csv(output_dir / 'Samples_No_Metadata.csv', index=False)
     print("Metadata adjusted for common samples.")
 
     print("Adjust Abundance file")
