@@ -2,6 +2,28 @@
 // Load the disclaimer text from the file
 window.addEventListener('DOMContentLoaded', () => {
     const disclaimerContent = document.getElementById('disclaimer-content');
+    // Add a visual indicator that disclaimer has been acknowledged
+    const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
+    const acknowledgeButton = document.querySelector('.acknowledge-button');
+    if (acknowledgeButton) {
+        if (isAcknowledged) {
+            if (acknowledgeButton) {
+                acknowledgeButton.classList.add('acknowledged');
+                acknowledgeButton.disabled = true;
+                acknowledgeButton.textContent = "Accepted";
+                acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+            }
+        }
+        else {
+            acknowledgeButton.addEventListener('click', () => {
+                localStorage.setItem("disclaimerAcknowledged", "true");
+                acknowledgeButton.classList.add('acknowledged');
+                acknowledgeButton.disabled = true;
+                acknowledgeButton.textContent = "Accepted";
+                acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
+            });
+        }
+    }
 
     fetch('text/disclaimer.txt')
         .then(response => {

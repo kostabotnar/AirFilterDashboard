@@ -45,3 +45,23 @@ body {
     margin-bottom: 20px;
     text-align: justify;
 }
+
+/* Style for the acknowledge button */
+.acknowledge-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 150px;
+}
+
+.acknowledge-button:hover {
+  background-color: #0056b3;
+}
