@@ -145,44 +145,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const disclaimerText = document.querySelector('.left-panel-content p');
-    fetch('text/disclaimer.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(text => {
-            // Normalize line endings
-            const normalizedText = text.replace(/\r\n/g, '\n');
-
-            // Split text into paragraphs
-            const paragraphs = normalizedText.split(/\n{2,}/)
-                .filter(para => para.trim() !== '')
-                .map(para => para.trim());
-
-            // Process each paragraph
-            const formattedHtml = paragraphs.map(paragraph => {
-                // Check if paragraph is a heading
-                if (paragraph.startsWith('# ')) {
-                    return `<h2>${paragraph.substring(2)}</h2>`;
-                } else if (paragraph.startsWith('## ')) {
-                    return `<h3>${paragraph.substring(3)}</h3>`;
-                } else {
-                    // Handle single line breaks within paragraphs
-                    const processedPara = paragraph.replace(/\n/g, '<br>');
-                    return `<p>${processedPara}</p>`;
-                }
-            }).join('');
-
-            disclaimerText.innerHTML = formattedHtml;
-        })
-        .catch(error => {
-            console.error('Error loading disclaimer text:', error);
-            disclaimerText.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p>';
-        });
-
     // Rest of your existing DOMContentLoaded code...
     const rightContentContainer = document.querySelector('.right-panel-content p');
     fetch('text/about.txt')
