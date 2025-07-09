@@ -20,7 +20,7 @@
             <h2>Air Metagenomics Dashboard</h2>
             <p></p>
             <div class="button-container">
-                <button class="login-button" id="loginButton" onclick="showDashboard()" disabled>Explore Dashboard
+                <button class="login-button" id="loginButton" onclick="handleLoginButtonClick()">Explore Dashboard
                 </button>
             </div>
         </div>
@@ -72,7 +72,17 @@
         <iframe src=""></iframe>
     </div>
 </div>
+
 <!-- Add modal for disclaimer -->
+<div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Disclaimer</h2>
+        <div id="modal-disclaimer-content"></div>
+        <button class="acknowledge-button" id="modalAcknowledgeButton" onclick="acknowledgeDisclaimer()">Acknowledge</button>
+    </div>
+</div>
+
 <script src="js/index.js"></script>
 </body>
 </html>
