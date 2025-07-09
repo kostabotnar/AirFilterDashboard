@@ -101,9 +101,6 @@ function acknowledgeDisclaimer() {
     // Store acknowledgment in localStorage
     localStorage.setItem("disclaimerAcknowledged", "true");
 
-    // Close the modal if it's open
-    document.getElementById('disclaimerModal').style.display = 'none';
-
     // Update the login button text and enable it
     const loginButton = document.getElementById('loginButton');
     loginButton.textContent = "Explore Dashboard";
@@ -117,6 +114,12 @@ function acknowledgeDisclaimer() {
         button.textContent = "Accepted";
         button.style.backgroundColor = "#4CAF50"; // Green color
     });
+
+    // Wait 100 milliseconds before closing the modal so users can see the button change
+    setTimeout(() => {
+        // Close the modal if it's open
+        document.getElementById('disclaimerModal').style.display = 'none';
+    }, 500);
 }
 
 // On page load, check if user is already logged in
