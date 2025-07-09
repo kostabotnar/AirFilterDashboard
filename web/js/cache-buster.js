@@ -5,7 +5,7 @@
 
 (function() {
     // Change this version number whenever you deploy a new version
-    const APP_VERSION = '2.4.2';
+    const APP_VERSION = '2.4.3';
 
     // Make APP_VERSION globally accessible
     window.APP_VERSION = APP_VERSION;
