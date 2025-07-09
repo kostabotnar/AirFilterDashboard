@@ -146,11 +146,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Rest of your existing DOMContentLoaded code...
-    const rightContentContainer = document.querySelector('.right-panel-content p');
+    const landingPageContainer = document.querySelector('.landing-page-content p');
     fetch('text/about.txt')
         .then(response => response.text())
         .then(text => {
-            rightContentContainer.textContent = text;
+            landingPageContainer.textContent = text;
         })
         .catch(error => {
             console.error("Failed to load dashboard description:", error);
