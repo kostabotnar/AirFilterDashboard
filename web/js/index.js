@@ -39,7 +39,7 @@ let disclaimerAcknowledged = false;
             if (acknowledgeButton) {
                 acknowledgeButton.classList.add('acknowledged');
                 acknowledgeButton.disabled = true;
-                acknowledgeButton.textContent = "Accepted";
+                acknowledgeButton.textContent = "Acknowledged";
                 acknowledgeButton.style.backgroundColor = "#4CAF50"; // Green color
             }
         }
