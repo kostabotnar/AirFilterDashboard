@@ -224,7 +224,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     iframe.src = 'contact.html'; // Load the contact form page
                     break;
-                case 'Logout':
+                case 'To Landing Page':
                     e.preventDefault();
                     localStorage.removeItem("loggedIn");
                     // Hide sidebar when user logs out
