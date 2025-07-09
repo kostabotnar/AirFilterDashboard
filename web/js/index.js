@@ -111,9 +111,18 @@ function acknowledgeDisclaimer() {
     acknowledgeButtons.forEach(button => {
         button.classList.add('acknowledged');
         button.disabled = true;
-        button.textContent = "Accepted";
+        button.textContent = "Acknowledged";
         button.style.backgroundColor = "#4CAF50"; // Green color
     });
+
+    // Show the disclaimer status label when acknowledged
+    const disclaimerStatus = document.getElementById('disclaimer-status');
+    if (disclaimerStatus) {
+        disclaimerStatus.style.display = 'block';
+        disclaimerStatus.onclick = function() {
+            showDisclaimerModal();
+        };
+    }
 
     // Wait 100 milliseconds before closing the modal so users can see the button change
     setTimeout(() => {
@@ -132,6 +141,15 @@ window.addEventListener('DOMContentLoaded', () => {
     if (isAcknowledged) {
         loginButton.textContent = "Explore Dashboard";
         loginButton.disabled = false;
+
+        // Show the disclaimer status label when acknowledged
+        const disclaimerStatus = document.getElementById('disclaimer-status');
+        if (disclaimerStatus) {
+            disclaimerStatus.style.display = 'block';
+            disclaimerStatus.onclick = function() {
+                showDisclaimerModal();
+            };
+        }
     } else {
         loginButton.textContent = "Read Disclaimer";
         loginButton.disabled = false; // Enable button to open modal
@@ -143,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
         acknowledgeButtons.forEach(button => {
             button.classList.add('acknowledged');
             button.disabled = true;
-            button.textContent = "Accepted";
+            button.textContent = "Acknowledged";
             button.style.backgroundColor = "#4CAF50"; // Green color
         });
     }
