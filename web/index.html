@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/cache-buster.js"></script>
     <meta charset="UTF-8">
     <title>Air Metagenomics Dashboard</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <div class="container" id="mainContainer">
-    <div class="left-panel">
-        <h1>Sign In</h1>
-        <div class="password-container">
-            <input id="password" type="password" placeholder="Enter Password">
-            <button class="toggle-password" onclick="togglePasswordVisibility()">
-                <img id="toggleIcon" src="image/hide_psw.jpg" alt="Toggle Password" width="20" height="20">
-            </button>
-        </div>
-        <button class="login-button" onclick="checkPassword()">Login</button>
-        <div id="errorMsg" class="error-message"></div>
-    </div>
-    <div class="right-panel">
-        <div class="right-panel-content">
-            <h2>Air Metadata Dashboard</h2>
+    <div class="landing-page">
+        <div class="landing-page-content">
+            <h2>Air Metagenomics Dashboard</h2>
             <p></p>
+            <div class="button-container">
+                <button class="login-button" id="loginButton" onclick="handleLoginButtonClick()">Explore Dashboard
+                </button>
+            </div>
+            <div id="disclaimer-status" class="disclaimer-status" onclick="showDisclaimerModal()">Disclaimer Acknowledged</div>
         </div>
     </div>
 </div>
@@ -60,7 +55,7 @@
 
             <a href="#" class="nav-item">
                 <span class="nav-icon">↩️</span>
-                <span class="nav-text">Logout</span>
+                <span class="nav-text">To Landing Page</span>
             </a>
         </div>
         <button class="sidebar-toggle" onclick="toggleSidebar()">
@@ -71,6 +66,17 @@
         <iframe src=""></iframe>
     </div>
 </div>
+
+<!-- Add modal for disclaimer -->
+<div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Disclaimer</h2>
+        <div id="modal-disclaimer-content"></div>
+        <button class="acknowledge-button" id="modalAcknowledgeButton" onclick="acknowledgeDisclaimer()">Acknowledge</button>
+    </div>
+</div>
+
 <script src="js/index.js"></script>
 </body>
 </html>

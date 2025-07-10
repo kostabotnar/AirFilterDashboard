@@ -1,13 +1,17 @@
-from pathlib import Path
-import pandas as pd
-import argparse
 import concurrent.futures
 import os
+from pathlib import Path
+
+import pandas as pd
+
 
 def process_single_sample(folder, output_path):
     try:
         # separate sample name from the folder name
         sample_id = folder.name.split("_")[0]
+        if len(sample_id) == 0:
+            print(f"Invalid sample ID: {folder.name}")
+            return None
         print(f"Processing {sample_id} in process {os.getpid()}")
         # read the TSV file into a dataframe
         abundance_file = folder / f"abundance_table_species.tsv"
@@ -33,10 +37,10 @@ def process_single_sample(folder, output_path):
         df = pd.concat([df.drop(columns=['Taxonomy']), taxa_df], axis=1)
         
         # Write to parquet with partitioning
-        parquet_path = output_path / "Sample Abundances Partitioned.parquet" / f"Sample ID={sample_id}"
+        parquet_path = output_path / "Sample Abundances.parquet" / f"Sample ID={sample_id}"
         parquet_path.mkdir(parents=True, exist_ok=True)
         df.to_parquet(
-            parquet_path / "Sample Abundances Partitioned.parquet",
+            parquet_path / "Sample Abundances.parquet",
             engine='pyarrow'
         )
 
@@ -75,10 +79,7 @@ def process_sample_abundance(input_dir=None, output_dir=None, max_workers=32):
                 print(f"Error processing {folder.name}: {str(e)}")
     
     print(f"Processed {len(processed_samples)} samples successfully")
-    print(f"Data written to {output_path / 'Sample Abundances Partitioned.parquet'} as partitioned parquet files")
-    print("Merge all data in one parquet file")
-    (pd.read_parquet(output_path / "Sample Abundances Partitioned.parquet", engine='pyarrow')
-     .to_parquet(output_path / "Sample Abundances.parquet"))
+    print(f"Data written to {output_path / 'Sample Abundances.parquet'} as partitioned parquet files")
 
 
 if __name__ == "__main__":

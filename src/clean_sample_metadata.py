@@ -13,12 +13,11 @@ def clean_metadata(input_dir=None, output_dir=None):
     df = pd.read_csv(input_dir / 'Sample Metadata.csv', parse_dates=['Collection Date'],
                      usecols=['Sample ID', 'Collection Date', 'State', 'Stored at 4C? (Y/N)',
                               'PCR Inhibited? Y/N/Partial', 'Location (Indoor/Outdoor/Transit/Special Event)'])
-    df = df.dropna(subset=['Sample ID', 'Collection Date', 'State'])
+    df = df.dropna(subset=['Sample ID', 'Collection Date', 'Location (Indoor/Outdoor/Transit/Special Event)', 'State'])
 
     print("Read Regions file")
     df_reg = pd.read_csv(input_dir / 'Regions.csv', usecols=['State', 'FEMA Region'])
     df = df.merge(df_reg, on='State')
-    df = df.fillna("Unknown")
     df['Sample ID'] = df['Sample ID'].str.upper()  # Remove leading/trailing whitespace from sample IDs
     df = df.rename(columns={'FEMA Region': 'Region'})
 

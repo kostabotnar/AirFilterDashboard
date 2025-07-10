@@ -226,11 +226,17 @@ def extract_read_length_stats(report_file, sample_id=None) -> pd.DataFrame or No
 def process_sample_stats(report_folder):
     print(f"Processing stats from {report_folder} in the process {os.getpid()}")
     sample_id = report_folder.name.split('_')[0]
+    if len(sample_id) == 0:
+        print(f"Invalid sample ID: {report_folder.name}")
+        return None
     report_file = report_folder / "wf-metagenomics-report.html"
 
     if report_file.exists():
-        stats = extract_read_stats(report_file, sample_id)
-        return stats
+        try:
+            stats = extract_read_stats(report_file, sample_id)
+            return stats
+        except Exception as e:
+            print(f"Error processing {report_file}: {str(e)}")
     return None
 
 

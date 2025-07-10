@@ -1,141 +1,257 @@
-const powerBiUrl = "https://app.powerbi.com/view?r=eyJrIjoiZTA3YzM5NzMtMjVkOS00N2UxLTk5ZjctMmQ3N2E3MjQyMzYzIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
-const pswHash = "66f22348ba8c3cff0ccadfba7b2c7d6bf8f434cba1e28430d2df3f0c79d3941fc90459952dd5273be4a8d05a36966124c159599ace8a2faaaa301bbe9e071745";
+const powerBiUrl = "https://app.powerbi.com/view?r=eyJrIjoiZDRkMzBlMDktZjc1Ny00YWIxLTk3YTMtNjQxYmJhYzk0YTZhIiwidCI6IjdiZWYyNTZkLTg1ZGItNDUyNi1hNzJkLTMxYWVhMjU0Njg1MiIsImMiOjN9";
 
-function togglePasswordVisibility() {
-        const passwordInput = document.getElementById('password');
-        const toggleIcon = document.getElementById('toggleIcon');
-        const isPassword = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        toggleIcon.src = isPassword ? 'image/show_psw.jpg' : 'image/hide_psw.jpg';
+// Variable to track if disclaimer has been acknowledged
+let disclaimerAcknowledged = false;
+
+function showDashboard() {
+    localStorage.setItem("loggedIn", "true"); // Remember login
+    document.getElementById('mainContainer').style.display = 'none';
+    const iframeContainer = document.getElementById('iframeContainer');
+    iframeContainer.style.display = 'flex';
+    iframeContainer.querySelector('iframe').src = powerBiUrl;
+
+    // Show sidebar when user is logged in
+    document.getElementById('sidebar').style.display = 'flex';
+
+    // Ensure Dashboard menu item is active
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        const menuText = item.querySelector('.nav-text').textContent;
+        if (menuText === 'Dashboard') {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
 }
 
-    async function checkPassword() {
-        const password = document.getElementById('password').value;
-        const msgEl = document.getElementById('errorMsg');
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-512', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+function handleLoginButtonClick() {
+    // Check if disclaimer has been acknowledged
+    const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
 
-        if (hashHex !== pswHash) {
-            msgEl.innerHTML = 'Incorrect password. Please try again.<br><a href="#" onclick="openContactPage(); return false;" style="display: block; text-align: center;">Contact support</a>';
-        } else {
-            localStorage.setItem("loggedIn", "true"); // Remember login
-            showDashboard();
-        }
+    if (isAcknowledged) {
+        // If acknowledged, proceed to dashboard
+        showDashboard();
+    } else {
+        // If not acknowledged, show the disclaimer modal
+        showDisclaimerModal();
     }
+}
 
-    function openContactPage() {
-        // Store the reason in localStorage to be retrieved by contact.html
-        localStorage.setItem("contactReason", "Forgot password");
+function showDisclaimerModal() {
+    const modal = document.getElementById('disclaimerModal');
+    const modalContent = document.getElementById('modal-disclaimer-content');
 
-        // Open contact page in a new window/tab
-        window.open('contact.html', '_blank');
-    }
-
-    function showDashboard() {
-        document.getElementById('mainContainer').style.display = 'none';
-        const iframeContainer = document.getElementById('iframeContainer');
-        iframeContainer.style.display = 'flex';
-        iframeContainer.querySelector('iframe').src = powerBiUrl;
-
-        // Show sidebar when user is logged in
-        document.getElementById('sidebar').style.display = 'flex';
-
-        // Ensure Dashboard menu item is active
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            const menuText = item.querySelector('.nav-text').textContent;
-            if (menuText === 'Dashboard') {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
+    // Load the disclaimer content into the modal
+    fetch('text/disclaimer.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.text();
+        })
+        .then(text => {
+            // Normalize line endings
+            const normalizedText = text.replace(/\r\n/g, '\n');
+
+            // Split text into paragraphs
+            const paragraphs = normalizedText.split(/\n{2,}/)
+                .filter(para => para.trim() !== '')
+                .map(para => para.trim());
+
+            // Process each paragraph
+            const formattedHtml = paragraphs.map(paragraph => {
+                // Check if paragraph is a heading
+                if (paragraph.startsWith('# ')) {
+                    return `<h2>${paragraph.substring(2)}</h2>`;
+                } else if (paragraph.startsWith('## ')) {
+                    return `<h3>${paragraph.substring(3)}</h3>`;
+                } else {
+                    // Handle single line breaks within paragraphs
+                    const processedPara = paragraph.replace(/\n/g, '<br>');
+                    return `<p>${processedPara}</p>`;
+                }
+            }).join('');
+
+            modalContent.innerHTML = formattedHtml;
+        })
+        .catch(error => {
+            console.error('Error loading disclaimer text:', error);
+            modalContent.innerHTML = '<p>Error loading disclaimer information. Please try again later.</p>';
+        });
+
+    modal.style.display = 'block';
+
+    // Close modal when clicking the X
+    const closeBtn = document.querySelector('.close-modal');
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
+}
+
+// Function to acknowledge disclaimer and enable login button
+function acknowledgeDisclaimer() {
+    // Store acknowledgment in localStorage
+    localStorage.setItem("disclaimerAcknowledged", "true");
+
+    // Update the login button text and enable it
+    const loginButton = document.getElementById('loginButton');
+    loginButton.textContent = "Explore Dashboard";
+    loginButton.disabled = false;
+
+    // Add a visual indicator that disclaimer has been acknowledged
+    const acknowledgeButtons = document.querySelectorAll('.acknowledge-button');
+    acknowledgeButtons.forEach(button => {
+        button.classList.add('acknowledged');
+        button.disabled = true;
+        button.textContent = "Acknowledged";
+        button.style.backgroundColor = "#4CAF50"; // Green color
+    });
+
+    // Show the disclaimer status label when acknowledged
+    const disclaimerStatus = document.getElementById('disclaimer-status');
+    if (disclaimerStatus) {
+        disclaimerStatus.style.display = 'block';
+        disclaimerStatus.onclick = function() {
+            showDisclaimerModal();
+        };
+    }
+
+    // Wait 100 milliseconds before closing the modal so users can see the button change
+    setTimeout(() => {
+        // Close the modal if it's open
+        document.getElementById('disclaimerModal').style.display = 'none';
+    }, 500);
+}
+
+// On page load, check if user is already logged in
+window.addEventListener('DOMContentLoaded', () => {
+    // Check localStorage for saved acknowledgment
+    const isAcknowledged = localStorage.getItem("disclaimerAcknowledged") === "true";
+
+    // Update login button text and state based on acknowledgment status
+    const loginButton = document.getElementById('loginButton');
+    if (isAcknowledged) {
+        loginButton.textContent = "Explore Dashboard";
+        loginButton.disabled = false;
+
+        // Show the disclaimer status label when acknowledged
+        const disclaimerStatus = document.getElementById('disclaimer-status');
+        if (disclaimerStatus) {
+            disclaimerStatus.style.display = 'block';
+            disclaimerStatus.onclick = function() {
+                showDisclaimerModal();
+            };
+        }
+    } else {
+        loginButton.textContent = "Read Disclaimer";
+        loginButton.disabled = false; // Enable button to open modal
+    }
+
+    // Add a visual indicator that disclaimer has been acknowledged
+    if (isAcknowledged) {
+        const acknowledgeButtons = document.querySelectorAll('.acknowledge-button');
+        acknowledgeButtons.forEach(button => {
+            button.classList.add('acknowledged');
+            button.disabled = true;
+            button.textContent = "Acknowledged";
+            button.style.backgroundColor = "#4CAF50"; // Green color
         });
     }
 
-    // On page load, check if user is already logged in
-    window.addEventListener('DOMContentLoaded', () => {
-        const contentContainer = document.querySelector('.right-panel-content p');
-        fetch('text/login-description.txt')
-            .then(response => response.text())
-            .then(text => {
-                contentContainer.textContent = text;
-            })
-            .catch(error => {
-                console.error("Failed to load dashboard description:", error);
-            });
-
-        // Hide sidebar by default
-        document.getElementById('sidebar').style.display = 'none';
-
-        if (localStorage.getItem("loggedIn") === "true") {
-            showDashboard();
-        }
-
-        // Setup sidebar toggle functionality
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        const iframe = mainContent.querySelector('iframe');
-
-        // Add double-click event to toggle sidebar
-        sidebar.addEventListener('dblclick', function() {
-            sidebar.classList.toggle('minimized');
-            mainContent.classList.toggle('expanded');
+    // Rest of your existing DOMContentLoaded code...
+    const landingPageContainer = document.querySelector('.landing-page-content p');
+    fetch('text/about.txt')
+        .then(response => response.text())
+        .then(text => {
+            landingPageContainer.textContent = text;
+        })
+        .catch(error => {
+            console.error("Failed to load dashboard description:", error);
         });
 
-        // Setup navigation item click events
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                const menuText = this.querySelector('.nav-text').textContent;
+    // Hide sidebar by default
+    document.getElementById('sidebar').style.display = 'none';
 
-                // Handle different menu items
-                switch(menuText) {
-                    case 'Dashboard':
-                        e.preventDefault();
-                        iframe.src = powerBiUrl; // Load the Power BI dashboard
-                        break;
-                    case 'Tutorial':
-                        e.preventDefault();
-                        iframe.src = 'guide.html'; // Assuming guide.html contains tutorial content
-                        break;
-                    case 'About':
-                        e.preventDefault();
-                        iframe.src = 'about.html'; // Create this file with about information
-                        break;
-                    case 'Disclaimer':
-                        e.preventDefault();
-                        iframe.src = 'disclaimer.html'; // Create this file with disclaimer information
-                        break;
-                    case 'Contact':
-                        e.preventDefault();
-                        iframe.src = 'contact.html'; // Load the contact form page
-                        break;
-                    case 'Logout':
-                        e.preventDefault();
-                        localStorage.removeItem("loggedIn");
-                        // Hide sidebar when user logs out
-                        document.getElementById('sidebar').style.display = 'none';
-                        window.location.reload();
-                        return;
-                    default:
-                        e.preventDefault();
-                        break;
-                }
+    if (localStorage.getItem("loggedIn") === "true") {
+        showDashboard();
+    }
 
-                // Remove active class from all items
-                navItems.forEach(i => i.classList.remove('active'));
-                // Add active class to clicked item
-                this.classList.add('active');
-            });
+    // Setup sidebar toggle functionality
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const iframe = mainContent.querySelector('iframe');
+
+    // Add double-click event to toggle sidebar
+    sidebar.addEventListener('dblclick', function() {
+        sidebar.classList.toggle('minimized');
+        mainContent.classList.toggle('expanded');
+    });
+
+    // Setup navigation item click events
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            const menuText = this.querySelector('.nav-text').textContent;
+
+            // Handle different menu items
+            switch(menuText) {
+                case 'Dashboard':
+                    e.preventDefault();
+                    iframe.src = powerBiUrl; // Load the Power BI dashboard
+                    break;
+                case 'Tutorial':
+                    e.preventDefault();
+                    iframe.src = 'guide.html'; // Assuming guide.html contains tutorial content
+                    break;
+                case 'About':
+                    e.preventDefault();
+                    iframe.src = 'about.html'; // Create this file with about information
+                    break;
+                case 'Disclaimer':
+                    e.preventDefault();
+                    // Show disclaimer as a regular page when accessed from sidebar
+                    iframe.src = 'disclaimer.html';
+                    break;
+                case 'Contact':
+                    e.preventDefault();
+                    iframe.src = 'contact.html'; // Load the contact form page
+                    break;
+                case 'To Landing Page':
+                    e.preventDefault();
+                    localStorage.removeItem("loggedIn");
+                    // Hide sidebar when user logs out
+                    document.getElementById('sidebar').style.display = 'none';
+                    window.location.reload();
+                    return;
+                default:
+                    e.preventDefault();
+                    break;
+            }
+
+            // Remove active class from all items
+            navItems.forEach(i => i.classList.remove('active'));
+            // Add active class to clicked item
+            this.classList.add('active');
         });
     });
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        sidebar.classList.toggle('minimized');
-        mainContent.classList.toggle('expanded');
-    }
+    // Update the help button click handler to show disclaimer as modal
+    document.querySelector('.acknowledge-button').addEventListener('click', function() {
+        acknowledgeDisclaimer(true); // Show as modal when clicked from help button
+    });
+});
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    sidebar.classList.toggle('minimized');
+    mainContent.classList.toggle('expanded');
+}
