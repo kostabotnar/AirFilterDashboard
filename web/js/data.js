@@ -17,6 +17,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<p>Error loading data collection information. Please try again later.</p>';
         });
 
+    // Load data preparation content
+    fetch('text/data-preparation.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(text => {
+            const preparationContent = document.getElementById('preparation-content');
+            preparationContent.innerHTML = formatTextContent(text);
+        })
+        .catch(error => {
+            console.error('Error loading data preparation text:', error);
+            document.getElementById('preparation-content').innerHTML =
+                '<p>Error loading data preparation information. Please try again later.</p>';
+        });
+
     // Load pathogens definition content
     fetch('text/data-pathogen.txt')
         .then(response => {
