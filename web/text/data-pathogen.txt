@@ -1,0 +1,51 @@
+The pathogen classification in this dashboard is based on established scientific databases and peer-reviewed literature to ensure accurate identification of potentially harmful microorganisms detected in air filter samples.
+
+## Definition and Classification
+
+Pathogens are microorganisms that can cause disease in humans, animals, or plants. In the context of this air metagenomics dashboard, pathogen identification focuses on organisms with known potential for human health impacts, particularly those that may be transmitted through airborne routes.
+
+The classification system employs a multi-source approach to ensure comprehensive coverage of both well-characterized pathogens and emerging threats. All identifications undergo validation against current scientific literature to maintain accuracy and relevance for public health applications.
+
+## Data Sources
+
+### Bacterial Pathogens
+
+**NCBI Pathogen Detection Database**
+Source: https://www.ncbi.nlm.nih.gov/pathogens/organisms/
+The National Center for Biotechnology Information maintains a comprehensive database of known bacterial pathogens based on clinical and epidemiological evidence. This database provides standardized identification criteria and is regularly updated with new pathogen discoveries and reclassifications.
+
+**Peer-Reviewed Literature**
+Source: Bartlett et al. - https://doi.org/10.1099/mic.0.001269
+Additional bacterial classifications are sourced from peer-reviewed scientific literature, including comprehensive studies that provide evidence-based pathogen classifications. These sources complement the NCBI database with detailed research findings and emerging pathogen information.
+
+### Viral Pathogens
+
+**Viral Zone Database**
+Source: https://viralzone.expasy.org/678
+The Viral Zone database provides genus-level information for viral pathogens, maintained by the Swiss Institute of Bioinformatics. This resource offers detailed taxonomic and functional information about viral families and genera known to cause disease.
+
+**International Committee on Taxonomy of Viruses (ICTV)**
+Source: https://ictv.global/msl
+Species-level viral classifications are matched against the ICTV Master Species List, which represents the official taxonomic classification system for viruses. This ensures that viral identifications follow internationally recognized standards.
+
+## Classification Methodology
+
+### Multi-Level Validation
+Each pathogen identification undergoes validation at multiple taxonomic levels, from genus to species, ensuring accurate classification despite potential variations in metagenomic sequencing depth and quality.
+
+### Clinical Relevance
+Priority is given to pathogens with documented human health significance, particularly those with potential for respiratory transmission or environmental persistence relevant to air filter sampling.
+
+### Regular Updates
+The pathogen classification system is regularly updated to incorporate new scientific findings, emerging pathogens, and revised taxonomic classifications from authoritative sources.
+
+## Dashboard Implementation
+
+### Visual Identification
+Pathogenic species are highlighted in red throughout the dashboard visualizations to immediately draw attention to potentially significant health-related findings.
+
+### Abundance Filtering
+The dashboard allows filtering based on pathogen status, enabling users to focus specifically on samples containing potential pathogens or to exclude them for environmental diversity analysis.
+
+### Regional Analysis
+Pathogen detection patterns can be analyzed across FEMA regions and collection environments to identify geographic or environmental risk factors.

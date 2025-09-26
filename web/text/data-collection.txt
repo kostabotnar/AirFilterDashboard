@@ -1,0 +1,23 @@
+This dashboard displays the culmination of over 800 air filters collected throughout the continental United States during all four seasons from 2024-2025. The collection methodology follows a systematic approach to ensure comprehensive geographic and temporal coverage across diverse environmental conditions.
+
+## Collection Methodology
+
+Air filter samples were collected using standardized protocols across the continental United States, covering all 10 FEMA regions. The collection process was designed to capture seasonal variations and diverse environmental conditions to provide a comprehensive view of airborne microorganisms.
+
+### Geographic Coverage
+- Samples collected across all 10 FEMA regions
+- Coverage includes urban, suburban, and rural environments
+- Indoor, outdoor, transit, and special event locations
+
+### Temporal Distribution
+- Four-season collection period (2024-2025)
+- Systematic sampling across different weather conditions
+- Capture of seasonal microbial variations
+
+### Sample Storage and Quality Control
+- Samples stored at 4°C to preserve microbial integrity
+- PCR inhibition testing performed to ensure sample quality
+- Standardized protocols maintained across all collection sites
+
+### Data Availability
+The raw next-generation sequencing data is available on the National Center for Biotechnology Information's Sequence Read Archive database. No biological or chemical materials were released into the air or environment during the collection process.
