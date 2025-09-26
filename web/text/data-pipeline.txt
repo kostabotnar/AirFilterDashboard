@@ -1,0 +1,50 @@
+The AirFilterDashboard data processing pipeline transforms raw metagenomic data into dashboard-ready visualizations through a systematic 4-stage process designed for scalability and reproducibility.
+
+## Pipeline Overview
+
+The processing pipeline is implemented as a Python-based command-line tool that orchestrates multiple data transformation steps, utilizing parallel processing for optimal performance with large datasets.
+
+### Stage 1: Metadata Cleaning
+- Processes sample metadata files and merges with FEMA region mappings
+- Normalizes sample IDs to uppercase format
+- Filters incomplete records and validates data integrity
+- Duplicates samples for RNA metagenomics analysis (adding 'R' suffix)
+- **Output**: Standardized metadata with regional associations
+
+### Stage 2: Abundance Processing
+- Processes abundance tables from metagenomic analysis reports
+- Parses semicolon-separated taxonomy strings into hierarchical columns
+- Transforms data from Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species
+- Standardizes missing classifications as "Unclassified"
+- **Output**: Partitioned parquet files for efficient querying
+
+### Stage 3: Read Statistics Extraction
+- Extracts read statistics from HTML metagenomic reports
+- Parses embedded JSON data and HTML tables using regex patterns
+- Captures read count, length statistics, and diversity indices
+- Processes quality metrics and unmapped read percentages
+- **Output**: Comprehensive read statistics per sample
+
+### Stage 4: Post-processing and Integration
+- Identifies common samples across all datasets (metadata, abundance, reads)
+- Filters datasets to include only samples with complete information
+- Removes Homo sapiens sequences from final abundance data
+- Creates filtered "Common Samples" outputs for dashboard consumption
+- **Output**: Dashboard-ready CSV files with consistent sample sets
+
+## Performance Features
+
+### Parallel Processing
+- ProcessPoolExecutor with up to 32 workers for abundance processing
+- ProcessPoolExecutor with up to 64 workers for HTML report parsing
+- Concurrent utilities for scalable batch processing
+
+### Data Formats
+- Input: TSV files, HTML reports, CSV metadata
+- Intermediate: Partitioned parquet files for efficient storage
+- Output: CSV files optimized for dashboard visualization
+
+### Quality Control
+- Automatic validation of sample ID consistency across datasets
+- Detection and reporting of samples missing from different processing stages
+- Error handling and logging for failed processing attempts

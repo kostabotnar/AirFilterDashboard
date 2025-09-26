@@ -211,6 +211,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     e.preventDefault();
                     iframe.src = 'guide.html'; // Assuming guide.html contains tutorial content
                     break;
+                case 'Data':
+                    e.preventDefault();
+                    iframe.src = 'data.html'; // Load the data information page
+                    break;
                 case 'About':
                     e.preventDefault();
                     iframe.src = 'about.html'; // Create this file with about information

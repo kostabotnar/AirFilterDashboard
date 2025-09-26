@@ -1,0 +1,17 @@
+This dashboard displays the culmination of over 800 air filters collected throughout the continental United States during all four seasons from 2023-2024. The collection methodology follows a systematic approach to ensure comprehensive geographic and temporal coverage across diverse environmental conditions.
+
+### Geographic Coverage
+
+Samples were systematically collected across all 10 FEMA regions throughout the continental United States, ensuring comprehensive national representation. The collection strategy encompassed diverse environmental settings including urban, suburban, and rural areas to capture the full spectrum of airborne microbial communities. Sample collection sites included indoor environments, outdoor locations, transit areas, and special event venues to provide a holistic view of microbial exposure across different human activity spaces.
+
+### Temporal Distribution
+
+The collection campaign spanned a complete four-season cycle from 2023 to 2024, allowing for the characterization of seasonal microbial variations and temporal dynamics. Systematic sampling was conducted across different weather conditions and seasonal transitions to capture the natural fluctuations in airborne microbial communities throughout the year. This temporal approach enables the identification of seasonal patterns and weather-related influences on microbial diversity and abundance.
+
+### Materials and Methods
+
+Aerosol samples were collected on 3-micron fluoropore filters at 200 liter per minute using Hi-Q Environmental Products PSU-2 collectors for 24 hours. Samples were then shipped overnight to a molecular laboratory on ice packs and stored in a -80°C freezer. To preserve nucleic acid integrity, we transferred the samples into DNA/RNA Shield. To determine optimal conditions for isolation of DNA and RNA, multiple nucleic acid isolation kits, such as MagMAX Viral/Pathogen Ultra, ZymoBIOMICS DNA/RNA Miniprep Kit, and RNeasy PowerFecal Pro kits, were assessed. DNA and RNA concentration was assessed using a Qubit 3.0. RNA was converted into cDNA following evaluation of multiple first- and second-strand cDNA synthesis kits, including SuperScript IV VILO, SuperScript III, and iScript. DNA and converted cDNA were prepared for sequencing using the Oxford Nanopore Technologies (ONT) Rapid PCR Barcoding Kits. PromethION flow cells were used on an ONT P2Solo instrument with up to ten samples per run.
+
+### Sequencing
+
+Our preferred methodology for nucleic acid isolation was the ZymoBIOMICS DNA/RNA Miniprep Kit. To sequence RNA samples, SuperScript IV VILO was selected as the method for cDNA conversion due to resistance to inhibitors. Afterwards, we used Invitrogen™ Second Strand cDNA Synthesis Kit for double-stranded cDNA, then cleaned the resulting product with Invitrogen’s PureLink™ PCR Micro Kit. 809 DNA samples and 801 RNA samples were sequenced using ONT Rapid PCR Barcoding Kits.

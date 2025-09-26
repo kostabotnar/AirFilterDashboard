@@ -1,0 +1,27 @@
+Pathogen classification in this dashboard is based on established scientific databases and peer-reviewed literature to ensure accurate identification of potentially harmful microorganisms.
+
+## Pathogen Sources
+
+### Bacterial Pathogens
+
+**NCBI Pathogen Detection Database**
+Source: https://www.ncbi.nlm.nih.gov/pathogens/organisms
+
+Comprehensive database of known bacterial pathogens based on clinical and epidemiological evidence, maintained by the National Center for Biotechnology Information.
+
+**Bartlett et al.**
+Source: https://doi.org/10.1099/mic.0.001269
+
+Peer-reviewed literature providing evidence-based bacterial pathogen classifications and emerging pathogen information.
+
+### Viral Pathogens
+
+**Viral Zone Database**
+Source: https://viralzone.expasy.org/678
+
+Genus-level information for viral pathogens maintained by the Swiss Institute of Bioinformatics, offering taxonomic and functional information about viral families.
+
+**International Committee on Taxonomy of Viruses (ICTV)**
+Source: https://ictv.global/msl
+
+Official taxonomic classification system for viruses providing species-level viral classifications through the Master Species List.
