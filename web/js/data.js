@@ -17,24 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<p>Error loading data collection information. Please try again later.</p>';
         });
 
-    // Load data pipeline content
-    fetch('text/data-pipeline.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(text => {
-            const pipelineContent = document.getElementById('pipeline-content');
-            pipelineContent.innerHTML = formatTextContent(text);
-        })
-        .catch(error => {
-            console.error('Error loading data pipeline text:', error);
-            document.getElementById('pipeline-content').innerHTML =
-                '<p>Error loading data pipeline information. Please try again later.</p>';
-        });
-
     // Load pathogens definition content
     fetch('text/data-pathogen.txt')
         .then(response => {
@@ -70,13 +52,33 @@ function formatTextContent(text) {
             return `<h3>${paragraph.substring(3)}</h3>`;
         } else if (paragraph.startsWith('### ')) {
             return `<h4>${paragraph.substring(4)}</h4>`;
-        } else if (paragraph.startsWith('- ')) {
+        } else if (paragraph.includes('\n- ') || paragraph.startsWith('- ')) {
             // Handle bullet points
-            const listItems = paragraph.split('\n')
-                .filter(line => line.trim().startsWith('- '))
-                .map(line => `<li>${line.substring(2).trim()}</li>`)
-                .join('');
-            return `<ul>${listItems}</ul>`;
+            const lines = paragraph.split('\n');
+            let html = '';
+            let inList = false;
+
+            lines.forEach(line => {
+                if (line.trim().startsWith('- ')) {
+                    if (!inList) {
+                        html += '<ul>';
+                        inList = true;
+                    }
+                    html += `<li>${line.substring(2).trim()}</li>`;
+                } else if (line.trim() !== '') {
+                    if (inList) {
+                        html += '</ul>';
+                        inList = false;
+                    }
+                    html += `<p>${line.trim()}</p>`;
+                }
+            });
+
+            if (inList) {
+                html += '</ul>';
+            }
+
+            return html;
         } else if (paragraph.includes('**Output**:') || paragraph.includes('**Performance**:')) {
             // Handle special formatting for pipeline steps
             const processedPara = paragraph.replace(/\n/g, '<br>')
